@@ -35,7 +35,6 @@ class ScopeStub {
 		// This SHOULD throw:
 		// 1120	Access of undefined property _
 		width3 = value;
-		trace("width3: " + width3);
 	}
 }
 
