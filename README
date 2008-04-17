@@ -1,4 +1,3 @@
+LAML is an acronym that stands for Luke and Ali Markup Language. It was first coined by Darren David at Fluid when we introduced him to an early revision of our layout architecture.
 
-AsUnit is the only open-source unit test framework that support Flash Player 6, 7, 8 and 9
-
------------------------------------
+This build is being created in an attempt to investigate a number of different issues still impacting GUI development.

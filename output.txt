@@ -1,0 +1,20 @@
+/Users/lbayes/Projects/Laml/as3/LAML/test/laml/surprises/ScopeTest.as(19): col: 37 Warning: return value for function 'testVariableScope' has no type declaration.
+
+		public function testVariableScope() {
+		                                  ^
+
+/Users/lbayes/Projects/Laml/as3/LAML/test/laml/surprises/ScopeTest.as(20): col: 8 Warning: variable 'stub' has no type declaration.
+
+			var stub = new ScopeStub();
+			    ^
+
+/Users/lbayes/Projects/Laml/as3/LAML/test/laml/surprises/ScopeTest.as(28): col: 13 Warning: variable 'width' has no type declaration.
+
+	public var width;
+	           ^
+
+/Users/lbayes/Projects/Laml/as3/LAML/test/laml/surprises/ScopeTest.as(30): col: 32 Warning: return value for function 'setWidth' has no type declaration.
+
+	public function setWidth(value) {
+	                              ^
+
