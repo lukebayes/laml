@@ -144,14 +144,13 @@ package laml {
 		
 		public function testChildrenBottomRight() {
 			var children = createAndAddStubChildren(3);
-			
 			component.verticalAlign = Layoutable.ALIGN_BOTTOM;
 			component.horizontalAlign = Layoutable.ALIGN_RIGHT;
 			component.draw();
 
 			var child = children[0];
-			assertEquals(20, child.x);
-			assertEquals(20, child.y);
+			assertEquals(25, child.x);
+			assertEquals(25, child.y);
 
 			child = children[1];
 			assertEquals(55, child.x);
@@ -160,7 +159,6 @@ package laml {
 			child = children[2];
 			assertEquals(85, child.x);
 			assertEquals(85, child.y);
-
 		}
 
 	}
