@@ -26,5 +26,9 @@ package laml {
 		override flash_proxy function getProperty(name:*):* {
 			return delegate[name];
 		}
+		
+		override flash_proxy function hasProperty(name:*):Boolean {
+			return delegate.hasOwnProperty(name);
+		}
 	}
 }

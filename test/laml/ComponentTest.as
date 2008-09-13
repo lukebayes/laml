@@ -85,12 +85,8 @@ package laml {
 		}
 		
 		public function testUnknownParam() {
-			try {
-				component.someParam = "foo";
-				fail("Setting an unknown param should cause a failure on the Model");
-			}
-			catch(e:ReferenceError) {
-			}
+			component.someParam = "foo";
+			assertEquals("foo", component.someParam);
 		}
 		
 		public function testParent() {

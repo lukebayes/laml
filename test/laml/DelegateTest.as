@@ -62,6 +62,11 @@ package laml {
 			delegate.width = 110;
 			assertEquals(110, delegate.width);
 		}
+		
+		public function testHasProperty() {
+			var delegate = new Delegate(new Component());
+			assertTrue( delegate.hasOwnProperty("pendingAttributes") );
+		}
 	}
 }
 

@@ -3,25 +3,18 @@ package laml {
 	import flash.events.Event;
 	import flash.utils.Proxy;
 	
-	public class Component extends Styleable {
-		public static var LAST_ID 					= 0;
+	dynamic public class Component extends Styleable {
+		public static var LAST_ID = 0;
 
-		public var id;
-		public var parent;
+		public var pendingAttributes;
 		
 		protected var _children;
 	
 		override protected function initialize() {
 			super.initialize();
 			id = "Component" + (LAST_ID++);
+			pendingAttributes = {};
 			_children = new Array();
-		}
-		
-		override public function draw() {
-			if(!view.parent) {
-				parent.view.addChild(view);
-			}
-			super.draw();
 		}
 
 		public function get children() {

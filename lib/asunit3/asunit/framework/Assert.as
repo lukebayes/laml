@@ -62,6 +62,7 @@ package asunit.framework {
 
 			assertTrue(message, !condition);
 		}
+
 		/**
 		 * Fails a test with the given message.
 		 */

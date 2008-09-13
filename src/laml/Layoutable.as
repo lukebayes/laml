@@ -2,14 +2,13 @@ package laml {
 	import flash.events.EventDispatcher;
 	
 	public class Layoutable {
-		/* Layout Constants */
 		public static const ALIGN_BOTTOM			= "bottom";
 		public static const ALIGN_CENTER			= "center";
 		public static const ALIGN_LEFT				= "left";
 		public static const ALIGN_RIGHT				= "right";
 		public static const ALIGN_TOP				= "top";
 
-		/* Layout Parameters */
+		public var id;
 		public var maxWidth;
 		public var maxHeight;
 		public var measuredHeight:int;
@@ -20,17 +19,18 @@ package laml {
 		public var paddingLeft:int;
 		public var paddingRight:int;
 		public var paddingTop:int;
+		public var parent;
 		public var x:int;
 		public var y:int;
 
 		protected var _actualHeight:int;
-		protected var _actualWidth:int
-		protected var _horizontalAlign				= ALIGN_LEFT;
+		protected var _actualWidth:int;
+		protected var _horizontalAlign = ALIGN_LEFT;
 		protected var _height:int;
 		protected var _layout;
 		protected var _minWidth:int;
 		protected var _minHeight:int;
-		protected var _verticalAlign				= ALIGN_TOP;
+		protected var _verticalAlign = ALIGN_TOP;
 		protected var _width:int;
 		protected var _view;
 		
@@ -45,6 +45,9 @@ package laml {
 		}
 		
 		public function draw() {
+			if(!view.parent) {
+				parent.view.addChild(view);
+			}
 			layout.draw();
 			view.draw();
 		}

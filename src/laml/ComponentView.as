@@ -14,9 +14,9 @@ package laml {
 			x = model.x;
 			y = model.y;
 			graphics.clear();
-//			if(model.backgroundAlpha > 0) {
+			if(model.backgroundAlpha > 0) {
 				graphics.beginFill(model.backgroundColor, model.backgroundAlpha);
-//			}
+			}
 			if(model.strokeAlpha > 0) {
 				graphics.lineStyle(model.strokeSize, model.strokeColor, model.strokeAlpha);
 			}

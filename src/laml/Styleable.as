@@ -1,4 +1,5 @@
 package laml {
+	import flash.display.Bitmap;
 	
 	public class Styleable extends Layoutable {
 		/* Constants */
@@ -10,13 +11,15 @@ package laml {
 
 		/* Style Parameters */
 		public var backgroundColor:uint				= 0x333333;
+		public var backgroundAlpha:Number			= 1;
+		public var backgroundImage:Bitmap			= null;
 		public var strokeColor:uint					= 0x666666;
-		public var backgroundAlpha					= 1;
 		public var fontFace							= FAMILY_SANS;
 		public var fontSize							= 12;
 		public var fontWeight						= FONT_NORMAL;
 		public var strokeAlpha						= 0;
 		public var strokeSize						= 0;
 		public var strokeStyle						= 'Solid';
+
 	}
 }

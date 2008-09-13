@@ -25,14 +25,14 @@ package laml {
 			if(_availableWidth) {
 				return _availableWidth;
 			}
-			return _availableWidth = (this.width - (this.paddingLeft + this.paddingRight));
+			return _availableWidth = (this.width - this.horizontalPadding);
 		}
 		
 		protected function get availableHeight() {
 			if(_availableHeight) {
 				return _availableHeight;
 			}
-			return _availableHeight = (this.height - (this.paddingTop + this.paddingBottom));
+			return _availableHeight = (this.height - this.verticalPadding);
 		}
 	}
 }

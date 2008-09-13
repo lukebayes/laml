@@ -7,22 +7,26 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
+	import laml.AppTest;
 	import laml.BoxLayoutTest;
 	import laml.ComponentTest;
 	import laml.ComponentViewTest;
 	import laml.ComponentVisualTest;
 	import laml.DelegateTest;
+	import laml.LAMLParserTest;
 	import laml.PayloadEventTest;
 	import laml.surprises.ScopeTest;
 
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
+			addTest(new laml.AppTest());
 			addTest(new laml.BoxLayoutTest());
 			addTest(new laml.ComponentTest());
 			addTest(new laml.ComponentViewTest());
 			addTest(new laml.ComponentVisualTest());
 			addTest(new laml.DelegateTest());
+			addTest(new laml.LAMLParserTest());
 			addTest(new laml.PayloadEventTest());
 			addTest(new laml.surprises.ScopeTest());
 		}
