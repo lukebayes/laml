@@ -1,2 +1,14 @@
 h1. LAML (Luke And Ali Markup Language)
 
+This is a lightweight layout and component framework for ActionScript 3 development. 
+
+There are many similarities between this framework and Flex, but there are some significant differences.
+
+* Supports (and was created using) Test-Driven Development
+* No Singletons or custom compilation units
+* Tiny download footprint
+* Minimize duplicate Boilerplate code
+* Supports workflow and views built using Flash Authoring
+* Simple creation of Skins and Themes
+
+
