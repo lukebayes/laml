@@ -503,6 +503,12 @@ package laml.display {
 		public function willTrigger(type:String):Boolean {
 			return model.willTrigger(type);
 		}
+
+		protected function dispatchPayloadEvent(type:String, payload:Object=null):void {
+			var event:PayloadEvent = new PayloadEvent(type);
+			event.payload = payload;
+			dispatchEvent(event);
+		}
 		
 		/***************************
 		 * Composable Implementation
@@ -589,12 +595,6 @@ package laml.display {
 		
 		private function childRemovedHandler(event:PayloadEvent):void {
 			removeChildFromHash(event.payload as Layoutable);
-			dispatchEvent(event);
-		}
-		
-		protected function dispatchPayloadEvent(type:String, payload:*):void {
-			var event:PayloadEvent = new PayloadEvent(type);
-			event.payload = payload;
 			dispatchEvent(event);
 		}
 		

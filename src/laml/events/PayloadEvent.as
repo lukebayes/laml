@@ -2,9 +2,12 @@ package laml.events {
 	import flash.events.Event;
 
 	public class PayloadEvent extends Event {
-		public static const ADDED:String = 'added';
-		public static const CHANGED:String = 'changed';
-		public static const REMOVED:String = 'removed';
+		public static const ADDED:String 				= 'added';
+		public static const CHANGED:String 				= 'changed';
+		public static const COMPLETED:String 			= 'completed';
+		public static const ERROR:String 				= 'error';
+		public static const LOADING_COMPLETED:String 	= 'loadingCompleted';
+		public static const REMOVED:String 				= 'removed';
 		
 		public var payload:Object;
 
