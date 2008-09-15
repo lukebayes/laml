@@ -258,7 +258,7 @@ package laml.display {
 		
 		public function get width():Number {
 			if(isNaN(model.actualWidth)) {
-				return preferredWidth || 0;
+				return preferredWidth || minWidth;
 			}
 			return model.actualWidth;
 		}
@@ -269,7 +269,7 @@ package laml.display {
 		
 		public function get height():Number {
 			if(isNaN(model.actualHeight)) {
-				return preferredHeight || 0;
+				return preferredHeight || minHeight;
 			}
 			return model.actualHeight;
 		}
@@ -300,6 +300,14 @@ package laml.display {
 			return model.actualHeight;
 		}
 		
+		public function set excludeFromLayout(exclude:Boolean):void {
+			model.excludeFromLayout = exclude;
+		}
+		
+		public function get excludeFromLayout():Boolean {
+			return model.excludeFromLayout;
+		}
+
 		public function set percentWidth(percent:Number):void {
 			percent = (percent > 1) ? percent * .01 : percent;
 			width = NaN;
@@ -357,7 +365,7 @@ package laml.display {
 		}
 		
 		public function get minWidth():Number {
-			return model.minWidth;
+			return model.minWidth || horizontalPadding;
 		}
 		
 		public function set minHeight(min:Number):void {
@@ -365,7 +373,7 @@ package laml.display {
 		}
 
 		public function get minHeight():Number {
-			return model.minHeight;
+			return model.minHeight || verticalPadding;
 		}
 		
 		public function set padding(padding:int):void {
@@ -381,7 +389,7 @@ package laml.display {
 		}
 		
 		public function get horizontalPadding():int {
-			return paddingLeft + paddingRight;	
+			return paddingLeft + paddingRight;
 		}
 		
 		public function get verticalPadding():int {

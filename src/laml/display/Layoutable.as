@@ -33,6 +33,8 @@ package laml.display {
 		function get actualWidth():Number;
 		function set actualHeight(height:Number):void;
 		function get actualHeight():Number;
+		function set excludeFromLayout(exclude:Boolean):void;
+		function get excludeFromLayout():Boolean;
 		function set percentWidth(width:Number):void;
 		function get percentWidth():Number;
 		function set percentHeight(height:Number):void;

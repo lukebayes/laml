@@ -277,5 +277,11 @@ package laml.display {
 			component.height = 6;
 			assertEquals(5, component.height);
 		}
+		
+		public function testPaddingChangesMinSize():void {
+			component.padding = 10;
+			assertEquals(20, component.width);
+			assertEquals(20, component.height);
+		}
 	}
 }

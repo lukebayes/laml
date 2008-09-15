@@ -114,6 +114,8 @@ package laml.layout {
 		}
 		
 		protected function renderChildren():void {
+			// Do not use the LayoutableDelegate.children
+			// or 'excludeFromLayout' items will not be rendered
 			var len:int = component.numChildren;
 			for(var i:int; i < len; i++) {
 				component.getChildAt(i).render();

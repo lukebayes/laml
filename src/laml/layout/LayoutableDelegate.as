@@ -54,20 +54,23 @@ package laml.layout {
 			var len:Number = component.numChildren;
 			var child:Layoutable;
 			for(var i:int; i < len; i++) {
-				result.push(new LayoutableDelegate(component.getChildAt(i), direction));
+				child = component.getChildAt(i);
+				if(!child.excludeFromLayout) {
+					result.push(new LayoutableDelegate(child, direction));
+				}
 			}
 			return result;
 		}
 		
 		public function get flexibleChildren():Array {
 			var result:Array = [];
-			var len:Number = component.numChildren;
-			var child:Layoutable;
+			var len:Number = children.length;
+			var child:LayoutableDelegate;
 			for(var i:int; i < len; i++) {
-				child = component.getChildAt(i);
+				child = children[i];
 				//trace(">> checking child: " + child + " : "  + child.percentWidth + " h: " + child.percentHeight);
-				if(!isNaN(child[keys.percent])) {
-					result.push(new LayoutableDelegate(child, direction));
+				if(!isNaN(child.percent)) {
+					result.push(child);
 				}
 			}
 			return result;
@@ -75,12 +78,12 @@ package laml.layout {
 		
 		public function get staticChildren():Array {
 			var result:Array = [];
-			var len:Number = component.numChildren;
-			var child:Layoutable;
+			var len:Number = children.length;
+			var child:LayoutableDelegate;
 			for(var i:int; i < len; i++) {
-				child = component.getChildAt(i);
-				if(isNaN(child[keys.percent])) {
-					result.push(new LayoutableDelegate(child, direction));
+				child = children[i];
+				if(isNaN(child.percent)) {
+					result.push(child);
 				}
 			}
 			return result;

@@ -93,16 +93,16 @@ package laml.layout {
 		
 		public function testFlexibleChildrenHorizontal():void {
 			box = parser.parseLayoutable(getFlexibleHBox());
-			addChild(box.view);
+			//addChild(box.view);
 			box.render();
-			listenToStage(box);
+			//listenToStage(box);
 			
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 5, 5, 190, 290);
 			child = box.getChildAt(1);
 			assertRectangle(child, 200, 5, 200, 180);
 			child = box.getChildAt(2);
-			assertRectangle(child, 405, 5, 190, 210);
+			assertRectangle(child, 405, 5, 190, 290);
 			
 		}
 		
