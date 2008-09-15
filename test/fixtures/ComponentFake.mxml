@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Component xmlns="laml.display.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="600" height="400" backgroundColor="#FF0000" padding="10">
+	<mx:Script>
+		<![CDATA[
+			import laml.events.PayloadEvent;
+
+			override protected function createChildren():void {
+				super.createChildren();
+			}
+			
+			public function get customMember():String {
+				return 'foo';
+			}
+		]]>
+	</mx:Script>
+</Component>

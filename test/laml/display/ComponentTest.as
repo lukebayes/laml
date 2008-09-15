@@ -1,7 +1,9 @@
 package laml.display {
 	import asunit.framework.TestCase;
+	
+	import fixtures.ComponentFake;
 	import fixtures.ComponentStub;
-	import flash.events.Event;
+	
 	import laml.events.PayloadEvent;
 
 	public class ComponentTest extends TestCase {
@@ -282,6 +284,11 @@ package laml.display {
 			component.padding = 10;
 			assertEquals(20, component.width);
 			assertEquals(20, component.height);
+		}
+		
+		public function testMXMLComponent():void {
+			var fake:ComponentFake = new ComponentFake();
+			assertEquals('foo', fake.customMember);
 		}
 	}
 }
