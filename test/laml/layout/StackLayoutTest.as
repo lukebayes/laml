@@ -40,7 +40,7 @@ package laml.layout {
 			var xml:XML = <HBox id="root" xmlns="laml.display" padding="5" horizontalGutter="5" backgroundColor="#FF00FF" width="600" height="300">
 				<Component id="child1" percentWidth="100" percentHeight="1" backgroundColor="#FF0000" />
 				<Component id="child2" width="200" height="180" backgroundColor="#FFFF00" />
-				<Component id="child3" percentWidth="100" height="210" backgroundColor="#0000FF" />
+				<Component id="child3" percentWidth="100" height="100%" backgroundColor="#0000FF" />
 			</HBox>;
 			return xml;
 		}
@@ -93,9 +93,9 @@ package laml.layout {
 		
 		public function testFlexibleChildrenHorizontal():void {
 			box = parser.parseLayoutable(getFlexibleHBox());
-			//addChild(box.view);
+			addChild(box.view);
 			box.render();
-			//listenToStage(box);
+			listenToStage(box);
 			
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 5, 5, 190, 290);
@@ -156,9 +156,9 @@ package laml.layout {
 						  </VBox>;
 
 			box = parser.parseLayoutable(xml);
-			addChild(box.view);
+			//addChild(box.view);
 			box.render();
-			listenToStage(box);
+			//listenToStage(box);
 
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 10, 10, 620, 393);
@@ -169,12 +169,12 @@ package laml.layout {
 		public function testNestedComplexLayout():void {
 			var container:Component;
 			var xml:XML = <Component id="player" verticalAlign="bottom" x="200" width="640" verticalGutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
-							<Component id="video_container" width="100%" height="100%" backgroundColor="#FFCC00" />
+							<Component id="video_container" width="100%" height="100%" backgroundColor="#33333" />
 							<VBox width="100%" height="57">
 								<HBox width="100%" height="57" padding="4" backgroundColor="#333333" backgroundAlpha=".5" horizontalGutter="4" verticalAlign="center">
 									<Component id="play_pause_button" width="50" height="100%" backgroundColor="#FF0000" />
 									<VBox width="100%" height="100%" paddingTop="18">
-										<Component id="progress_handle" width="100%" height="10" backgroundColor="#FF0000" />
+										<Component id="progress_handle" width="100%" height="10" backgroundColor="#00FF00" />
 										<Component id="title" width="99.9%" height="100%" borderSize="0" borderColor="#FF0000" />
 									</VBox>
 								</HBox>
@@ -182,9 +182,9 @@ package laml.layout {
 						  </Component>;
 
 			box = parser.parseLayoutable(xml);
-			addChild(box.view);
+			//addChild(box.view);
 			box.render();
-			listenToStage(box);
+			//listenToStage(box);
 
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 10, 10, 620, 460);
