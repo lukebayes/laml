@@ -7,8 +7,8 @@ There are many similarities between this framework and Flex, but there are some 
 * Supports (and was created using) Test-Driven Development
 * No Singletons or custom compilation units
 * Tiny download footprint
-* Minimize duplicate Boilerplate code
+* Minimize duplicate boilerplate code
 * Supports workflow and views built using Flash Authoring
-* Simple creation of Skins and Themes
+* Simple creation of skins and themes
 
 
