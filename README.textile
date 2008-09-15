@@ -10,5 +10,5 @@ There are many similarities between this framework and Flex, but there are some 
 * Minimize duplicate boilerplate code
 * Supports workflow and views built using Flash Authoring
 * Simple creation of skins and themes
-
-
+* Supports both compile time and run time XML layout (configuration) documents
+* Composite component structure does not extend DisplayObject
