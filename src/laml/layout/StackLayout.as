@@ -22,7 +22,30 @@ package laml.layout {
 			horizontallyPositionChildren(horizontalDelegate);
 			verticallyPositionChildren(verticalDelegate);
 			
+			updateComponentMinWidth(horizontalDelegate);
+			updateComponentMinHeight(verticalDelegate);
+			
 			renderChildren();
+		}
+		
+		protected function updateComponentMinWidth(delegate:LayoutableDelegate):void {
+			var size:Number = getMinSize(delegate);
+			component.minWidth = size;
+		}
+		
+		protected function updateComponentMinHeight(delegate:LayoutableDelegate):void {
+			var size:Number = getMinSize(delegate);
+			component.minHeight = size;
+		}
+		
+		protected function getMinSize(delegate:LayoutableDelegate):int {
+			var kids:Array = delegate.children;
+			var result:int;
+			var len:int = kids.length;
+			for(var i:int; i < len; i++) {
+				result = Math.max(result, kids[i].size + delegate.padding);
+			}
+			return result;
 		}
 		
 		protected function horizontallyScaleChildren(delegate:LayoutableDelegate):void {

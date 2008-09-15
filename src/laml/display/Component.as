@@ -8,8 +8,8 @@ package laml.display {
 	
 	import laml.collections.SelectableList;
 	import laml.events.PayloadEvent;
-	import laml.layout.StackLayout;
 	import laml.layout.ILayout;
+	import laml.layout.StackLayout;
 	
 	/**
 	 * Component is the primary base class for the visual composite structure.
@@ -116,6 +116,7 @@ package laml.display {
 			validateProperties();
 			if(model.validateDisplayList()) {
 				model.disabled = true;
+				layout.render(this);
 				updateDisplayList(width, height);
 				model.disabled = false;
 			}
@@ -129,8 +130,7 @@ package laml.display {
 		protected function updateDisplayList(w:Number, h:Number):void {
 			view.x = x;
 			view.y = y;
-			drawBackground(w, h);
-			layout.render(this);
+			drawBackground(width, height);
 		}
 		
 		protected function drawBackground(w:Number, h:Number):void {

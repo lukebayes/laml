@@ -9,12 +9,20 @@ package laml.layout {
 		}
 
 		override protected function scaleChildren(delegate:LayoutableDelegate, axis:String):void {
-			if(axis == direction) {
+			if(shouldScaleChildren(delegate, axis)) {
 				scaleChildrenOnAxis(delegate, axis);
 			}
 			else {
 				super.scaleChildren(delegate, axis);
 			}
+		}
+		
+		protected function shouldScaleChildren(delegate:LayoutableDelegate, axis:String):Boolean {
+			if(axis == direction) {
+				return true;
+				//return !(isNaN(delegate.percent) && isNaN(delegate.preferred));
+			}
+			return false;
 		}
 
 		override protected function horizontallyPositionChildren(delegate:LayoutableDelegate):void {

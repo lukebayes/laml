@@ -26,10 +26,12 @@ package laml.layout {
 				direction: 		'horizontal',
 				paddingFirst: 	'paddingLeft',
 				gutter: 		'horizontalGutter',
+				minSize:		'minWidth',
 				paddingLast: 	'paddingRight',
 				padding: 		'horizontalPadding',
 				percent: 		'percentWidth',
 				position:		'x',
+				preferred:		'preferredWidth',
 				size: 			'width'
 			}
 		}
@@ -41,10 +43,12 @@ package laml.layout {
 				direction: 		'vertical',
 				paddingFirst: 	'paddingTop',
 				gutter: 		'verticalGutter',
+				minSize:		'minHeight',
 				paddingLast: 	'paddingBottom',
 				padding: 		'verticalPadding',
 				percent: 		'percentHeight',
 				position:		'y',
+				preferred:		'preferredHeight',
 				size: 			'height'
 			}
 		}
@@ -87,6 +91,10 @@ package laml.layout {
 				}
 			}
 			return result;
+		}
+		
+		public function get minSize():Number {
+			return component[keys.minSize];
 		}
 		
 		public function get staticSize():Number {
@@ -160,6 +168,10 @@ package laml.layout {
 		
 		public function get position():Number {
 			return component[keys.position];
+		}
+		
+		public function get preferred():Number {
+			return component[keys.preferred];
 		}
 	
 		public function set size(size:Number):void {
