@@ -21,11 +21,6 @@ package laml {
 			parser = null;
 		}
 		
-		private function getSimpleXML(name) {
-			var xml = <u:Dictionary xmlns:u="flash.utils" name={name} />;
-			return xml;
-		}
-		
 		private function getCustomTypeXML(type) {
 			var str = "<" + type + " />";
 			return new XML(str);
@@ -36,11 +31,10 @@ package laml {
 		}
 
 		public function testParseSimple():void {
-			var name = "FooBar";
-			var xml = getSimpleXML(name);
+			var xml = <u:Dictionary xmlns:u="flash.utils" name="foobar" />;
 			var result = parser.parse(xml);
 			assertNotNull("Object returned", result);
-			assertEquals(name, result.name);
+			assertEquals("foobar", result.name);
 		}
 		
 		public function testParseCustomType():void {

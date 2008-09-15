@@ -4,7 +4,6 @@ package laml {
 	import flash.utils.describeType;
 	import flash.errors.IllegalOperationError;
 	
-	// TODO: Refactor toward a Visitor
 	public class LAMLParser {
 		public static const COMMENT:String 				 	= "comment";
 		public static const ELEMENT:String 					= "element";
@@ -70,8 +69,8 @@ package laml {
 			else if(!isNaN(value)) {
 				return Number(value);
 			}
-			else if(value.indexOf("{") > -1) {
-				root.pendingAttributes[name] = value;
+			else if(value.indexOf("{") == 0) {
+				instance.pendingAttributes[name] = value;
 			}
 			else {
 				return value;
@@ -114,24 +113,27 @@ package laml {
 			}
 		}
 
-		protected function parsePendingAttributes(root) {
-			if(root.hasOwnProperty("pendingAttributes")) {
-				var obj = root.pendingAttributes;
+		protected function parsePendingAttributes(element) {
+			if(element.hasOwnProperty("pendingAttributes")) {
+				var obj = element.pendingAttributes;
 				for(var i in obj) {
 					trace(">> i: " + i + " : " + obj[i]);
-					evaluateAttribute(obj[i], root);
+					evaluateAttribute(obj[i], element);
 					delete obj[i];
+				}
+			}
+			if(element.hasOwnProperty('children')) {
+				var len = element.children.length;
+				for(var i = 0; i < len; i++) {
+					parsePendingAttributes(element.getChildAt(i));
 				}
 			}
 		}
 		
 		protected function evaluateAttribute(value, context) {
-			trace(">> eval with: " + value);
 			var matches = value.match(/{(.*)}/);
 			var match = matches.pop();
-			trace(">> match: " + match);
-			trace("root id is match: " + (context.id == match));
-			trace("context: " + context[match]);
+			context[match] = context.getElementById(match);
 		}
 
 	}

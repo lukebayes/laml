@@ -1,5 +1,6 @@
 package laml {
 	import flash.errors.ArgumentError;
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.utils.Proxy;
 	
@@ -9,22 +10,54 @@ package laml {
 		public var pendingAttributes;
 		
 		protected var _children;
+		protected var childIdHash;
 	
 		override protected function initialize() {
 			super.initialize();
-			id = "Component" + (LAST_ID++);
+			id = "Component" + (++LAST_ID);
 			pendingAttributes = {};
-			_children = new Array();
+			childIdHash = {};
 		}
 
 		public function get children() {
-			return _children;
+			return _children ||= [];
+		}
+		
+		public function get length() {
+			return children.length;
 		}
 		
 		public function addChild(child) {
 			children.push(child);
 			child.parent = this;
+			addElementId(child);
 			return children.length - 1;
+		}
+		
+		public function addElementId(child) {
+			if(parent) {
+				return parent.addElementId(child);
+			}
+			if(childIdHash[child.id]) {
+				throw new IllegalOperationError('Element added to Composite with existing id (' + child.id + ')');
+			}
+			childIdHash[child.id] = child;
+		}
+		
+		public function removeElementId(child) {
+			if(parent) {
+				return parent.removeElementId(child);
+			}
+			delete childIdHash[child.id];
+		}
+		
+		public function getElementById(id) {
+			if(parent) {
+				return parent.getElementById(id);
+			}
+			else {
+				return childIdHash[id];
+			}
 		}
 
 		public function getChildAt(index) {
