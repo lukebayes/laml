@@ -171,7 +171,7 @@ package laml.layout {
 			var xml:XML = <Component id="player" verticalAlign="bottom" x="200" width="640" verticalGutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
 							<Component id="video_container" width="100%" height="100%" backgroundColor="#33333" />
 							<VBox width="100%" height="57">
-								<HBox width="100%" height="57" padding="4" backgroundColor="#333333" backgroundAlpha=".5" horizontalGutter="4" verticalAlign="center">
+								<HBox width="100%" height="57" padding="4" backgroundColor="#333333" backgroundAlpha=".8" horizontalGutter="4" verticalAlign="center">
 									<Component id="play_pause_button" width="50" height="100%" backgroundColor="#FF0000" />
 									<VBox width="100%" height="100%" paddingTop="18">
 										<Component id="progress_handle" width="100%" height="10" backgroundColor="#00FF00" />
@@ -182,9 +182,9 @@ package laml.layout {
 						  </Component>;
 
 			box = parser.parseLayoutable(xml);
-			//addChild(box.view);
+			addChild(box.view);
 			box.render();
-			//listenToStage(box);
+			listenToStage(box);
 
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 10, 10, 620, 460);

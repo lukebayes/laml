@@ -8,7 +8,6 @@ package laml.display {
 	
 	import laml.events.PayloadEvent;
 	
-	
 	public class Image extends Component {
 		private var attached:Bitmap;
 		

@@ -51,7 +51,7 @@ package laml.display {
 				}
 				var props:Dictionary = invalidProperties;
 				invalidProperties = new Dictionary();
-				var event:PayloadEvent = new PayloadEvent();
+				var event:PayloadEvent = new PayloadEvent(PayloadEvent.CHANGED);
 				event.payload = props;
 				dispatchEvent(event);
 			}

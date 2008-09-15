@@ -22,8 +22,8 @@ package laml.layout {
 			horizontallyPositionChildren(horizontalDelegate);
 			verticallyPositionChildren(verticalDelegate);
 			
-			updateComponentMinWidth(horizontalDelegate);
-			updateComponentMinHeight(verticalDelegate);
+			//updateComponentMinWidth(horizontalDelegate);
+			//updateComponentMinHeight(verticalDelegate);
 			
 			renderChildren();
 		}
