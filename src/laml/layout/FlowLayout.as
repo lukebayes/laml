@@ -18,11 +18,22 @@ package laml.layout {
 		}
 		
 		protected function shouldScaleChildren(delegate:LayoutableDelegate, axis:String):Boolean {
-			if(axis == direction) {
-				return true;
-				//return !(isNaN(delegate.percent) && isNaN(delegate.preferred));
+			return (axis == direction);
+		}
+
+		override protected function getMinSize(delegate:LayoutableDelegate):int {
+			if(delegate.direction == direction) {
+				var kids:Array = delegate.children;
+				var result:int;
+				var len:int = kids.length;
+				for(var i:int; i < len; i++) {
+					result += kids[i].size;
+				}
+				return result + delegate.gutterSum + delegate.padding;
 			}
-			return false;
+			else {
+				return super.getMinSize(delegate);
+			}
 		}
 
 		override protected function horizontallyPositionChildren(delegate:LayoutableDelegate):void {
