@@ -7,7 +7,11 @@ package laml.display {
 
 	public interface Layoutable extends IEventDispatcher {
 		
-		/* Findable */
+		/**
+		 * Globally unique identifier for this instance. 
+		 * The provided id must be unique for any tree that
+		 * this instance is added to.
+		 */
 		function set id(id:String):void;
 		function get id():String;
 		function set name(name:String):void;

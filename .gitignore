@@ -1,6 +1,5 @@
-.actionScriptProperties
-.project
-.settings
-.DS_Store
+.svn
 bin/*.swf
+.DS_Store
+doc
 lib/*.swc
