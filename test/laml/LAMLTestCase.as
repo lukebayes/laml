@@ -6,11 +6,11 @@ package laml {
 	import laml.display.Layoutable;
 
 	public class LAMLTestCase extends TestCase {
-
+		
 		public function LAMLTestCase(methodName:String=null) {
 			super(methodName)
 		}
-
+		
 		protected function listenToStage(subscriber:Layoutable):void {
 			getContext().stage.addEventListener(Event.RESIZE, function(event:Event):void {
 				subscriber.width = getContext().stage.stageWidth - 10;

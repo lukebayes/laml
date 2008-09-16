@@ -3,11 +3,10 @@ package {
 	
 	import laml.display.Component;
 	import laml.display.HBox;
-	import laml.display.ImageTest;
 	import laml.display.VBox;
 	
 	public class LAMLRunner extends TestRunner {
-
+		
 		private var hboxRef:HBox;
 		private var vboxRef:VBox;
 		private var component:Component;
@@ -18,7 +17,7 @@ package {
 			// execute setUp(), the method and NOT tearDown.
 			// This allows you to get visual confirmation while developing
 			// visual entities
-			start(ImageTest, 'testClassName', TestRunner.SHOW_TRACE);
+			start(AllTests, null, TestRunner.SHOW_TRACE);
 		}
 	}
 }
