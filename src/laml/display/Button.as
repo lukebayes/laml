@@ -3,7 +3,12 @@ package laml.display {
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	
-	
+	[Event(name='click', type='MouseEvent')]
+	[Event(name='mouseDown', type='MouseEvent')]
+	[Event(name='mouseMove', type='MouseEvent')]
+	[Event(name='mouseOut', type='MouseEvent')]
+	[Event(name='mouseOver', type='MouseEvent')]
+	[Event(name='mouseUp', type='MouseEvent')]
 	public class Button extends Component {
 		private var _buttonView:SimpleButton;
 		
@@ -21,8 +26,8 @@ package laml.display {
 		override protected function createChildren():void {
 			super.createChildren();
 			buttonView = new SimpleButton();
-			createButtonEventListeners(buttonView);
 			buttonView.useHandCursor = true;
+			decorateButtonViewEventListeners(buttonView);
 		}
 		
 		override protected function commitProperties():void {
@@ -97,13 +102,18 @@ package laml.display {
 			return _buttonView;
 		}
 		
-		protected function createButtonEventListeners(button:SimpleButton):void {
-			button.addEventListener(MouseEvent.CLICK, mouseClickHandler);
+		protected function decorateButtonViewEventListeners(button:SimpleButton):void {
+			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 		}
 		
-		protected function mouseClickHandler(event:MouseEvent):void {
-			trace(" CLICk ");
+		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
+			var event:MouseEvent = new MouseEvent(mouseEvent.type);
+			dispatchEvent(event);
 		}
-			
 	}
 }

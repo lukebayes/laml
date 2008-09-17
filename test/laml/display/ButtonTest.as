@@ -2,7 +2,7 @@ package laml.display {
 
 	import asunit.framework.TestCase;
 	
-	import flash.display.SimpleButton;
+	import flash.events.MouseEvent;
 
 	public class ButtonTest extends TestCase {
 		private var button:Button;
@@ -41,9 +41,20 @@ package laml.display {
 			button.upState        = new ButtonDisplayState(upColor, size);
 			button.overState      = new ButtonDisplayState(overColor, size);
 			button.downState      = new ButtonDisplayState(downColor, size);
-//			button.hitTestState   = new ButtonDisplayState(upColor, size);
+			button.hitTestState   = new ButtonDisplayState(upColor, size);
+			
+			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 
 			return button;
+		}
+		
+		private function mouseEventHandler(event:MouseEvent):void {
+			trace(">> mouseEventHandler :: " + event.type + " from " + event.target);
 		}
 	}
 }

@@ -18,8 +18,8 @@ package {
 			// execute setUp(), the method and NOT tearDown.
 			// This allows you to get visual confirmation while developing
 			// visual entities
-			start(AllTests, null, TestRunner.SHOW_TRACE);
-//			start(ButtonTest, "testInstantiated", TestRunner.SHOW_TRACE);
+//			start(AllTests, null, TestRunner.SHOW_TRACE);
+			start(ButtonTest, "testInstantiated", TestRunner.SHOW_TRACE);
 		}
 	}
 }
