@@ -99,9 +99,9 @@ package laml.display {
 		 */
 		public function validateProperties():void {
 			if(model.validateProperties()) {
-				model.disabled = true;
+//				model.disabled = true;
 				commitProperties();
-				model.disabled = false;
+//				model.disabled = false;
 			}
 		}
 		
@@ -130,7 +130,7 @@ package laml.display {
 		protected function updateDisplayList(w:Number, h:Number):void {
 			view.x = x;
 			view.y = y;
-			drawBackground(width, height);
+			drawBackground(w, h);
 		}
 		
 		protected function drawBackground(w:Number, h:Number):void {

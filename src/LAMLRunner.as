@@ -1,6 +1,7 @@
 package {
 	import asunit.textui.TestRunner;
 	
+	import laml.display.ButtonTest;
 	import laml.display.Component;
 	import laml.display.HBox;
 	import laml.display.VBox;
@@ -18,6 +19,7 @@ package {
 			// This allows you to get visual confirmation while developing
 			// visual entities
 			start(AllTests, null, TestRunner.SHOW_TRACE);
+//			start(ButtonTest, "testInstantiated", TestRunner.SHOW_TRACE);
 		}
 	}
 }
