@@ -10,10 +10,7 @@ package laml.display {
 	[Event(name='mouseOver', type='MouseEvent')]
 	[Event(name='mouseUp', type='MouseEvent')]
 	public class Button extends Component {
-		private var _buttonView:SimpleButton;
-		
-		public function Button() {
-		}
+		protected var _buttonView:SimpleButton;
 		
 		override protected function initialize():void { 
 			super.initialize();
@@ -26,7 +23,6 @@ package laml.display {
 		override protected function createChildren():void {
 			super.createChildren();
 			buttonView = new SimpleButton();
-			buttonView.useHandCursor = true;
 			decorateButtonViewEventListeners(buttonView);
 		}
 		
@@ -38,9 +34,13 @@ package laml.display {
 		}
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
+			updateSize(w, h);
+			super.updateDisplayList(w, h);
+		}
+		
+		protected function updateSize(w:Number, h:Number):void {
 			buttonView.width = w;
 			buttonView.height = h;
-			super.updateDisplayList(w, h);
 		}
 		
 		public function set upState(upState:DisplayObject):void {
@@ -96,6 +96,7 @@ package laml.display {
 				view.removeChild(_buttonView);
 			}
 			_buttonView = view.addChild(simpleButton) as SimpleButton;
+			_buttonView.useHandCursor = true;
 		}
 		
 		public function get buttonView():SimpleButton {
@@ -103,7 +104,7 @@ package laml.display {
 		}
 		
 		protected function decorateButtonViewEventListeners(button:SimpleButton):void {
-			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			button.addEventListener(MouseEvent.CLICK, clickHandler);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
@@ -111,6 +112,10 @@ package laml.display {
 			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 		}
 		
+		protected function clickHandler(mouseEvent:MouseEvent):void {
+			mouseEventHandler(mouseEvent);
+		}
+
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
 			var event:MouseEvent = new MouseEvent(mouseEvent.type);
 			dispatchEvent(event);

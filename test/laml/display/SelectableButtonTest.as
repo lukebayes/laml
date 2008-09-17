@@ -4,15 +4,18 @@ package laml.display {
 	
 	import flash.events.MouseEvent;
 
-	public class ButtonTest extends TestCase {
-		private var button:Button;
+	public class SelectableButtonTest extends TestCase {
+		private var button:SelectableButton;
 		
-		private var upColor:uint   = 0xFFCC00;
-		private var overColor:uint = 0xCCFF00;
-		private var downColor:uint = 0x00CCFF;
-		private var size:uint      = 80;
+		private var upColor:uint			= 0xFFCC00;
+		private var overColor:uint			= 0xCCFF00;
+		private var downColor:uint			= 0x00CCFF;
+		private var upSelectedColor:uint	= 0xFF0000;
+		private var overSelectedColor:uint	= 0x00FF00;
+		private var downSelectedColor:uint	= 0x0000FF;
+		private var size:uint				= 80;
     
-		public function ButtonTest(methodName:String=null) {
+		public function SelectableButtonTest(methodName:String=null) {
 			super(methodName)
 		}
 
@@ -29,19 +32,24 @@ package laml.display {
 		}
 		
 		public function testInstantiated():void {
-			assertTrue("button is Button", button is Button);
+			assertTrue("button is Button", button is SelectableButton);
 		}
 		
-		private function createButton():Button {
-			var button:Button = new Button();
+		private function createButton():SelectableButton {
+			var button:SelectableButton = new SelectableButton();
 			button.width = 250;
 			button.height = 100;
-			button.backgroundColor = 0xCCCCCC;
+			button.backgroundColor 		= 0xCCCCCC;
 
-			button.upState        = new ButtonDisplayState(upColor, size);
-			button.overState      = new ButtonDisplayState(overColor, size);
-			button.downState      = new ButtonDisplayState(downColor, size);
-			button.hitTestState   = new ButtonDisplayState(upColor, size);
+			button.upState				= new ButtonDisplayState(upColor, size);
+			button.overState			= new ButtonDisplayState(overColor, size);
+			button.downState			= new ButtonDisplayState(downColor, size);
+			
+			button.upSelectedState		= new ButtonDisplayState(upSelectedColor, size);
+			button.overSelectedState	= new ButtonDisplayState(overSelectedColor, size);
+			button.downSelectedState	= new ButtonDisplayState(downSelectedColor, size);
+			
+			button.hitTestState			= new ButtonDisplayState(upSelectedColor, size);
 			
 			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
@@ -54,7 +62,7 @@ package laml.display {
 		}
 		
 		private function mouseEventHandler(event:MouseEvent):void {
-			trace(">> mouseEventHandler :: " + event.type + " from " + event.target);
+			trace(">> mouseEventHandler :: " + event.type + " from " + event.target + " where selected is " + event.target.selected);
 		}
 	}
 }
