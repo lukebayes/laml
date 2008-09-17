@@ -31,6 +31,12 @@ package laml.display {
 			if(!hitTestState) {
 				hitTestState = upState;
 			}
+			if(!overState) {
+				overState = upState;
+			} 
+			if(!downState) {
+				downState = overState || upState;
+			}
 		}
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
@@ -51,10 +57,6 @@ package laml.display {
 			return model.upState;
 		}
 		
-		protected function validateUpState(newValue:*, oldValue:*):void {
-			buttonView.upState = newValue;
-		}
-		
 		public function set overState(overState:DisplayObject):void {
 			model.overState = overState;
 		}
@@ -63,10 +65,6 @@ package laml.display {
 			return model.overState;
 		}
 		
-		protected function validateOverState(newValue:*, oldValue:*):void {
-			buttonView.overState = newValue;
-		}
-
 		public function set downState(downState:DisplayObject):void {
 			model.downState = downState;
 		}
@@ -75,10 +73,6 @@ package laml.display {
 			return model.downState;
 		}
 		
-		protected function validateDownState(newValue:*, oldValue:*):void {
-			buttonView.downState = newValue;
-		}
-
 		public function set hitTestState(hitTestState:DisplayObject):void {
 			model.hitTestState = hitTestState;
 		}
@@ -87,6 +81,18 @@ package laml.display {
 			return model.hitTestState;
 		}
 		
+		protected function validateUpState(newValue:*, oldValue:*):void {
+			buttonView.upState = newValue;
+		}
+		
+		protected function validateOverState(newValue:*, oldValue:*):void {
+			buttonView.overState = newValue;
+		}
+
+		protected function validateDownState(newValue:*, oldValue:*):void {
+			buttonView.downState = newValue;
+		}
+
 		protected function validateHitTestState(newValue:*, oldValue:*):void {
 			buttonView.hitTestState = newValue;
 		}

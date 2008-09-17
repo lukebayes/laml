@@ -18,12 +18,25 @@ package laml.display {
 		
 		override protected function createChildren():void {
 			view = new Sprite();
+
 			selectedButtonView = new SimpleButton();
-			unselectedButtonView = new SimpleButton();
 			decorateButtonViewEventListeners(selectedButtonView);
+
+			unselectedButtonView = new SimpleButton();
 			decorateButtonViewEventListeners(unselectedButtonView);
 			buttonView = unselectedButtonView;
+
 			_selected = false;
+		}
+		
+		override protected function commitProperties():void {
+			super.commitProperties();
+			if(!overSelectedState) {
+				overSelectedState = upSelectedState;
+			} 
+			if(!downSelectedState) {
+				downSelectedState = overSelectedState || upSelectedState;
+			}
 		}
 
 		override protected function updateSize(w:Number, h:Number):void {
@@ -41,10 +54,6 @@ package laml.display {
 			return model.upSelectedState;
 		}
 		
-		protected function validateUpSelectedState(newValue:*, oldValue:*):void {
-			selectedButtonView.upState = newValue;
-		}
-		
 		public function set overSelectedState(overSelectedState:DisplayObject):void {
 			model.overSelectedState = overSelectedState;
 		}
@@ -53,10 +62,6 @@ package laml.display {
 			return model.overSelectedState;
 		}
 		
-		protected function validateOverSelectedState(newValue:*, oldValue:*):void {
-			selectedButtonView.overState = newValue;
-		}
-
 		public function set downSelectedState(downSelectedState:DisplayObject):void {
 			model.downSelectedState = downSelectedState;
 		}
@@ -65,6 +70,14 @@ package laml.display {
 			return model.downSelectedState;
 		}
 		
+		protected function validateUpSelectedState(newValue:*, oldValue:*):void {
+			selectedButtonView.upState = newValue;
+		}
+		
+		protected function validateOverSelectedState(newValue:*, oldValue:*):void {
+			selectedButtonView.overState = newValue;
+		}
+
 		protected function validateDownSelectedState(newValue:*, oldValue:*):void {
 			selectedButtonView.downState = newValue;
 		}

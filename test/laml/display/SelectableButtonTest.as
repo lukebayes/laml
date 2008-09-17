@@ -10,6 +10,7 @@ package laml.display {
 		private var upColor:uint			= 0xFFCC00;
 		private var overColor:uint			= 0xCCFF00;
 		private var downColor:uint			= 0x00CCFF;
+		
 		private var upSelectedColor:uint	= 0xFF0000;
 		private var overSelectedColor:uint	= 0x00FF00;
 		private var downSelectedColor:uint	= 0x0000FF;
