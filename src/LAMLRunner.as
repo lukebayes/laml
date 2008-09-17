@@ -1,9 +1,9 @@
 package {
 	import asunit.textui.TestRunner;
 	
+	import laml.display.ButtonTest;
 	import laml.display.Component;
 	import laml.display.HBox;
-	import laml.display.SelectableButtonTest;
 	import laml.display.VBox;
 	
 	public class LAMLRunner extends TestRunner {
@@ -19,7 +19,7 @@ package {
 			// This allows you to get visual confirmation while developing
 			// visual entities
 //			start(AllTests, null, TestRunner.SHOW_TRACE);
-			start(SelectableButtonTest, "testInstantiated", TestRunner.SHOW_TRACE);
+			start(ButtonTest, "testCustomButton", TestRunner.SHOW_TRACE);
 		}
 	}
 }

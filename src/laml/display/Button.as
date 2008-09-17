@@ -1,4 +1,6 @@
 package laml.display {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
@@ -10,6 +12,11 @@ package laml.display {
 	[Event(name='mouseOver', type='MouseEvent')]
 	[Event(name='mouseUp', type='MouseEvent')]
 	public class Button extends Component {
+		protected const UP_STATE:String = "UpState";
+		protected const OVER_STATE:String = "OverState";
+		protected const DOWN_STATE:String = "DownState";
+		protected const HIT_TEST_STATE:String = "HitTestState";
+
 		protected var _buttonView:SimpleButton;
 		
 		override protected function initialize():void { 
@@ -22,8 +29,31 @@ package laml.display {
 		
 		override protected function createChildren():void {
 			super.createChildren();
+			createView();
+			createStates();
+		}
+		
+		protected function createView():void {
 			buttonView = new SimpleButton();
 			decorateButtonViewEventListeners(buttonView);
+		}
+		
+		protected function createStates():void {
+			if(defaultUpState) {
+				upState = defaultUpState;
+			}
+			
+			if(defaultOverState) {
+				overState = defaultOverState;
+			}
+
+			if(defaultDownState) {
+				downState = defaultDownState;
+			}
+			
+			if(defaultHitTestState) {
+				hitTestState = defaultHitTestState;
+			}
 		}
 		
 		override protected function commitProperties():void {
@@ -95,6 +125,38 @@ package laml.display {
 
 		protected function validateHitTestState(newValue:*, oldValue:*):void {
 			buttonView.hitTestState = newValue;
+		}
+
+		public function get defaultUpState():DisplayObject {
+			var alias:String = unQualifiedClassName + UP_STATE;
+			return getBitmap(alias);
+		}
+		
+		public function get defaultOverState():DisplayObject {
+			var alias:String = unQualifiedClassName + OVER_STATE;
+			return getBitmap(alias);
+		}
+
+		public function get defaultDownState():DisplayObject {
+			var alias:String = unQualifiedClassName + DOWN_STATE;
+			return getBitmap(alias);
+		}
+
+		public function get defaultHitTestState():DisplayObject {
+			if(width > 0 && height > 0) {
+				var bitmapData:BitmapData = new BitmapData(width, height);
+				return new Bitmap(bitmapData);
+			}
+			
+			return null;
+		}
+
+		public function getBitmap(alias:String):DisplayObject {
+			if(hasOwnProperty(alias)) {
+				return new this[alias]() as DisplayObject;
+			}
+			
+			return null;
 		}
 
 		public function set buttonView(simpleButton:SimpleButton):void {

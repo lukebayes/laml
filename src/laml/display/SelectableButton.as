@@ -5,9 +5,13 @@ package laml.display {
 	import flash.events.MouseEvent;
 	
 	public class SelectableButton extends Button {
-		protected var _selected:Boolean;
-		protected var selectedButtonView:SimpleButton; 
+		protected const UP_SELECTED_STATE:String = "UpSelectedState";
+		protected const OVER_SELECTED_STATE:String = "OverSelectedState";
+		protected const DOWN_SELECTED_STATE:String = "DownSelectedState";
+		protected const HIT_TEST_SELECTED_STATE:String = "HitTestSelectedState";
 		protected var unselectedButtonView:SimpleButton;
+		protected var selectedButtonView:SimpleButton; 
+		protected var _selected:Boolean;
 		
 		override protected function initialize():void { 
 			super.initialize();
@@ -16,9 +20,7 @@ package laml.display {
 			model.validate_downSelectedState = validateDownSelectedState;
 		}
 		
-		override protected function createChildren():void {
-			view = new Sprite();
-
+		override protected function createView():void {
 			selectedButtonView = new SimpleButton();
 			decorateButtonViewEventListeners(selectedButtonView);
 
@@ -27,6 +29,21 @@ package laml.display {
 			buttonView = unselectedButtonView;
 
 			_selected = false;
+		}
+		
+		override protected function createStates():void {
+			super.createStates();
+			if(defaultUpSelectedState) {
+				upSelectedState = defaultUpSelectedState;
+			}
+			
+			if(defaultOverSelectedState) {
+				overSelectedState = defaultOverSelectedState;
+			}
+
+			if(defaultDownSelectedState) {
+				downSelectedState = defaultDownSelectedState;
+			}
 		}
 		
 		override protected function commitProperties():void {
@@ -86,7 +103,22 @@ package laml.display {
 			super.validateHitTestState(newValue, oldValue);
 			selectedButtonView.hitTestState = newValue;
 		}
+
+		public function get defaultUpSelectedState():DisplayObject {
+			var alias:String = unQualifiedClassName + UP_SELECTED_STATE;
+			return getBitmap(alias);
+		}
 		
+		public function get defaultOverSelectedState():DisplayObject {
+			var alias:String = unQualifiedClassName + OVER_SELECTED_STATE;
+			return getBitmap(alias);
+		}
+
+		public function get defaultDownSelectedState():DisplayObject {
+			var alias:String = unQualifiedClassName + DOWN_SELECTED_STATE;
+			return getBitmap(alias);
+		}
+
 		public function get selected():Boolean {
 			return _selected;
 		}
