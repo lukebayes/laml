@@ -2,6 +2,8 @@ package laml.display {
 
 	import asunit.framework.TestCase;
 	
+	import fixtures.CustomSelectableButton;
+	
 	import flash.events.MouseEvent;
 
 	public class SelectableButtonTest extends TestCase {
@@ -20,12 +22,6 @@ package laml.display {
 			super(methodName)
 		}
 
-		override protected function setUp():void {
-			super.setUp();
-			button = createButton();
-			addChild(button.view);
-		}
-
 		override protected function tearDown():void {
 			super.tearDown();
 			removeChild(button.view);
@@ -33,7 +29,15 @@ package laml.display {
 		}
 		
 		public function testInstantiated():void {
+			button = createButton();
+			addChild(button.view);
 			assertTrue("button is Button", button is SelectableButton);
+		}
+		
+		public function testCustomButton():void {
+			button = new CustomSelectableButton();
+			addChild(button.view);
+			addEventHandlers(button);
 		}
 		
 		private function createButton():SelectableButton {
@@ -52,6 +56,12 @@ package laml.display {
 			
 			button.hitTestState			= new ButtonDisplayState(upSelectedColor, size);
 			
+			addEventHandlers(button);
+
+			return button;
+		}
+		
+		protected function addEventHandlers(button:SelectableButton):void {
 			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
@@ -59,7 +69,6 @@ package laml.display {
 			button.addEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 
-			return button;
 		}
 		
 		private function mouseEventHandler(event:MouseEvent):void {

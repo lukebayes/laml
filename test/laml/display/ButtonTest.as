@@ -19,10 +19,6 @@ package laml.display {
 			super(methodName)
 		}
 
-		override protected function setUp():void {
-			super.setUp();
-		}
-
 		override protected function tearDown():void {
 			super.tearDown();
 			removeChild(button.view);
