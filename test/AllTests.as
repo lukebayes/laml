@@ -8,6 +8,7 @@ package {
 
 	import asunit.framework.TestSuite;
 	import laml.collections.SelectableListTest;
+	import laml.display.ButtonTest;
 	import laml.display.ComponentTest;
 	import laml.display.ImageTest;
 	import laml.layout.FlowLayoutTest;
@@ -18,6 +19,7 @@ package {
 
 		public function AllTests() {
 			addTest(new laml.collections.SelectableListTest());
+			addTest(new laml.display.ButtonTest());
 			addTest(new laml.display.ComponentTest());
 			addTest(new laml.display.ImageTest());
 			addTest(new laml.layout.FlowLayoutTest());

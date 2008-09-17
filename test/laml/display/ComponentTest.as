@@ -69,6 +69,8 @@ package laml.display {
 			assertEquals(0, component.y);
 			component.y = 10;
 			assertEquals(10, component.y);
+			component.y = 20;
+			assertEquals(20, component.y);
 		}
 		
 		public function testCallbackOrder():void {
