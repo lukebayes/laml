@@ -1,7 +1,6 @@
 package {
 	import asunit.textui.TestRunner;
 	
-	import laml.display.ButtonTest;
 	import laml.display.Component;
 	import laml.display.HBox;
 	import laml.display.VBox;
