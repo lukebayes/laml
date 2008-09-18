@@ -106,17 +106,17 @@ package laml.display {
 
 		public function get defaultUpSelectedState():DisplayObject {
 			var alias:String = unQualifiedClassName + UP_SELECTED_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 		
 		public function get defaultOverSelectedState():DisplayObject {
 			var alias:String = unQualifiedClassName + OVER_SELECTED_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 
 		public function get defaultDownSelectedState():DisplayObject {
 			var alias:String = unQualifiedClassName + DOWN_SELECTED_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 
 		public function get selected():Boolean {

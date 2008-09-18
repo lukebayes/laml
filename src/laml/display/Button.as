@@ -129,31 +129,23 @@ package laml.display {
 
 		public function get defaultUpState():DisplayObject {
 			var alias:String = unQualifiedClassName + UP_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 		
 		public function get defaultOverState():DisplayObject {
 			var alias:String = unQualifiedClassName + OVER_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 
 		public function get defaultDownState():DisplayObject {
 			var alias:String = unQualifiedClassName + DOWN_STATE;
-			return getBitmap(alias);
+			return getBitmapByName(alias);
 		}
 
 		public function get defaultHitTestState():DisplayObject {
 			if(width > 0 && height > 0) {
 				var bitmapData:BitmapData = new BitmapData(width, height);
 				return new Bitmap(bitmapData);
-			}
-			
-			return null;
-		}
-
-		public function getBitmap(alias:String):DisplayObject {
-			if(hasOwnProperty(alias)) {
-				return new this[alias]() as DisplayObject;
 			}
 			
 			return null;

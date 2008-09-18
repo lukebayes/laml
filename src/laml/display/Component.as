@@ -1,5 +1,7 @@
 package laml.display {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
@@ -61,11 +63,12 @@ package laml.display {
 		
 		private var children:SelectableList;
 		private var childrenHash:Dictionary;
+		private var childrenCreated:Boolean;
+		
 		
 		public function Component() {
 			initializeComponent();
 			initialize();
-			createChildren();
 		}
 		
 		private function initializeComponent():void {
@@ -89,6 +92,13 @@ package laml.display {
 			view = new Sprite();
 		}
 		
+		protected function createChildrenIfNeeded():void {
+			if(!childrenCreated) {
+				createChildren();
+				childrenCreated = true;
+			}
+		}
+		
 		public function invalidateProperties():void {
 			model.invalidateProperties();
 			invalidateDisplayList();
@@ -98,6 +108,7 @@ package laml.display {
 		 * Force validation and prevent pending asynchronous update
 		 */
 		public function validateProperties():void {
+			createChildrenIfNeeded()
 			if(model.validateProperties()) {
 //				model.disabled = true;
 				commitProperties();
@@ -168,6 +179,9 @@ package laml.display {
 		}
 		
 		public function get view():Sprite {
+			if(!_view) {
+				createChildrenIfNeeded();
+			}
 			return _view;
 		}
 
@@ -604,6 +618,39 @@ package laml.display {
 		
 		protected function get qualifiedClassName():String {
 			return _qualifiedClassName ||= getQualifiedClassName(this);
+		}
+
+		public function set skin(skin:Skin):void {
+			model.skin = skin;
+		}
+
+		public function get skin():Skin {
+			return model.skin;
+		}
+
+		public function getBitmapByName(alias:String):DisplayObject {
+			var result:DisplayObject;
+			
+			if(hasOwnProperty(alias)) {
+				return new this[alias]() as DisplayObject;
+			}
+			
+			if(skin) {
+				result = skin.getBitmapByName(alias);
+				if(result) {
+					return result;
+				} 
+			}
+			
+			if(parent) {
+				result = parent.getBitmapByName(alias);
+				if(result) {
+					return result;
+				}
+			}
+
+			var bitmapData:BitmapData = new BitmapData(1, 1);
+			return new Bitmap(bitmapData);
 		}
 
 		protected function generateId():String {

@@ -1,10 +1,7 @@
 package episodic.core {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
+	import laml.display.Skin;
 	
-	public class SkinStub extends Sprite {
+	public class SkinStub extends Skin {
 		[Embed(source="assets/Play1Normal.png")]
 		public var CustomButtonUpState:Class;
 
@@ -31,15 +28,5 @@ package episodic.core {
 
 		[Embed(source="assets/PausePressed.png")]
 		public var CustomSelectableButtonDownSelectedState:Class;
-
-		public function getBitmap(alias:String):DisplayObject {
-			if(hasOwnProperty(alias)) {
-				return new this[alias]() as DisplayObject;
-			}
-			else {
-				var bitmapData:BitmapData = new BitmapData(1, 1);
-				return new Bitmap(bitmapData);
-			}
-		}
 	}
 }
