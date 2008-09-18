@@ -192,13 +192,13 @@ package laml.layout {
 			assertRectangle(child, 10, 413, 620, 57);
 		}
 		
-		public function testContainerExpandsForChild():void {
+		public function testContainerExpandsForChildPreferred():void {
 			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" padding="5" backgroundColor="#FFCC00">
 				<Component preferredWidth="200" preferredHeight="210" backgroundColor="#FF0000" />
 			</VBox>;
 			
 			box = parser.parseLayoutable(xml);
-			//addChild(box.view);
+			addChild(box.view);
 			box.render();
 			//listenToStage(box);
 			
@@ -206,28 +206,6 @@ package laml.layout {
 			assertRectangle(child, 200, 0, 210, 220);
 			child = box.getChildAt(0);
 			assertRectangle(child, 5, 5, 200, 210);			
-		}
-
-		public function testContainerExpandsForChildren():void {
-			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" y="10" padding="5" backgroundColor="#FFCC00">
-				<Component id="child1" width="200" height="80" backgroundColor="#FF0000" />
-				<Component id="child2" width="120" height="80" backgroundColor="#00FF00" />
-				<Component id="child3" width="200" height="105" backgroundColor="#0000FF" />
-			</VBox>;
-			
-			box = parser.parseLayoutable(xml);
-			//addChild(box.view);
-			box.render();
-			//listenToStage(box);
-			
-			var child:Layoutable = box;
-			assertRectangle(child, 200, 10, 210, 275);
-			child = box.getChildAt(0);
-			assertRectangle(child, 5, 5, 200, 80);
-			child = box.getChildAt(1);
-			assertRectangle(child, 5, 85, 120, 80);
-			child = box.getChildAt(2);
-			assertRectangle(child, 5, 165, 200, 105);
 		}
 	}
 }

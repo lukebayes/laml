@@ -35,6 +35,8 @@ package laml.display {
 		function get width():Number;
 		function set height(height:Number):void;
 		function get height():Number;
+		function get fixedWidth():Number;
+		function get fixedHeight():Number;
 		function set actualWidth(width:Number):void;
 		function get actualWidth():Number;
 		function set actualHeight(height:Number):void;

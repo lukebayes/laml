@@ -267,7 +267,7 @@ package laml.display {
 		}
 		
 		public function set width(width:Number):void {
-			actualWidth = width;
+			model.width = actualWidth = width;
 		}
 		
 		public function get width():Number {
@@ -278,7 +278,7 @@ package laml.display {
 		}
 		
 		public function set height(height:Number):void {
-			actualHeight = height;
+			model.height = actualHeight = height;
 		}
 		
 		public function get height():Number {
@@ -286,6 +286,14 @@ package laml.display {
 				return preferredHeight || minHeight;
 			}
 			return model.actualHeight;
+		}
+		
+		public function get fixedWidth():Number {
+			return model.width;
+		}
+
+		public function get fixedHeight():Number {
+			return model.height;
 		}
 		
 		public function set actualWidth(width:Number):void {
@@ -298,7 +306,7 @@ package laml.display {
 		}
 		
 		public function get actualWidth():Number {
-			return model.actualWidth;
+			return model.actualWidth || preferredWidth || minWidth;
 		}
 		
 		public function set actualHeight(height:Number):void {
@@ -311,7 +319,7 @@ package laml.display {
 		}
 		
 		public function get actualHeight():Number {
-			return model.actualHeight;
+			return model.actualHeight || preferredHeight || minHeight;
 		}
 		
 		public function set excludeFromLayout(exclude:Boolean):void {
@@ -376,6 +384,9 @@ package laml.display {
 		
 		public function set minWidth(min:Number):void {
 			model.minWidth = min;
+			if(actualWidth < min) {
+				actualWidth = min;
+			}
 		}
 		
 		public function get minWidth():Number {
@@ -384,6 +395,9 @@ package laml.display {
 		
 		public function set minHeight(min:Number):void {
 			model.minHeight = min;
+			if(actualHeight < min) {
+				actualHeight = min;
+			}
 		}
 
 		public function get minHeight():Number {
