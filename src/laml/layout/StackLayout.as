@@ -16,34 +16,66 @@ package laml.layout {
 			var horizontalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.HORIZONTAL);
 			var verticalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.VERTICAL);
 
+			horizontalDelegate.minSize = getChildrenMinWidth(horizontalDelegate);
+			
+			if(isNaN(horizontalDelegate.fixed) && isNaN(horizontalDelegate.percent)) {
+				horizontalDelegate.actual = getChildrenWidth(horizontalDelegate);
+			}
+			
+			verticalDelegate.minSize = getChildrenMinHeight(verticalDelegate);
+			
+			if(isNaN(verticalDelegate.fixed) && isNaN(verticalDelegate.percent)) {
+				verticalDelegate.actual = getChildrenHeight(horizontalDelegate);
+			}
+
 			horizontallyScaleChildren(horizontalDelegate);
 			verticallyScaleChildren(verticalDelegate);
 			
 			horizontallyPositionChildren(horizontalDelegate);
 			verticallyPositionChildren(verticalDelegate);
 			
-			//updateComponentMinWidth(horizontalDelegate);
-			//updateComponentMinHeight(verticalDelegate);
-			
 			renderChildren();
 		}
 		
-		protected function updateComponentMinWidth(delegate:LayoutableDelegate):void {
-			var size:Number = getMinSize(delegate);
-			component.minWidth = size;
+		protected function getChildrenMinWidth(delegate:LayoutableDelegate):Number {
+			return getDelegateMinSize(delegate);
 		}
 		
-		protected function updateComponentMinHeight(delegate:LayoutableDelegate):void {
-			var size:Number = getMinSize(delegate);
-			component.minHeight = size;
+		protected function getChildrenMinHeight(delegate:LayoutableDelegate):Number {
+			return getDelegateMinSize(delegate);
 		}
 		
-		protected function getMinSize(delegate:LayoutableDelegate):int {
+		protected function getDelegateMinSize(delegate:LayoutableDelegate):Number {
 			var kids:Array = delegate.children;
-			var result:int;
+			var result:Number = 0;
+			var child:LayoutableDelegate;
 			var len:int = kids.length;
 			for(var i:int; i < len; i++) {
-				result = Math.max(result, kids[i].size + delegate.padding);
+				child = kids[i] as LayoutableDelegate;
+				if(child.minSize) {
+					result = Math.max(result, child.minSize + delegate.padding);
+				}
+				else if(child.fixed) {
+					result = Math.max(result, child.fixed + delegate.padding);
+				}
+			}
+			return result;
+		}
+		
+		protected function getChildrenWidth(delegate:LayoutableDelegate):Number {
+			return getDelegateSize(delegate);
+		}
+		
+		protected function getChildrenHeight(delegate:LayoutableDelegate):Number {
+			return getDelegateSize(delegate);
+		}
+		
+		protected function getDelegateSize(delegate:LayoutableDelegate):Number {
+			var kids:Array = delegate.children;
+			var result:Number = 0;
+			var len:int = kids.length;
+			for(var i:int; i < len; i++) {
+				result = Math.max(result, kids[i].actual + delegate.padding);
 			}
 			return result;
 		}

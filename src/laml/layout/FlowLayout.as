@@ -21,18 +21,35 @@ package laml.layout {
 			return (axis == direction);
 		}
 
-		override protected function getMinSize(delegate:LayoutableDelegate):int {
+		override protected function getDelegateMinSize(delegate:LayoutableDelegate):Number {
 			if(delegate.direction == direction) {
 				var kids:Array = delegate.children;
-				var result:int;
+				var result:Number = 0;
+				var child:LayoutableDelegate;
 				var len:int = kids.length;
 				for(var i:int; i < len; i++) {
-					result += kids[i].size;
+					child = kids[i] as LayoutableDelegate;
+					result += child.minSize || child.fixed || child.preferred;
 				}
 				return result + delegate.gutterSum + delegate.padding;
 			}
 			else {
-				return super.getMinSize(delegate);
+				return super.getDelegateMinSize(delegate);
+			}
+		}
+
+		override protected function getDelegateSize(delegate:LayoutableDelegate):Number {
+			if(delegate.direction == direction) {
+				var kids:Array = delegate.children;
+				var result:Number = 0;
+				var len:int = kids.length;
+				for(var i:int; i < len; i++) {
+					result += kids[i].actual;
+				}
+				return result + delegate.gutterSum + delegate.padding;
+			}
+			else {
+				return super.getDelegateSize(delegate);
 			}
 		}
 

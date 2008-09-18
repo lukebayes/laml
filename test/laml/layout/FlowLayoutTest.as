@@ -20,8 +20,8 @@ package laml.layout {
 
 			component = new Component();
 			component.backgroundColor = 0xFFCC00;
-			component.preferredWidth = 640;
-			component.preferredHeight = 480;
+			component.width = 640;
+			component.height = 480;
 			component.padding = 10;
 			component.paddingTop = 10;
 			component.x = 300;
@@ -66,6 +66,7 @@ package laml.layout {
 		
 		public function testSingleFixedWidthChildTopLeft():void {
 			var child:Layoutable = createChild();
+
 			component.addChild(child);
 			component.render();
 			assertEquals(200, child.width);
@@ -146,6 +147,62 @@ package laml.layout {
 			assertRectangle(child, 10, 10, 200, 460);
 			child = box.getChildAt(1);
 			assertRectangle(child, 0, 0, 300, 200);
+		}
+
+		public function testContainerExpandsForChildren():void {
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" y="10" padding="5" backgroundColor="#FFCC00">
+				<Component id="child1" width="200" height="80" backgroundColor="#FF0000" />
+				<Component id="child2" width="120" height="80" backgroundColor="#00FF00" />
+				<Component id="child3" width="200" height="105" backgroundColor="#0000FF" />
+			</VBox>;
+			
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.render();
+			//listenToStage(box);
+			
+			var child:Layoutable = box;
+			assertRectangle(child, 200, 10, 210, 275);
+			child = box.getChildAt(0);
+			assertRectangle(child, 5, 5, 200, 80);
+			child = box.getChildAt(1);
+			assertRectangle(child, 5, 85, 120, 80);
+			child = box.getChildAt(2);
+			assertRectangle(child, 5, 165, 200, 105);
+			
+			child.width = 300;
+			child.height = 200;
+			box.render();
+			
+			// The Box should always draw up to it's children size
+			// unless it has been given a percent, or fixed size
+			assertRectangle(box, 200, 10, 310, 370);
+		}
+
+		public function testContainerRespectsChildrenMinSize():void {
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" y="10" padding="5" backgroundColor="#FFCC00">
+				<Component id="child1" width="200" height="80" backgroundColor="#FF0000" />
+				<Component id="child2" width="120" height="80" backgroundColor="#00FF00" />
+				<Component id="child3" minWidth="20" minHeight="25" width="100%" height="50%" backgroundColor="#0000FF" />
+			</VBox>;
+			
+			removeChild(component.view);
+			
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.width = 100; // Set invalid (too small) width
+			box.height = 100; // Set invalid (too small) height
+			box.render();
+			listenToStage(box);
+			
+			var child:Layoutable = box;
+			assertRectangle(child, 200, 10, 210, 195);
+			child = box.getChildAt(0);
+			assertRectangle(child, 5, 5, 200, 80);
+			child = box.getChildAt(1);
+			assertRectangle(child, 5, 85, 120, 80);
+			child = box.getChildAt(2);
+			assertRectangle(child, 5, 165, 200, 25);
 		}
 	}
 }

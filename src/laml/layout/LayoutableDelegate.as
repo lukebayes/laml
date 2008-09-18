@@ -24,9 +24,10 @@ package laml.layout {
 				actual: 		'actualWidth',
 				align:			'horizontalAlign',
 				direction: 		'horizontal',
-				paddingFirst: 	'paddingLeft',
+				fixed:			'fixedWidth',
 				gutter: 		'horizontalGutter',
 				minSize:		'minWidth',
+				paddingFirst: 	'paddingLeft',
 				paddingLast: 	'paddingRight',
 				padding: 		'horizontalPadding',
 				percent: 		'percentWidth',
@@ -41,9 +42,10 @@ package laml.layout {
 				actual: 		'actualHeight',
 				align:			'verticalAlign',
 				direction: 		'vertical',
-				paddingFirst: 	'paddingTop',
+				fixed:	 		'fixedHeight',
 				gutter: 		'verticalGutter',
 				minSize:		'minHeight',
+				paddingFirst: 	'paddingTop',
 				paddingLast: 	'paddingBottom',
 				padding: 		'verticalPadding',
 				percent: 		'percentHeight',
@@ -93,6 +95,14 @@ package laml.layout {
 			return result;
 		}
 		
+		public function get fixed():Number {
+			return component[keys.fixed];	
+		}
+		
+		public function set minSize(min:Number):void {
+			component[keys.minSize] = min;
+		}
+		
 		public function get minSize():Number {
 			return component[keys.minSize];
 		}
@@ -106,7 +116,7 @@ package laml.layout {
 		}
 		
 		public function set actual(size:Number):void {
-			component[keys.actual] = size;
+			component[keys.actual] = Math.max(minSize, size);
 		}
 		
 		public function get actual():Number {
@@ -172,10 +182,6 @@ package laml.layout {
 		
 		public function get preferred():Number {
 			return component[keys.preferred];
-		}
-	
-		public function set size(size:Number):void {
-			component[keys.size] = size;
 		}
 		
 		public function get size():Number {
