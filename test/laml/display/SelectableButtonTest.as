@@ -40,6 +40,13 @@ package laml.display {
 			addEventHandlers(button);
 		}
 		
+		public function testCustomButtonGrayScale():void {
+			button = new CustomSelectableButton();
+			button.enabled = false;
+			addChild(button.view);
+			addEventHandlers(button);
+		}
+
 		private function createButton():SelectableButton {
 			var button:SelectableButton = new SelectableButton();
 			button.width = 250;
