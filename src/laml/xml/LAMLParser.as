@@ -1,4 +1,5 @@
 package laml.xml {
+	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
 	
@@ -10,20 +11,24 @@ package laml.xml {
 		public static const PROCESSING_INSTRUCTION:String 	= "processing-instruction";
 		public static const TEXT:String 					= "text";
 		
-		public function parse(xml:XML):Object {
-			var result:Object = parseNode(xml);
+		public function parse(xml:XML, skin:ISkin=null):Object {
+			var result:Object = parseNode(xml, null, null, skin);
 			//parsePendingAttributes(result);
 			return result;
 		}
 		
-		public function parseLayoutable(xml:XML):Layoutable {
-			return parse(xml) as Layoutable;
+		public function parseLayoutable(xml:XML, skin:ISkin=null):Layoutable {
+			return parse(xml, skin) as Layoutable;
 		}
 		
-		protected function parseNode(xml:XML, parent:Object=null, root:Object=null):Object {
+		protected function parseNode(xml:XML, parent:Object=null, root:Object=null, skin:ISkin=null):Object {
 			root = (root == null) ? parent : root;
 			preVisitNode(xml, parent, root);
 			var instance:Object = visitNode(xml, parent, root);
+			if(instance is Layoutable) {
+				instance.skin = skin;
+			}
+			
 			postVisitNode(xml, parent, root);
 			return instance;
 		}
