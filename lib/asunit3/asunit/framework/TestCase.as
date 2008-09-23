@@ -378,9 +378,5 @@ package asunit.framework {
 			}
 			return null;
 		}
-
-//		public function fail(message:String):void {
-//			result.addFailure(this, new AssertionFailedError(message));
-//		}
 	}
 }

@@ -67,7 +67,6 @@ package laml.display {
 		private var childrenHash:Dictionary;
 		private var childrenCreated:Boolean;
 		
-		
 		public function Component() {
 			initializeComponent();
 			initialize();

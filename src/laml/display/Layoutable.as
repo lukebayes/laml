@@ -1,5 +1,4 @@
 package laml.display {
-
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -92,6 +91,7 @@ package laml.display {
 
 		function set padding(padding:int):void;
 		function get padding():int;
+
 		function set paddingTop(padding:int):void;
 		function get paddingTop():int;
 		function set paddingLeft(padding:int):void;
@@ -106,7 +106,6 @@ package laml.display {
 
 		function set styleNames(names:String):void;
 		function get styleNames():String;
-		
 		
 		/* Utilities */
 		function set layout(layout:ILayout):void;
