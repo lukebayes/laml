@@ -34,9 +34,7 @@ package laml.layout {
 				removeChild(box.view);
 			}
 
-			if(component.view.parent) {
-				removeChild(component.view);
-			}
+			removeChild(component.view);
 			component = null;
 		}
 		

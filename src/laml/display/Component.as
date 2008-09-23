@@ -1,8 +1,11 @@
 package laml.display {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
+	import flash.filters.ColorMatrixFilter;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
@@ -58,14 +61,15 @@ package laml.display {
 		private var _parent:Layoutable;
 		private var _qualifiedClassName:String;
 		private var _view:Sprite;
+		private var _enabled:Boolean;
 		
 		private var children:SelectableList;
 		private var childrenHash:Dictionary;
+		private var childrenCreated:Boolean;
 		
 		public function Component() {
 			initializeComponent();
 			initialize();
-			createChildren();
 		}
 		
 		private function initializeComponent():void {
@@ -89,6 +93,13 @@ package laml.display {
 			view = new Sprite();
 		}
 		
+		protected function createChildrenIfNeeded():void {
+			if(!childrenCreated) {
+				createChildren();
+				childrenCreated = true;
+			}
+		}
+		
 		public function invalidateProperties():void {
 			model.invalidateProperties();
 			invalidateDisplayList();
@@ -98,6 +109,7 @@ package laml.display {
 		 * Force validation and prevent pending asynchronous update
 		 */
 		public function validateProperties():void {
+			createChildrenIfNeeded()
 			if(model.validateProperties()) {
 //				model.disabled = true;
 				commitProperties();
@@ -168,6 +180,9 @@ package laml.display {
 		}
 		
 		public function get view():Sprite {
+			if(!_view) {
+				createChildrenIfNeeded();
+			}
 			return _view;
 		}
 
@@ -618,6 +633,74 @@ package laml.display {
 		
 		protected function get qualifiedClassName():String {
 			return _qualifiedClassName ||= getQualifiedClassName(this);
+		}
+
+		public function set skin(skin:Skin):void {
+			model.skin = skin;
+		}
+
+		public function get skin():Skin {
+			return model.skin;
+		}
+		
+		public function set enabled(enabled:Boolean):void {
+			_enabled = enabled;
+			
+			if(_enabled) {
+				clearGrayScale();
+				view.mouseEnabled = true;
+				view.mouseChildren = true;
+			}
+			else {
+				applyGrayScale();
+				view.mouseEnabled = false;
+				view.mouseChildren = false;
+			}
+		}
+		
+		public function get enabled():Boolean {
+			return _enabled;
+		}
+		
+		public function clearGrayScale():void {
+			view.filters = [];
+		}
+		
+		public function applyGrayScale():void {
+			var cm:ColorMatrixFilter = new ColorMatrixFilter();
+			
+			cm.matrix = new Array(
+			0.3086, 0.609, 0.282, 0, 0,
+			0.3086, 0.609, 0.282, 0, 0,
+			0.3086, 0.609, 0.282, 0, 0,
+			0, 0, 0, 1, 0);
+			
+			view.filters = [cm];	
+		}
+
+		public function getBitmapByName(alias:String):DisplayObject {
+			var result:DisplayObject;
+			
+			if(hasOwnProperty(alias)) {
+				return new this[alias]() as DisplayObject;
+			}
+			
+			if(skin) {
+				result = skin.getBitmapByName(alias);
+				if(result) {
+					return result;
+				} 
+			}
+			
+			if(parent) {
+				result = parent.getBitmapByName(alias);
+				if(result) {
+					return result;
+				}
+			}
+
+			var bitmapData:BitmapData = new BitmapData(1, 1);
+			return new Bitmap(bitmapData);
 		}
 
 		protected function generateId():String {

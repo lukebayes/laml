@@ -1,5 +1,6 @@
 package laml.display {
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.IEventDispatcher;
 	
@@ -60,31 +61,6 @@ package laml.display {
 		function get minHeight():Number;
 		
 		/* Styleable */
-		function set styleNames(names:String):void;
-		function get styleNames():String;
-		
-		function set horizontalAlign(align:String):void;
-		function get horizontalAlign():String;
-		function set horizontalGutter(gutter:int):void;
-		function get horizontalGutter():int;
-		function set verticalAlign(align:String):void;
-		function get verticalAlign():String;
-		function set verticalGutter(gutter:int):void;
-		function get verticalGutter():int;
-		
-		function set padding(padding:int):void;
-		function get padding():int;
-		function get horizontalPadding():int;
-		function get verticalPadding():int;
-		function set paddingTop(padding:int):void;
-		function get paddingTop():int;
-		function set paddingLeft(padding:int):void;
-		function get paddingLeft():int;
-		function set paddingRight(padding:int):void;
-		function get paddingRight():int;
-		function set paddingBottom(padding:int):void;
-		function get paddingBottom():int;
-		
 		function set backgroundColor(color:uint):void;
 		function get backgroundColor():uint;
 		function set backgroundAlpha(alpha:Number):void;
@@ -101,6 +77,36 @@ package laml.display {
 		function set borderStyle(style:String):void;
 		function get borderStyle():String;
 		
+		function set horizontalAlign(align:String):void;
+		function get horizontalAlign():String;
+		function set horizontalGutter(gutter:int):void;
+		function get horizontalGutter():int;
+		function set verticalAlign(align:String):void;
+		function get verticalAlign():String;
+		function set verticalGutter(gutter:int):void;
+		function get verticalGutter():int;
+		
+		function get horizontalPadding():int;
+		function get verticalPadding():int;
+
+		function set padding(padding:int):void;
+		function get padding():int;
+
+		function set paddingTop(padding:int):void;
+		function get paddingTop():int;
+		function set paddingLeft(padding:int):void;
+		function get paddingLeft():int;
+		function set paddingRight(padding:int):void;
+		function get paddingRight():int;
+		function set paddingBottom(padding:int):void;
+		function get paddingBottom():int;
+
+		function set skin(skin:Skin):void;
+		function get skin():Skin;
+
+		function set styleNames(names:String):void;
+		function get styleNames():String;
+		
 		/* Utilities */
 		function set layout(layout:ILayout):void;
 		function get layout():ILayout;
@@ -110,6 +116,7 @@ package laml.display {
 		function validateDisplayList():void;
 		function validateProperties():void;
 		function render():void;
+		function getBitmapByName(name:String):DisplayObject;
 		
 		/* Composable */
 		function addChild(child:Layoutable):void;
