@@ -5,7 +5,7 @@ This is a lightweight, in-progress layout and component framework for ActionScri
 There are many similarities between this framework and Flex, but there are some significant differences.
 
 * Supports (and was created using) Test-Driven Development
-* No Singletons or custom compilation units
+* Avoids Singletons and custom compilation units (like extra frames and pre-loaders)
 * Tiny download footprint
 * Minimize duplicate boilerplate code
 * Supports workflow and views built using Flash Authoring
