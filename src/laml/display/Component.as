@@ -635,11 +635,11 @@ package laml.display {
 			return _qualifiedClassName ||= getQualifiedClassName(this);
 		}
 
-		public function set skin(skin:Skin):void {
+		public function set skin(skin:ISkin):void {
 			model.skin = skin;
 		}
 
-		public function get skin():Skin {
+		public function get skin():ISkin {
 			return model.skin;
 		}
 		
@@ -681,24 +681,32 @@ package laml.display {
 		public function getBitmapByName(alias:String):DisplayObject {
 			var result:DisplayObject;
 			
+			trace("1 >> getBitmapByName");
+			
 			if(hasOwnProperty(alias)) {
+			trace("2 >> getBitmapByName");
 				return new this[alias]() as DisplayObject;
 			}
 			
 			if(skin) {
+			trace("3 >> getBitmapByName");
 				result = skin.getBitmapByName(alias);
 				if(result) {
+			trace("4 >> getBitmapByName");
 					return result;
 				} 
 			}
 			
 			if(parent) {
+			trace("5 >> getBitmapByName");
 				result = parent.getBitmapByName(alias);
 				if(result) {
+			trace("6 >> getBitmapByName");
 					return result;
 				}
 			}
 
+			trace("7 >> getBitmapByName");
 			var bitmapData:BitmapData = new BitmapData(1, 1);
 			return new Bitmap(bitmapData);
 		}

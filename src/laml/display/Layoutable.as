@@ -101,8 +101,8 @@ package laml.display {
 		function set paddingBottom(padding:int):void;
 		function get paddingBottom():int;
 
-		function set skin(skin:Skin):void;
-		function get skin():Skin;
+		function set skin(skin:ISkin):void;
+		function get skin():ISkin;
 
 		function set styleNames(names:String):void;
 		function get styleNames():String;
