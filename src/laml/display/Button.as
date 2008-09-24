@@ -164,21 +164,21 @@ package laml.display {
 		}
 		
 		protected function decorateButtonViewEventListeners(button:SimpleButton):void {
-			button.addEventListener(MouseEvent.CLICK, clickHandler);
+			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
-			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
+			button.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 		}
 		
-		protected function clickHandler(mouseEvent:MouseEvent):void {
-			mouseEventHandler(mouseEvent);
-		}
-
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
 			var event:MouseEvent = new MouseEvent(mouseEvent.type);
 			dispatchEvent(event);
+		}
+
+		protected function mouseUpHandler(mouseEvent:MouseEvent):void {
+			mouseEventHandler(mouseEvent);
 		}
 	}
 }
