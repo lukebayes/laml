@@ -7,12 +7,16 @@ package fixtures {
 		public var callbacks:Array = [];
 		public var fakeBoolean:Boolean;
 		public var fooCallbackTriggered:Boolean;
+		public var somePropertyValidated:Boolean;
+		public var otherPropertyValidated:Boolean;
 		
 		override protected function initialize():void {
 			callbacks.push('initialize');
 			super.initialize();
 			// Set up validations for custom params
 			model.validate_foo = fooChanged;
+			model.validate_someProperty = validateSomeProperty;
+			model.validate_otherProperty = validateOtherProperty;
 		}
 		
 		override protected function createChildren():void {
@@ -33,6 +37,31 @@ package fixtures {
 		private function fooChanged(newValue:String, oldValue:String):void {
 			callbacks.push('fooChanged');
 			fooCallbackTriggered = true;
+		}
+		
+		public function set someProperty(value:String):void {
+			model.someProperty = value;	
+		}
+		
+		public function get someProperty():String {
+			return model.someProperty;
+		}
+		
+		private function validateSomeProperty(newValue:String, oldValue:String):void {
+			somePropertyValidated = true;
+			model.otherProperty = newValue + 'Other';	
+		}
+		
+		private function validateOtherProperty(newValue:String, oldValue:String):void {
+			otherPropertyValidated = true;	
+		}
+		
+		public function set otherProperty(value:String):void {
+			model.otherProperty = value;
+		}
+		
+		public function get otherProperty():String {
+			return model.otherProperty;
 		}
 		
 		public function set foo(foo:String):void {
