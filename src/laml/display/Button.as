@@ -12,10 +12,10 @@ package laml.display {
 	[Event(name='mouseOver', type='MouseEvent')]
 	[Event(name='mouseUp', type='MouseEvent')]
 	public class Button extends Component {
-		protected const UP_STATE:String = "UpState";
-		protected const OVER_STATE:String = "OverState";
-		protected const DOWN_STATE:String = "DownState";
-		protected const HIT_TEST_STATE:String = "HitTestState";
+		protected const UP_STATE:String = "Up";
+		protected const OVER_STATE:String = "Over";
+		protected const DOWN_STATE:String = "Down";
+		protected const HIT_TEST_STATE:String = "HitTest";
 
 		protected var _buttonView:SimpleButton;
 		
