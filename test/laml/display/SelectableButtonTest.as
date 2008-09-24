@@ -38,6 +38,7 @@ package laml.display {
 			button = new CustomSelectableButton();
 			addChild(button.view);
 			addEventHandlers(button);
+			trace("testCustomButton");
 		}
 		
 		public function testCustomButtonGrayScale():void {

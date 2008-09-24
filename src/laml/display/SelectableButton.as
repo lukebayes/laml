@@ -128,7 +128,7 @@ package laml.display {
 			_selected = !_selected;
 		}
 		
-		override protected function clickHandler(mouseEvent:MouseEvent):void {
+		override protected function mouseUpHandler(mouseEvent:MouseEvent):void {
 			toggleState();
 			mouseEventHandler(mouseEvent);
 		}

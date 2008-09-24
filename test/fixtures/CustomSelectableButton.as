@@ -4,22 +4,22 @@ package fixtures {
 
 	public class CustomSelectableButton extends SelectableButton {
 		[Embed(source="assets/Play1Normal.png")]
-		public var CustomSelectableButtonUpState:Class;
+		public var CustomSelectableButtonUp:Class;
 
 		[Embed(source="assets/Play1Hot.png")]
-		public var CustomSelectableButtonOverState:Class;
+		public var CustomSelectableButtonOver:Class;
 
 		[Embed(source="assets/Play1Pressed.png")]
-		public var CustomSelectableButtonDownState:Class;
+		public var CustomSelectableButtonDown:Class;
 		
 		[Embed(source="assets/PauseNormal.png")]
-		public var CustomSelectableButtonUpSelectedState:Class;
+		public var CustomSelectableButtonSelectedUp:Class;
 
 		[Embed(source="assets/PauseHot.png")]
-		public var CustomSelectableButtonOverSelectedState:Class;
+		public var CustomSelectableButtonSelectedOver:Class;
 
 		[Embed(source="assets/PausePressed.png")]
-		public var CustomSelectableButtonDownSelectedState:Class;
+		public var CustomSelectableButtonSelectedDown:Class;
 
 //		[Embed(source="images/PauseDisabled.png")]
 
