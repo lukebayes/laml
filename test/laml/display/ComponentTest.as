@@ -295,5 +295,25 @@ package laml.display {
 			var fake:ComponentFake = new ComponentFake();
 			assertEquals('foo', fake.customMember);
 		}
+		
+		/** 
+		 * If one parameter validator invalidates another
+		 * parameter, the second validator will NOT be 
+		 * triggered - if it did, it would be too easy
+		 * to create infinite recursion within the component
+		 * validation process.
+		 * 
+		 * If you are tempted to invalidate another propery
+		 * try to do it in the setter of a given property
+		 * rather than it's validator.
+		 */
+		public function testInvalidateWhileValidating():void {
+			var stub:ComponentStub = new ComponentStub();
+			stub.someProperty = 'foo';
+			stub.render();
+			assertEquals('foo', stub.someProperty);
+			assertTrue('a', stub.somePropertyValidated);
+			assertFalse('Does not validate!', stub.otherPropertyValidated);
+		}
 	}
 }
