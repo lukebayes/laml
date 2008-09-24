@@ -91,6 +91,9 @@ package laml.display {
 		
 		protected function createChildren():void {
 			view = new Sprite();
+		}
+		
+		protected function addChildViewsToView():void {
 			var len:int = numChildren;
 			for(var i:int; i < len; i++) {
 				view.addChild(getChildAt(i).view);
@@ -100,6 +103,7 @@ package laml.display {
 		protected function createChildrenIfNeeded():void {
 			if(!childrenCreated) {
 				createChildren();
+				addChildViewsToView();
 				childrenCreated = true;
 			}
 		}
@@ -113,7 +117,7 @@ package laml.display {
 		 * Force validation and prevent pending asynchronous update
 		 */
 		public function validateProperties():void {
-			createChildrenIfNeeded()
+			createChildrenIfNeeded();
 			if(model.validateProperties()) {
 //				model.disabled = true;
 				commitProperties();
@@ -563,7 +567,9 @@ package laml.display {
 		public function removeChild(child:Layoutable):void {
 			if(children.removeItem(child)) {
 				child.parent = null;
-				view.removeChild(child.view);
+				if(childrenCreated && view.contains(child.view)) {
+					view.removeChild(child.view);
+				}
 				removeChildFromHash(child);
 				dispatchPayloadEvent(PayloadEvent.REMOVED, child);
 				invalidateDisplayList();
@@ -689,32 +695,24 @@ package laml.display {
 		public function getBitmapByName(alias:String):DisplayObject {
 			var result:DisplayObject;
 			
-			trace("1 >> getBitmapByName");
-			
 			if(hasOwnProperty(alias)) {
-			trace("2 >> getBitmapByName");
 				return new this[alias]() as DisplayObject;
 			}
 			
 			if(skin) {
-			trace("3 >> getBitmapByName");
 				result = skin.getBitmapByName(alias);
 				if(result) {
-			trace("4 >> getBitmapByName");
 					return result;
 				} 
 			}
 			
 			if(parent) {
-			trace("5 >> getBitmapByName");
 				result = parent.getBitmapByName(alias);
 				if(result) {
-			trace("6 >> getBitmapByName");
 					return result;
 				}
 			}
 
-			trace("7 >> getBitmapByName");
 			var bitmapData:BitmapData = new BitmapData(1, 1);
 			return new Bitmap(bitmapData);
 		}
