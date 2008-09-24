@@ -1,8 +1,8 @@
 package laml.xml {
-	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
 	
+	import laml.display.ISkin;
 	import laml.display.Layoutable;
 	
 	public class LAMLParser {
@@ -12,7 +12,12 @@ package laml.xml {
 		public static const TEXT:String 					= "text";
 		
 		public function parse(xml:XML, skin:ISkin=null):Object {
-			var result:Object = parseNode(xml, null, null, skin);
+			var result:Object = parseNode(xml);
+	
+			if(result is Layoutable) {
+				result.skin = skin;
+			}
+			
 			//parsePendingAttributes(result);
 			return result;
 		}
@@ -21,14 +26,10 @@ package laml.xml {
 			return parse(xml, skin) as Layoutable;
 		}
 		
-		protected function parseNode(xml:XML, parent:Object=null, root:Object=null, skin:ISkin=null):Object {
+		protected function parseNode(xml:XML, parent:Object=null, root:Object=null):Object {
 			root = (root == null) ? parent : root;
 			preVisitNode(xml, parent, root);
 			var instance:Object = visitNode(xml, parent, root);
-			if(instance is Layoutable) {
-				instance.skin = skin;
-			}
-			
 			postVisitNode(xml, parent, root);
 			return instance;
 		}

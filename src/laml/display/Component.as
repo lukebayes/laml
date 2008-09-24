@@ -91,6 +91,10 @@ package laml.display {
 		
 		protected function createChildren():void {
 			view = new Sprite();
+			var len:int = numChildren;
+			for(var i:int; i < len; i++) {
+				view.addChild(getChildAt(i).view);
+			}
 		}
 		
 		protected function createChildrenIfNeeded():void {
@@ -165,6 +169,10 @@ package laml.display {
 		
 		public function get layout():ILayout {
 			return _layout;
+		}
+		
+		public function get length():int {
+			throw new IllegalOperationError("get length isn't supported on Component, try numChildren instead");
 		}
 
 		public function set model(model:DynamicModel):void {
@@ -546,7 +554,7 @@ package laml.display {
 			child.addEventListener(PayloadEvent.ADDED, childAddedHandler);
 			child.addEventListener(PayloadEvent.REMOVED, childRemovedHandler);
 			children.addItem(child);
-			view.addChild(child.view);
+			//view.addChild(child.view);
 			child.parent = this;
 			dispatchPayloadEvent(PayloadEvent.ADDED, child);
 			invalidateDisplayList();
