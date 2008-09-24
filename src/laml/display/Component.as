@@ -97,9 +97,17 @@ package laml.display {
 			}
 		}
 		
+		protected function addChildViewsToView():void {
+			var len:int = numChildren;
+			for(var i:int; i < len; i++) {
+				view.addChild(getChildAt(i).view);
+			}
+		}
+		
 		protected function createChildrenIfNeeded():void {
 			if(!childrenCreated) {
 				createChildren();
+				addChildViewsToView();
 				childrenCreated = true;
 			}
 		}
@@ -113,7 +121,7 @@ package laml.display {
 		 * Force validation and prevent pending asynchronous update
 		 */
 		public function validateProperties():void {
-			createChildrenIfNeeded()
+			createChildrenIfNeeded();
 			if(model.validateProperties()) {
 //				model.disabled = true;
 				commitProperties();
@@ -563,7 +571,9 @@ package laml.display {
 		public function removeChild(child:Layoutable):void {
 			if(children.removeItem(child)) {
 				child.parent = null;
-				view.removeChild(child.view);
+				if(childrenCreated && view.contains(child.view)) {
+					view.removeChild(child.view);
+				}
 				removeChildFromHash(child);
 				dispatchPayloadEvent(PayloadEvent.REMOVED, child);
 				invalidateDisplayList();

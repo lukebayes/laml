@@ -146,18 +146,21 @@ package laml.display {
 		}
 		
 		public function testAddChild():void {
-			var child:Layoutable = new Component();
-			assertEquals(0, component.numChildren);
-
 			var handler:Function = function(event:PayloadEvent):void {
 				assertSame(event.payload, child);
 			}
 			
+			// Had to swap the component because children 
+			// were being created prematurely on get view
+			component = new ComponentStub();
 			component.addEventListener(PayloadEvent.ADDED, handler);
+
+			var child:Layoutable = new Component();
 			component.addChild(child);
-			assertEquals(1, component.view.numChildren);
 			
-			component.render();
+			component.render(); // Render must be called for children to be created
+
+			assertEquals('View Children should be added', 1, component.view.numChildren);
 			
 			// Ensure validation doesn't get duplicated after child addition
 			var stub:ComponentStub = component as ComponentStub;
