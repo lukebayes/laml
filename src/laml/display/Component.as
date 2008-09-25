@@ -82,6 +82,7 @@ package laml.display {
 			backgroundAlpha = 1;
 			borderAlpha = 1;
 			styleNames = '';
+			visible = true;
 			horizontalAlign = ALIGN_LEFT;
 			verticalAlign = ALIGN_TOP;
 		}
@@ -152,18 +153,21 @@ package laml.display {
 		}
 		
 		protected function updateDisplayList(w:Number, h:Number):void {
-			view.x = x;
-			view.y = y;
-			drawBackground(w, h);
+			if(visible) {
+				view.x = x;
+				view.y = y;
+				drawBackground(w, h);
+			}
+			view.visible = visible;
 		}
 		
 		protected function drawBackground(w:Number, h:Number):void {
-			if(backgroundColor || borderColor) {
+			if(model.backgroundColor != null || model.borderColor != null) {
 				view.graphics.clear();
-				if(backgroundColor && backgroundAlpha > 0) {
+				if(model.backgroundColor != null && backgroundAlpha > 0) {
 					view.graphics.beginFill(backgroundColor, backgroundAlpha);
 				}
-				if(borderColor) {
+				if(model.borderColor != null) {
 					view.graphics.lineStyle(borderSize, borderColor, borderAlpha);
 				}
 				view.graphics.drawRect(0, 0, w, h);
@@ -227,6 +231,14 @@ package laml.display {
 		
 		public function get styleNames():String {
 			return model.styleNames;
+		}
+
+		public function set visible(visible:Boolean):void {
+			model.visible = visible;
+		}
+		
+		public function get visible():Boolean {
+			return model.visible;
 		}
 
 		public function set horizontalAlign(align:String):void {
