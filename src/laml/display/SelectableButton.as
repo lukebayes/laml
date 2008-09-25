@@ -22,12 +22,9 @@ package laml.display {
 		
 		override protected function createView():void {
 			selectedButtonView = new SimpleButton();
-			decorateButtonViewEventListeners(selectedButtonView);
-
 			unselectedButtonView = new SimpleButton();
-			decorateButtonViewEventListeners(unselectedButtonView);
-			buttonView = unselectedButtonView;
 
+			buttonView = unselectedButtonView;
 			_selected = false;
 		}
 		
@@ -123,14 +120,14 @@ package laml.display {
 			return _selected;
 		}
 		
-		protected function toggleState():void {
+		public function toggleState():void {
 			buttonView = (buttonView === unselectedButtonView) ? selectedButtonView : unselectedButtonView;
 			_selected = !_selected;
 		}
 		
-		override protected function mouseUpHandler(mouseEvent:MouseEvent):void {
-			toggleState();
+		override protected function mouseClickHandler(mouseEvent:MouseEvent):void {
 			mouseEventHandler(mouseEvent);
+			toggleState();
 		}
 	}
 }

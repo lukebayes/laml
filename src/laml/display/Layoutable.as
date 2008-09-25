@@ -107,6 +107,9 @@ package laml.display {
 		function set styleNames(names:String):void;
 		function get styleNames():String;
 		
+		function set visible(visible:Boolean):void;
+		function get visible():Boolean;
+		
 		/* Utilities */
 		function set layout(layout:ILayout):void;
 		function get layout():ILayout;
