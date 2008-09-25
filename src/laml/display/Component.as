@@ -92,6 +92,10 @@ package laml.display {
 		
 		protected function createChildren():void {
 			view = new Sprite();
+			if(backgroundImage) {
+				backgroundImage.name = 'background';
+				view.addChild(backgroundImage);
+			}
 			var len:int = numChildren;
 			for(var i:int; i < len; i++) {
 				view.addChild(getChildAt(i).view);
@@ -172,6 +176,12 @@ package laml.display {
 				}
 				view.graphics.drawRect(0, 0, w, h);
 				view.graphics.endFill();
+			}
+			
+			if(backgroundImage) {
+				backgroundImage.alpha = backgroundAlpha;
+				backgroundImage.width = w;
+				backgroundImage.height = h;
 			}
 		}
 
@@ -501,11 +511,11 @@ package laml.display {
 			return model.backgroundAlpha;
 		}
 		
-		public function set backgroundImage(image:Bitmap):void {
+		public function set backgroundImage(image:DisplayObject):void {
 			model.backgroundImage = image;
 		}
 		
-		public function get backgroundImage():Bitmap {
+		public function get backgroundImage():DisplayObject {
 			return model.backgroundImage;
 		}
 		
@@ -728,7 +738,7 @@ package laml.display {
 				}
 			}
 
-			var bitmapData:BitmapData = new BitmapData(1, 1);
+			var bitmapData:BitmapData = new BitmapData(1, 1, true, 0xCCFFCC00);
 			return new Bitmap(bitmapData);
 		}
 

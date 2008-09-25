@@ -11,14 +11,17 @@ package laml.xml {
 		public static const PROCESSING_INSTRUCTION:String 	= "processing-instruction";
 		public static const TEXT:String 					= "text";
 		
+		private var skin:ISkin;
+		
 		public function parse(xml:XML, skin:ISkin=null):Object {
-			var result:Object = parseNode(xml);
-	
+			this.skin = skin;
+
+			var result:Object = parseNode(xml, null, null);
+			//parsePendingAttributes(result);
 			if(result is Layoutable) {
 				result.skin = skin;
 			}
 			
-			//parsePendingAttributes(result);
 			return result;
 		}
 		
@@ -69,6 +72,9 @@ package laml.xml {
 		protected function parseAttributeValue(name:String, value:*, instance:Object, root:Object=null):* {
 			if(name == 'width' || name == 'height') {
 				return parseWidthOrHeightAttribute(name, value, instance);
+			}
+			else if(name == 'backgroundImage') {
+				return skin.getBitmapByName(value);
 			}
 			else if(value == "true") {
 				return true;

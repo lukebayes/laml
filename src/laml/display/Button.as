@@ -38,25 +38,30 @@ package laml.display {
 		}
 		
 		protected function createStates():void {
-			if(defaultUpState) {
+			if(!upState && defaultUpState) {
 				upState = defaultUpState;
 			}
 			
-			if(defaultOverState) {
+			if(!overState && defaultOverState) {
 				overState = defaultOverState;
 			}
 
-			if(defaultDownState) {
+			if(!downState && defaultDownState) {
 				downState = defaultDownState;
 			}
 			
-			if(defaultHitTestState) {
-				hitTestState = defaultHitTestState;
-			}
+			// This hitTestState isn't getting
+			// sized appropriately...
+			//if(defaultHitTestState) {
+			//	hitTestState = defaultHitTestState;
+			//}
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties();
+			//preferredWidth = upState.width;
+			//preferredHeight = upState.height;
+			
 			if(!hitTestState) {
 				hitTestState = upState;
 			}
@@ -188,8 +193,7 @@ package laml.display {
 		}
 		
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
-			var event:MouseEvent = new MouseEvent(mouseEvent.type);
-			dispatchEvent(event);
+			dispatchEvent(mouseEvent);
 		}
 	}
 }
