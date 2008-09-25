@@ -65,8 +65,8 @@ package laml.display {
 		function get backgroundColor():uint;
 		function set backgroundAlpha(alpha:Number):void;
 		function get backgroundAlpha():Number;
-		function set backgroundImage(image:Bitmap):void;
-		function get backgroundImage():Bitmap;
+		function set backgroundImage(image:DisplayObject):void;
+		function get backgroundImage():DisplayObject;
 		
 		function set borderColor(color:uint):void;
 		function get borderColor():uint;
@@ -106,6 +106,9 @@ package laml.display {
 
 		function set styleNames(names:String):void;
 		function get styleNames():String;
+		
+		function set visible(visible:Boolean):void;
+		function get visible():Boolean;
 		
 		/* Utilities */
 		function set layout(layout:ILayout):void;

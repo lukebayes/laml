@@ -35,29 +35,33 @@ package laml.display {
 		
 		protected function createView():void {
 			buttonView = new SimpleButton();
-			decorateButtonViewEventListeners(buttonView);
 		}
 		
 		protected function createStates():void {
-			if(defaultUpState) {
+			if(!upState && defaultUpState) {
 				upState = defaultUpState;
 			}
 			
-			if(defaultOverState) {
+			if(!overState && defaultOverState) {
 				overState = defaultOverState;
 			}
 
-			if(defaultDownState) {
+			if(!downState && defaultDownState) {
 				downState = defaultDownState;
 			}
 			
-			if(defaultHitTestState) {
-				hitTestState = defaultHitTestState;
-			}
+			// This hitTestState isn't getting
+			// sized appropriately...
+			//if(defaultHitTestState) {
+			//	hitTestState = defaultHitTestState;
+			//}
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties();
+			//preferredWidth = upState.width;
+			//preferredHeight = upState.height;
+			
 			if(!hitTestState) {
 				hitTestState = upState;
 			}
@@ -153,32 +157,43 @@ package laml.display {
 
 		public function set buttonView(simpleButton:SimpleButton):void {
 			if(_buttonView) {
+				removeButtonViewEventListeners(_buttonView);
 				view.removeChild(_buttonView);
 			}
 			_buttonView = view.addChild(simpleButton) as SimpleButton;
 			_buttonView.useHandCursor = true;
+			
+			decorateButtonViewEventListeners(_buttonView);
 		}
 		
 		public function get buttonView():SimpleButton {
 			return _buttonView;
 		}
 		
+		protected function removeButtonViewEventListeners(button:SimpleButton):void {
+			button.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
+			button.removeEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
+			button.removeEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
+			button.removeEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
+			button.removeEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
+			button.removeEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
+		}
+
 		protected function decorateButtonViewEventListeners(button:SimpleButton):void {
-			button.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			button.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 			button.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_MOVE, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_OUT, mouseEventHandler);
 			button.addEventListener(MouseEvent.MOUSE_OVER, mouseEventHandler);
-			button.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+			button.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
+		}
+
+		protected function mouseClickHandler(mouseEvent:MouseEvent):void {
+			mouseEventHandler(mouseEvent);
 		}
 		
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
-			var event:MouseEvent = new MouseEvent(mouseEvent.type);
-			dispatchEvent(event);
-		}
-
-		protected function mouseUpHandler(mouseEvent:MouseEvent):void {
-			mouseEventHandler(mouseEvent);
+			dispatchEvent(mouseEvent);
 		}
 	}
 }
