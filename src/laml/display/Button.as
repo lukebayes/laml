@@ -158,7 +158,9 @@ package laml.display {
 		public function set buttonView(simpleButton:SimpleButton):void {
 			if(_buttonView) {
 				removeButtonViewEventListeners(_buttonView);
-				view.removeChild(_buttonView);
+				if(view.contains(_buttonView)) {
+					view.removeChild(_buttonView);
+				}
 			}
 			_buttonView = view.addChild(simpleButton) as SimpleButton;
 			_buttonView.useHandCursor = true;
@@ -193,6 +195,7 @@ package laml.display {
 		}
 		
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
+			trace(">> mouseEventHandler :: " + mouseEvent.type);
 			dispatchEvent(mouseEvent);
 		}
 	}
