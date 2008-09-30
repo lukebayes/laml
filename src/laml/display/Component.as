@@ -738,7 +738,7 @@ package laml.display {
 				}
 			}
 
-			var bitmapData:BitmapData = new BitmapData(1, 1, true, 0xCCFFCC00);
+			var bitmapData:BitmapData = new BitmapData(1, 1, true, 0x00FFCC00);
 			return new Bitmap(bitmapData);
 		}
 

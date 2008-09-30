@@ -1,7 +1,6 @@
 package laml.display {
 	import flash.display.DisplayObject;
 	import flash.display.SimpleButton;
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	public class SelectableButton extends Button {
@@ -11,7 +10,6 @@ package laml.display {
 		protected const SELECTED_HIT_TEST_STATE:String = "SelectedHitTest";
 		protected var unselectedButtonView:SimpleButton;
 		protected var selectedButtonView:SimpleButton; 
-		protected var _selected:Boolean;
 		
 		override protected function initialize():void { 
 			super.initialize();
@@ -25,7 +23,7 @@ package laml.display {
 			unselectedButtonView = new SimpleButton();
 
 			buttonView = unselectedButtonView;
-			_selected = false;
+			selected = false;
 		}
 		
 		override protected function createStates():void {
@@ -115,14 +113,18 @@ package laml.display {
 			var alias:String = unQualifiedClassName + SELECTED_DOWN_STATE;
 			return getBitmapByName(alias);
 		}
+		
+		public function set selected(selected:Boolean):void {
+			model.selected = selected;
+		}
 
 		public function get selected():Boolean {
-			return _selected;
+			return model.selected;
 		}
 		
 		public function toggleState():void {
 			buttonView = (buttonView === unselectedButtonView) ? selectedButtonView : unselectedButtonView;
-			_selected = !_selected;
+			selected = !selected;
 		}
 		
 		override protected function mouseClickHandler(mouseEvent:MouseEvent):void {
