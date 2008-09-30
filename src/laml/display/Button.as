@@ -195,7 +195,6 @@ package laml.display {
 		}
 		
 		protected function mouseEventHandler(mouseEvent:MouseEvent):void {
-			trace(">> mouseEventHandler :: " + mouseEvent.type);
 			dispatchEvent(mouseEvent);
 		}
 	}
