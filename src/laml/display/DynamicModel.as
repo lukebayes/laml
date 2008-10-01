@@ -1,4 +1,5 @@
 package laml.display {
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -93,6 +94,11 @@ package laml.display {
 
 		override flash_proxy function setProperty(name:*, value:*):void {
 			if(value is Function) {
+				// TODO: Need to support a collection of callbacks instead
+				// of clobbering with the most recent....
+				if(callbacks[name]) {
+					throw new IllegalOperationError("DynamicModel does not yet support multiple callbacks on: " + name);
+				}
 				callbacks[name] = value;
 			}
 			else if(value != valueContainer[name]) {
