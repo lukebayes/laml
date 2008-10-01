@@ -5,11 +5,9 @@ package laml.xml {
 	import fixtures.ComponentStub;
 	
 	import flash.errors.IllegalOperationError;
+	import flash.text.StyleSheet;
 	
-	import laml.display.Component;
-	import laml.display.HBox;
 	import laml.display.Layoutable;
-	import laml.display.VBox;
 
 	public class LAMLParserTest extends TestCase {
 		private var parser:LAMLParser;
@@ -144,6 +142,59 @@ package laml.xml {
 			var result:Layoutable = parser.parseLayoutable(xml);
 			result.render();
 			assertEquals(0xFFCC00, result.backgroundColor);
+		}
+		
+		public function testStyleSheetNode():void {
+			var styleSheet:StyleSheet = new StyleSheet();
+			styleSheet.setStyle("child1", {color:0xFF0000, fontSize:12});
+			styleSheet.setStyle("child2", {color:0x0000FF, fontSize:12});
+			styleSheet.setStyle("child3", {color:0x00FF00, fontSize:12});
+
+			var xml:XML = <Component xmlns="laml.display">
+						<textFormat>
+							<![CDATA[
+							Component {
+								font-size: 12;
+								color: #00FF00;
+							}
+
+							#child1 {
+								color: #FF0000;
+							}
+							]]>
+						</textFormat>
+						<Component id="child1" />
+						<Component id="child2">
+							<textFormat>
+								<![CDATA[
+								#child2 {
+									color: #0000FF;
+								}
+								]]>
+							</textFormat>
+							<Component id="child3" />
+						</Component>
+					  </Component>;
+			var result:Layoutable = parser.parseLayoutable(xml);
+			result.render();
+
+			var child1:Layoutable = result.getChildById('child1');
+			assertNotNull(child1);
+			assertSame(result, child1.parent);			
+			assertTrue(child1.textFormat.color, child1.textFormat.color == styleSheet.getStyle("child1").color);
+			assertTrue(child1.textFormat.size, child1.textFormat.size == styleSheet.getStyle("child1").fontSize);
+
+			var child2:Layoutable = result.getChildById('child2');
+			assertNotNull(child2);
+			assertSame(result, child2.parent);
+			assertTrue(child2.textFormat.color, child2.textFormat.color == styleSheet.getStyle("child2").color);
+			assertTrue(child2.textFormat.size, child2.textFormat.size == styleSheet.getStyle("child2").fontSize);
+
+			var child3:Layoutable = result.getChildById('child3');
+			assertNotNull(child3);
+			assertSame(child2, child3.parent);
+			assertTrue(child3.textFormat.color, child3.textFormat.color == styleSheet.getStyle("child3").color);
+			assertTrue(child3.textFormat.size, child3.textFormat.size == styleSheet.getStyle("child3").fontSize);
 		}
 		
 		/*

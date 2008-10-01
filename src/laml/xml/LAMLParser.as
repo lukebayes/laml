@@ -41,7 +41,21 @@ package laml.xml {
 		}
 		
 		protected function visitNode(node:XML, parent:Object=null, root:Object=null):Object {
+			var methodName:String = "visit_" + node.name().localName;
+
+			try {
+				return this[methodName](node, parent, root);
+			}
+			catch(e:Error) {}
+
 			return visitDefault(node, parent, root);
+		}
+		
+		protected function visit_textFormat(node:XML, parent:Object=null, root:Object=null):Object {
+			if(parent is Layoutable) {
+				Layoutable(parent).css = node.text();
+			}
+			return parent;
 		}
 		
 		protected function visitDefault(node:XML, parent:Object=null, root:Object=null):Object {

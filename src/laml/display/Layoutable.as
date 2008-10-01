@@ -1,8 +1,9 @@
 package laml.display {
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.IEventDispatcher;
+	import flash.text.StyleSheet;
+	import flash.text.TextFormat;
 	
 	import laml.layout.ILayout;
 
@@ -77,6 +78,11 @@ package laml.display {
 		function set borderStyle(style:String):void;
 		function get borderStyle():String;
 		
+		function buildStyleSheet(sheet:StyleSheet=null):StyleSheet;
+
+		function set css(css:String):void;
+		function get css():String;
+
 		function set horizontalAlign(align:String):void;
 		function get horizontalAlign():String;
 		function set horizontalGutter(gutter:int):void;
@@ -104,9 +110,11 @@ package laml.display {
 		function set skin(skin:ISkin):void;
 		function get skin():ISkin;
 
+		function get textFormat():TextFormat;
+
 		function set styleNames(names:String):void;
 		function get styleNames():String;
-		
+
 		function set visible(visible:Boolean):void;
 		function get visible():Boolean;
 		
