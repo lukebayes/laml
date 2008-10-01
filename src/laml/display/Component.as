@@ -6,6 +6,8 @@ package laml.display {
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.filters.ColorMatrixFilter;
+	import flash.text.StyleSheet;
+	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
@@ -81,6 +83,7 @@ package laml.display {
 			// initialize component properties
 			backgroundAlpha = 1;
 			borderAlpha = 1;
+			css = '';
 			styleNames = '';
 			visible = true;
 			horizontalAlign = ALIGN_LEFT;
@@ -235,12 +238,75 @@ package laml.display {
 			return model.name ||= id;
 		}
 		
+		public function set css(css:String):void {
+			model.css = css;
+		}
+		
+		public function get css():String {
+			return model.css;
+		}
+
+		public function get textFormat():TextFormat {
+			var sheet:StyleSheet = buildStyleSheet();
+
+			var styles:Array = new Array();
+			styles.push(getStyleByType(sheet));
+			styles.concat(getStylesByStyleNames(sheet));
+			styles.push(getStyleById(sheet));
+			
+			var style:Object = new Object();
+			var len:Number = styles.length;
+			for(var i:Number = 0; i < len; i++) {
+				for(var j:String in styles[i]) {
+					style[j] = styles[i][j];
+				}
+			}
+
+			return sheet.transform(style);
+		}
+
+		protected function getStyleByType(sheet:StyleSheet):Object {
+			var style:Object = sheet.getStyle(unQualifiedClassName); 
+			return style;
+		}
+
+		protected function getStylesByStyleNames(sheet:StyleSheet):Array {
+			var names:Array = styleNames.split(" ");
+			var styles:Array = new Array();
+			var len:Number = names.length;
+			
+			for(var i:Number = 0; i < len; i++) {
+				styles.push(sheet.getStyle(names[i]));
+			}
+			
+			return styles;
+		}
+		
+		protected function getStyleById(sheet:StyleSheet):Object {
+			var style:Object = sheet.getStyle("#" + id); 
+			return style;
+		}
+
 		public function set styleNames(names:String):void {
 			model.styleNames = names;
 		}
 		
 		public function get styleNames():String {
 			return model.styleNames;
+		}
+		
+		public function buildStyleSheet(sheet:StyleSheet=null):StyleSheet {
+			if(!sheet) {
+				var sheet:StyleSheet = new StyleSheet();
+			}
+			sheet.parseCSS(css);
+			
+			if(parent) {
+				return parent.buildStyleSheet(sheet);
+			} 
+			else {
+				return sheet;
+			}
 		}
 
 		public function set visible(visible:Boolean):void {

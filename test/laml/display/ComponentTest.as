@@ -4,6 +4,8 @@ package laml.display {
 	import fixtures.ComponentFake;
 	import fixtures.ComponentStub;
 	
+	import flash.text.StyleSheet;
+	
 	import laml.events.PayloadEvent;
 
 	public class ComponentTest extends TestCase {
@@ -51,6 +53,18 @@ package laml.display {
 			assertEquals('Default name should be same as id', component.name, component.id);
 			component.name = 'a';
 			assertEquals('a', component.name);
+		}
+		
+		public function testStyleSheet():void {
+//			var styleSheet:StyleSheet = new StyleSheet();
+//			styleSheet.setStyle("componentId", {color:"#FF0000"});
+//			component.styleSheet = styleSheet;
+			
+ //			assertEquals(styleSheet, component.styleSheet);
+		}
+		
+		public function testStyle():void {
+			
 		}
 		
 		public function testStyleNames():void {
