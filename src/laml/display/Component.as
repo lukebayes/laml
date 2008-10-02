@@ -246,7 +246,7 @@ package laml.display {
 			return model.css;
 		}
 
-		public function get textFormat():TextFormat {
+		public function getTextFormat():TextFormat {
 			var sheet:StyleSheet = buildStyleSheet();
 
 			var styles:Array = new Array();

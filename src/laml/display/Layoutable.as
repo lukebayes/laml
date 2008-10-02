@@ -78,8 +78,6 @@ package laml.display {
 		function set borderStyle(style:String):void;
 		function get borderStyle():String;
 		
-		function buildStyleSheet(sheet:StyleSheet=null):StyleSheet;
-
 		function set css(css:String):void;
 		function get css():String;
 
@@ -110,8 +108,6 @@ package laml.display {
 		function set skin(skin:ISkin):void;
 		function get skin():ISkin;
 
-		function get textFormat():TextFormat;
-
 		function set styleNames(names:String):void;
 		function get styleNames():String;
 
@@ -127,7 +123,10 @@ package laml.display {
 		function validateDisplayList():void;
 		function validateProperties():void;
 		function render():void;
+
 		function getBitmapByName(name:String):DisplayObject;
+		function getTextFormat():TextFormat;
+		function buildStyleSheet(sheet:StyleSheet=null):StyleSheet;
 		
 		/* Composable */
 		function addChild(child:Layoutable):void;
