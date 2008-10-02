@@ -144,7 +144,7 @@ package laml.xml {
 			assertEquals(0xFFCC00, result.backgroundColor);
 		}
 		
-		public function testStyleSheetNode():void {
+		public function testTextFormatNode():void {
 			var styleSheet:StyleSheet = new StyleSheet();
 			styleSheet.setStyle("child1", {color:0xFF0000, fontSize:12});
 			styleSheet.setStyle("child2", {color:0x0000FF, fontSize:12});
@@ -181,20 +181,20 @@ package laml.xml {
 			var child1:Layoutable = result.getChildById('child1');
 			assertNotNull(child1);
 			assertSame(result, child1.parent);			
-			assertTrue(child1.textFormat.color, child1.textFormat.color == styleSheet.getStyle("child1").color);
-			assertTrue(child1.textFormat.size, child1.textFormat.size == styleSheet.getStyle("child1").fontSize);
+			assertTrue(child1.getTextFormat().color, child1.getTextFormat().color == styleSheet.getStyle("child1").color);
+			assertTrue(child1.getTextFormat().size, child1.getTextFormat().size == styleSheet.getStyle("child1").fontSize);
 
 			var child2:Layoutable = result.getChildById('child2');
 			assertNotNull(child2);
 			assertSame(result, child2.parent);
-			assertTrue(child2.textFormat.color, child2.textFormat.color == styleSheet.getStyle("child2").color);
-			assertTrue(child2.textFormat.size, child2.textFormat.size == styleSheet.getStyle("child2").fontSize);
+			assertTrue(child2.getTextFormat().color, child2.getTextFormat().color == styleSheet.getStyle("child2").color);
+			assertTrue(child2.getTextFormat().size, child2.getTextFormat().size == styleSheet.getStyle("child2").fontSize);
 
 			var child3:Layoutable = result.getChildById('child3');
 			assertNotNull(child3);
 			assertSame(child2, child3.parent);
-			assertTrue(child3.textFormat.color, child3.textFormat.color == styleSheet.getStyle("child3").color);
-			assertTrue(child3.textFormat.size, child3.textFormat.size == styleSheet.getStyle("child3").fontSize);
+			assertTrue(child3.getTextFormat().color, child3.getTextFormat().color == styleSheet.getStyle("child3").color);
+			assertTrue(child3.getTextFormat().size, child3.getTextFormat().size == styleSheet.getStyle("child3").fontSize);
 		}
 		
 		/*
