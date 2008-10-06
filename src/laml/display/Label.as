@@ -16,6 +16,7 @@ package laml.display{
 			super.initialize();
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
+			text = "";
 		}
 		
 		override protected function createChildren():void {
