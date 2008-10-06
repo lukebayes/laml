@@ -9,7 +9,9 @@ package laml.display {
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
+	import flash.utils.clearInterval;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.setInterval;
 	
 	import laml.collections.SelectableList;
 	import laml.events.PayloadEvent;
@@ -68,6 +70,7 @@ package laml.display {
 		private var children:SelectableList;
 		private var childrenHash:Dictionary;
 		private var childrenCreated:Boolean;
+		private var showHideInterval:Number;
 		
 		public function Component() {
 			initializeComponent();
@@ -747,6 +750,59 @@ package laml.display {
 
 		public function get skin():ISkin {
 			return model.skin;
+		}
+		
+		public function show(milliseconds:Number = 0):void {
+			visible = true;
+			if(milliseconds != 0) {
+				clearInterval(showHideInterval);
+				var interval:Number = milliseconds * this.view.alpha * .01;
+				showHideInterval = setInterval(showInterval, interval);
+			}
+		}
+		
+		protected function showInterval():void {
+			var alpha:Number = this.view.alpha;
+			if(alpha < 100) {
+				this.view.alpha += .01; 
+			}
+			else {
+				clearInterval(showHideInterval);
+				showCompleteHandler();
+			}
+		}
+		
+		protected function showCompleteHandler():void {
+		}
+		
+		public function hide(milliseconds:Number = 0):void {
+			if(milliseconds == 0) {
+				visible = false;
+			}
+			else {
+				clearInterval(showHideInterval);
+				var interval:Number = milliseconds * this.view.alpha * .01;
+				showHideInterval = setInterval(hideInterval, interval);
+			}
+		}
+		
+		protected function hideInterval():void {
+			var alpha:Number = this.view.alpha;
+			if(alpha > 0) {
+				this.view.alpha -= .01; 
+			}
+			else {
+				clearInterval(showHideInterval);			
+				hideCompleteHandler();
+			}
+		}
+		
+		protected function hideCompleteHandler():void {
+			visible = false;
+		}
+		
+		public function toggle():void {
+			(visible) ? hide() : show();
 		}
 		
 		public function set enabled(enabled:Boolean):void {

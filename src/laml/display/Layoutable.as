@@ -122,7 +122,11 @@ package laml.display {
 		function invalidateProperties():void;
 		function validateDisplayList():void;
 		function validateProperties():void;
-		function render():void;
+		function render():void;		
+
+		function hide(milliseconds:Number = 0):void;
+		function show(milliseconds:Number = 0):void;
+		function toggle():void;
 
 		function getBitmapByName(name:String):DisplayObject;
 		function getTextFormat():TextFormat;

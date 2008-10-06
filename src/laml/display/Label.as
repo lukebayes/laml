@@ -1,4 +1,5 @@
 package laml.display{
+	import flash.display.BlendMode;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
@@ -34,6 +35,7 @@ package laml.display{
 			tf.sharpness = 200;
 			tf.selectable = false;
 			tf.mouseEnabled = false;
+			tf.blendMode = BlendMode.LAYER;
 			textView = tf;
 		}
 
