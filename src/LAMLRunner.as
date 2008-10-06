@@ -3,6 +3,7 @@ package {
 	
 	import laml.display.Component;
 	import laml.display.HBox;
+	import laml.display.LabelTest;
 	import laml.display.VBox;
 	
 	public class LAMLRunner extends TestRunner {
