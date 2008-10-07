@@ -1,7 +1,5 @@
 package laml.display{
 	import flash.display.BlendMode;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
@@ -17,34 +15,34 @@ package laml.display{
 			super.initialize();
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
+			model.validate_embedFonts = validateEmbedFonts;
 			text = "";
 		}
 		
 		override protected function createChildren():void {
 			super.createChildren();
-			createTextView();
-			createTextFormat();
+			textView = createTextView();
+			textFormat = createTextFormat();
 		}
 		
-		protected function createTextView():void {
+		protected function createTextView():TextField {
 			var tf:TextField = new TextField();
-			tf.antiAliasType = AntiAliasType.ADVANCED;
-			tf.gridFitType = GridFitType.PIXEL;
 			tf.type = TextFieldType.DYNAMIC;
 			tf.wordWrap = true;
-			tf.sharpness = 200;
 			tf.selectable = false;
 			tf.mouseEnabled = false;
 			tf.blendMode = BlendMode.LAYER;
-			textView = tf;
+			
+			return tf;
 		}
 
-		protected function createTextFormat():void {
+		protected function createTextFormat():TextFormat {
 			var tf:TextFormat = getTextFormat();
 			if(!tf.align) {
-				tf.align = TextFormatAlign.CENTER;
+//				tf.align = TextFormatAlign.CENTER;
 			}
-			textFormat = tf;
+			
+			return tf;
 		}
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
@@ -88,6 +86,18 @@ package laml.display{
 		protected function validateSelectable(newValue:*, oldValue:*):void {
 			textView.selectable = newValue;
 			textView.mouseEnabled = newValue;
+		}
+		
+		public function set embedFonts(embedFonts:Boolean):void {
+			model.embedFonts = embedFonts;
+		}
+		
+		public function get embedFonts():Boolean {
+			return model.embedFonts;
+		}
+		
+		protected function validateEmbedFonts(newValue:*, oldValue:*):void {
+			textView.embedFonts = newValue;
 		}
 		
 		public function set textView(textField:TextField):void {
