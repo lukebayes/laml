@@ -16,14 +16,13 @@ package laml.display {
 			model.validate_upSelectedState = validateUpSelectedState;
 			model.validate_overSelectedState = validateOverSelectedState;
 			model.validate_downSelectedState = validateDownSelectedState;
+			model.validate_selected = validateSelected;
+			selected = false;
 		}
-		
+
 		override protected function createView():void {
 			selectedButtonView = new SimpleButton();
 			unselectedButtonView = new SimpleButton();
-
-			buttonView = unselectedButtonView;
-			selected = false;
 		}
 		
 		override protected function createStates():void {
@@ -81,6 +80,18 @@ package laml.display {
 		public function get downSelectedState():DisplayObject {
 			return model.downSelectedState;
 		}
+
+		override protected function validateUpState(newValue:*, oldValue:*):void {
+			unselectedButtonView.upState = newValue;
+		}
+		
+		override protected function validateOverState(newValue:*, oldValue:*):void {
+			unselectedButtonView.overState = newValue;
+		}
+
+		override protected function validateDownState(newValue:*, oldValue:*):void {
+			unselectedButtonView.downState = newValue;
+		}
 		
 		protected function validateUpSelectedState(newValue:*, oldValue:*):void {
 			selectedButtonView.upState = newValue;
@@ -95,7 +106,7 @@ package laml.display {
 		}
 
 		override protected function validateHitTestState(newValue:*, oldValue:*):void {
-			super.validateHitTestState(newValue, oldValue);
+			unselectedButtonView.hitTestState = newValue;
 			selectedButtonView.hitTestState = newValue;
 		}
 
@@ -122,8 +133,16 @@ package laml.display {
 			return model.selected;
 		}
 		
+		protected function validateSelected(newValue:*, oldValue:*):void {
+			if(newValue) {
+				buttonView = selectedButtonView;
+			}
+			else {
+				buttonView = unselectedButtonView;
+			}
+		}
+		
 		public function toggleState():void {
-			buttonView = (buttonView === unselectedButtonView) ? selectedButtonView : unselectedButtonView;
 			selected = !selected;
 		}
 		

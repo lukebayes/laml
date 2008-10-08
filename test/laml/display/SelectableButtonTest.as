@@ -38,12 +38,18 @@ package laml.display {
 			button = new CustomSelectableButton();
 			addChild(button.view);
 			addEventHandlers(button);
-			trace("testCustomButton");
 		}
 		
-		public function testCustomButtonGrayScale():void {
+		public function testCustomButtonDisabled():void {
 			button = new CustomSelectableButton();
 			button.enabled = false;
+			addChild(button.view);
+			addEventHandlers(button);
+		}
+
+		public function testCustomButtonSelected():void {
+			button = new CustomSelectableButton();
+			button.selected = true;
 			addChild(button.view);
 			addEventHandlers(button);
 		}
