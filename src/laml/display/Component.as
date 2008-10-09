@@ -180,7 +180,12 @@ package laml.display {
 				if(model.borderColor != null) {
 					view.graphics.lineStyle(borderSize, borderColor, borderAlpha);
 				}
-				view.graphics.drawRect(0, 0, w, h);
+				if(model.cornerRadius != null) {
+					view.graphics.drawRoundRect(0, 0, w, h, cornerRadius);
+				}
+				else {
+					view.graphics.drawRect(0, 0, w, h);
+				}
 				view.graphics.endFill();
 			}
 			
@@ -570,6 +575,14 @@ package laml.display {
 		
 		public function get backgroundColor():uint {
 			return model.backgroundColor;
+		}
+		
+		public function set cornerRadius(radius:uint):void {
+			model.cornerRadius = radius;
+		}
+		
+		public function get cornerRadius():uint {
+			return model.cornerRadius;
 		}
 		
 		public function set backgroundAlpha(alpha:Number):void {
