@@ -16,6 +16,7 @@ package laml.display{
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
 			model.validate_embedFonts = validateEmbedFonts;
+			model.validate_border = validateBorder;
 			text = "";
 		}
 		
@@ -39,7 +40,7 @@ package laml.display{
 		protected function createTextFormat():TextFormat {
 			var tf:TextFormat = getTextFormat();
 			if(!tf.align) {
-//				tf.align = TextFormatAlign.CENTER;
+				tf.align = TextFormatAlign.CENTER;
 			}
 			
 			return tf;
@@ -100,6 +101,18 @@ package laml.display{
 			textView.embedFonts = newValue;
 		}
 		
+		public function set border(border:Boolean):void {
+			model.border = border;
+		}
+		
+		public function get border():Boolean {
+			return model.border;
+		}
+		
+		protected function validateBorder(newValue:*, oldValue:*):void {
+			textView.border = border;
+		}
+
 		public function set textView(textField:TextField):void {
 			if(_textView && view.contains(_textView)) {
 				view.removeChild(_textView);
