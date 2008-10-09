@@ -68,6 +68,8 @@ package laml.display {
 		function get backgroundAlpha():Number;
 		function set backgroundImage(image:DisplayObject):void;
 		function get backgroundImage():DisplayObject;
+		function set cornerRadius(radius:uint):void;
+		function get cornerRadius():uint;
 		
 		function set borderColor(color:uint):void;
 		function get borderColor():uint;
