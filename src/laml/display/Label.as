@@ -49,10 +49,11 @@ package laml.display{
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
 			textView.text = text;
-
-			var yPosition:Number = Math.round(Math.max((h - textView.textHeight)/2, 0));
+			
+			var magic:Number = 1;
+			var yPosition:Number = Math.round(Math.max((h - textView.textHeight)/2, 0)) - magic;
 			textView.width = w;
-			textView.height = h - yPosition;
+			textView.height = h - yPosition + magic;
 			textView.y = yPosition;
 		}
 		
