@@ -79,8 +79,16 @@ package laml.display {
 		}
 		
 		protected function updateSize(w:Number, h:Number):void {
-			buttonView.width = w;
-			buttonView.height = h;
+			if(buttonView.upState is BasicBackground) {
+				BasicBackground(buttonView.upState).draw(w, h);
+				BasicBackground(buttonView.overState).draw(w, h);
+				BasicBackground(buttonView.downState).draw(w, h);
+				BasicBackground(buttonView.hitTestState).draw(w, h);
+			}
+			else {
+				buttonView.width = w;
+				buttonView.height = h;
+			}
 		}
 		
 		public function set upState(upState:DisplayObject):void {
