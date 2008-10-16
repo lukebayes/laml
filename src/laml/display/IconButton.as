@@ -8,9 +8,10 @@ package laml.display {
 	import laml.xml.LAMLParser;
 	
 	public class IconButton extends Button {
-		private var ICON:String = "icon_button_icon";		
-		private var LABEL:String = "icon_button_label";		
-		private var ICON_CONTAINER:String = "icon_container";		
+		private var classId:String = generateId();
+		private var ICON:String = classId + "_icon_button_icon";
+		private var LABEL:String = classId + "_icon_button_label";		
+		private var ICON_CONTAINER:String = classId + "icon_container";		
 		
 		private var iconComponent:Image;
 		private var iconContainer:Component;
