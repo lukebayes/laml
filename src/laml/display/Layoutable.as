@@ -126,6 +126,11 @@ package laml.display {
 		function validateProperties():void;
 		function render():void;		
 
+		function set mouseChildren(mouseChildren:Boolean):void;
+		function get mouseChildren():Boolean;
+		function set mouseEnabled(mouseEnabled:Boolean):void;
+		function get mouseEnabled():Boolean;
+
 		function hide(milliseconds:Number = 0):void;
 		function show(milliseconds:Number = 0):void;
 		function toggle():void;
