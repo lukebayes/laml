@@ -2,6 +2,8 @@ package laml.display {
 
 	import asunit.framework.TestCase;
 	
+	import fixtures.CustomIconButton;
+	
 	import flash.events.MouseEvent;
 
 	public class IconButtonTest extends TestCase {
@@ -37,6 +39,21 @@ package laml.display {
 			addEventHandlers(button);
 		}
 				
+		public function testCustomIconButton():void {
+			button = new CustomIconButton();
+			button.width = 80;
+			button.height = 24;
+			button.upState        = new ButtonDisplayState(upColor, size);
+			button.overState      = new ButtonDisplayState(overColor, size);
+			button.downState      = new ButtonDisplayState(downColor, size);
+			button.hitTestState   = new ButtonDisplayState(upColor, size);
+			button.text = "MySpace";
+			button.icon = "CustomIconButtonIcon";
+			button.url = "http://www.myspace.com";
+			addChild(button.view);
+			addEventHandlers(button);
+		}
+
 		private function createButton():IconButton {
 			var button:IconButton = new IconButton();
 			button.width = 80;
