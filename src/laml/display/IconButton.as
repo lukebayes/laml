@@ -1,5 +1,8 @@
 package laml.display {
+	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
 	
 	import laml.xml.LAMLParser;
@@ -7,8 +10,10 @@ package laml.display {
 	public class IconButton extends Button {
 		private var ICON:String = "icon_button_icon";		
 		private var LABEL:String = "icon_button_label";		
+		private var ICON_CONTAINER:String = "icon_container";		
 		
-		private var iconComponent:Component;
+		private var iconComponent:Image;
+		private var iconContainer:Component;
 		private var label:Label;
 		
 		public function IconButton() {
@@ -22,6 +27,7 @@ package laml.display {
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
 			model.validate_embedFonts = validateEmbedFonts;
+			textFormat = getTextFormat();
 			text = "";
 		}
 
@@ -34,18 +40,21 @@ package laml.display {
 		}
 		
 		protected function configureChildren():void {
-			iconComponent = getChildById(ICON) as Component;
-
+			iconComponent = getChildById(ICON) as Image;
 			label = getChildById(LABEL) as Label;
-			label.border = true;
+
+			iconContainer = getChildById(ICON_CONTAINER) as Component;
+			// TODO: not accessing the view directly results in not taking the
+			// children's size into consideration - maybe a missed invalidate call?
+			iconContainer.view.mouseEnabled = false;
+			iconContainer.view.mouseChildren = false;
 		}
 
 		override protected function mouseClickHandler(event:MouseEvent):void {
+			if(url) {
+				navigateToURL(new URLRequest(url));
+			} 
 			super.mouseClickHandler(event);
-		}
-
-		override protected function mouseEventHandler(event:MouseEvent):void {
-			super.mouseEventHandler(event);
 		}
 		
 		public function set icon(icon:String):void {
@@ -56,9 +65,16 @@ package laml.display {
 			return model.icon;
 		}
 		
+		public function set url(url:String):void {
+			model.url = url;
+		}
+		
+		public function get url():String {
+			return model.url;
+		}
+		
 		protected function validateIcon(newValue:*, oldValue:*):void {
-			trace(">> IconButton.validatIcon :: " + newValue + ", " + oldValue);
-//			iconComponent.backgroundImage = getBitmapByName(newValue);
+			iconComponent.source = getBitmapByName(newValue) as Bitmap;
 		}
 		
 		public function set text(text:String):void {
@@ -111,10 +127,10 @@ package laml.display {
 		}			
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox width="100%" height="100%" xmlns="laml.display">
-							<VBox width="24" height="100%" verticalAlign="center">
-								<Component id={ICON} width="24" height="24" backgroundColor="#CCCCCC"></Component>
-							</VBox>
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="2" xmlns="laml.display">
+							<HBox verticalAlign="center">
+								<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
+							</HBox>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
 			return xml;

@@ -79,6 +79,9 @@ package laml.display {
 		
 		private function initializeComponent():void {
 			model = new DynamicModel(this);
+			model.validate_mouseChildren = validateMouseChildren;
+			model.validate_mouseEnabled = validateMouseEnabled;
+
 			children = new SelectableList();
 			childrenHash = new Dictionary();
 			layout = new StackLayout();
@@ -323,6 +326,30 @@ package laml.display {
 		
 		public function get visible():Boolean {
 			return model.visible;
+		}
+		
+		public function set mouseChildren(mouseChildren:Boolean):void {
+			model.mouseChildren = mouseChildren;
+		}
+		
+		public function get mouseChildren():Boolean {
+			return model.mouseChildren;
+		}
+		
+		protected function validateMouseChildren(newValue:*, oldValue:*):void {
+			view.mouseChildren = newValue;
+		}
+		
+		public function set mouseEnabled(mouseEnabled:Boolean):void {
+			model.mouseEnabled = mouseEnabled;
+		}
+		
+		public function get mouseEnabled():Boolean {
+			return model.mouseEnabled;
+		}
+
+		protected function validateMouseEnabled(newValue:*, oldValue:*):void {
+			view.mouseEnabled = newValue;
 		}
 
 		public function set horizontalAlign(align:String):void {
@@ -823,13 +850,13 @@ package laml.display {
 			
 			if(_enabled) {
 				clearGrayScale();
-				view.mouseEnabled = true;
-				view.mouseChildren = true;
+				mouseEnabled = true;
+				mouseChildren = true;
 			}
 			else {
 				applyGrayScale();
-				view.mouseEnabled = false;
-				view.mouseChildren = false;
+				mouseEnabled = false;
+				mouseChildren = false;
 			}
 		}
 		
