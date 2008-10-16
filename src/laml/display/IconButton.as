@@ -1,6 +1,8 @@
 package laml.display {
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
@@ -11,7 +13,9 @@ package laml.display {
 		private var classId:String = generateId();
 		private var ICON:String = classId + "_icon_button_icon";
 		private var LABEL:String = classId + "_icon_button_label";		
-		private var ICON_CONTAINER:String = classId + "icon_container";		
+		private var ICON_CONTAINER:String = classId + "icon_container";
+		private var UP_BG_COLOR:Number = 0x2F2F2F;
+		private var OVER_BG_COLOR:Number = 0x444444;
 		
 		private var iconComponent:Image;
 		private var iconContainer:Component;
@@ -28,7 +32,6 @@ package laml.display {
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
 			model.validate_embedFonts = validateEmbedFonts;
-			textFormat = getTextFormat();
 			text = "";
 		}
 
@@ -38,6 +41,13 @@ package laml.display {
 			var parsedXml:Component = parser.parseLayoutable(configXml, skin) as Component;
 			addChild(parsedXml);
 			configureChildren();
+			textFormat = getTextFormat();
+		}
+		
+		override protected function createStates():void {
+			var size:Point = new Point(width, height);
+			upState = new IconButtonDisplayState(UP_BG_COLOR, size, cornerRadius);
+			downState = new IconButtonDisplayState(OVER_BG_COLOR, size, cornerRadius);
 		}
 		
 		protected function configureChildren():void {
@@ -49,6 +59,24 @@ package laml.display {
 			// children's size into consideration - maybe a missed invalidate call?
 			iconContainer.view.mouseEnabled = false;
 			iconContainer.view.mouseChildren = false;
+		}
+		
+		override protected function updateDisplayList(w:Number, h:Number):void {
+			super.updateDisplayList(w, h);
+			iconComponent.x = iconContainer.paddingLeft;			
+			iconComponent.y = (h - iconComponent.height) / 2;
+
+			var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
+			label.x = labelOffset;
+			label.width = w - labelOffset;
+		}
+		
+		override protected function updateSize(w:Number, h:Number):void {
+			var size:Point = new Point(w, h);
+			buttonView.upState = new IconButtonDisplayState(UP_BG_COLOR, size, cornerRadius);
+			buttonView.overState = new IconButtonDisplayState(OVER_BG_COLOR, size, cornerRadius);
+			buttonView.downState = new IconButtonDisplayState(OVER_BG_COLOR, size, cornerRadius);
+			buttonView.hitTestState = new IconButtonDisplayState(UP_BG_COLOR, size, cornerRadius);
 		}
 
 		override protected function mouseClickHandler(event:MouseEvent):void {
@@ -128,13 +156,33 @@ package laml.display {
 		}			
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="2" xmlns="laml.display">
-							<HBox verticalAlign="center">
-								<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
-							</HBox>
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">
+							<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
 			return xml;
 		}
 	}
+}
+
+import flash.display.Shape;
+import flash.geom.Point;	
+
+class IconButtonDisplayState extends Shape {
+    private var bgColor:uint;
+    private var size:Point;
+    private var radius:Number;
+
+    public function IconButtonDisplayState(bgColor:uint, size:Point, radius:uint) {
+        this.bgColor = bgColor;
+        this.size    = size;
+        this.radius  = radius;
+        draw();
+    }
+
+    private function draw():void {
+        graphics.beginFill(bgColor);
+ 		graphics.drawRoundRect(0, 0, size.x, size.y, radius);
+        graphics.endFill();
+    }
 }
