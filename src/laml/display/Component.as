@@ -256,6 +256,14 @@ package laml.display {
 		public function get css():String {
 			return model.css;
 		}
+		
+		public function bringToTop(child:DisplayObject):void {
+			view.setChildIndex(child, view.numChildren - 1);
+		}
+		
+		public function swapChildren(childOne:DisplayObject, childTwo:DisplayObject):void {
+			view.swapChildren(childOne, childTwo);
+		}
 
 		public function getTextFormat():TextFormat {
 			var sheet:StyleSheet = buildStyleSheet();

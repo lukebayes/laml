@@ -4,15 +4,14 @@ package laml.display {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
 	
 	import laml.xml.LAMLParser;
 	
-	public class IconButton extends Button {
+	public class SelectableIconButton extends SelectableButton {
 		private var classId:String = generateId();
-		private var ICON:String = classId + "_icon_button_icon";
-		private var LABEL:String = classId + "_icon_button_label";		
-		private var ICON_CONTAINER:String = classId + "_icon_container";
+		private var ICON:String = classId + "_selectable_icon_button_icon";
+		private var LABEL:String = classId + "_selectable_icon_button_label";		
+		private var ICON_CONTAINER:String = classId + "_selectable_icon_container";
 		
 		private var iconComponent:Image;
 		private var iconContainer:Component;
@@ -51,29 +50,16 @@ package laml.display {
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
+			iconComponent.x = iconContainer.paddingLeft;			
+			iconComponent.y = (h - iconComponent.height) / 2;
+
+			var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
+			label.x = labelOffset;
+			label.width = w - labelOffset;
 			
-			if(iconComponent.width <= 1 || iconComponent.height <= 1) {
-				iconComponent.visible = false;
-				label.x = 0;
-				label.width = w;
-				
-				if(label.textFormat.align != TextFormatAlign.CENTER) {
-					var tf:TextFormat = label.textFormat;
-					tf.align = TextFormatAlign.CENTER;
-					label.textView.defaultTextFormat = tf;
-				}
-			}
-			else {
-				iconComponent.visible = true;
-				iconComponent.x = iconContainer.paddingLeft;			
-				iconComponent.y = (h - iconComponent.height) / 2;
-
-				var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
-				label.x = labelOffset;
-				label.width = w - labelOffset;
-			}
+			bringToTop(iconContainer.view);
 		}
-
+		
 		override protected function mouseClickHandler(event:MouseEvent):void {
 			if(url) {
 				navigateToURL(new URLRequest(url));
@@ -151,7 +137,7 @@ package laml.display {
 		}			
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">			
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">
 							<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
