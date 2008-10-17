@@ -4,6 +4,7 @@ package laml.display {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	import laml.xml.LAMLParser;
 	
@@ -50,12 +51,27 @@ package laml.display {
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
-			iconComponent.x = iconContainer.paddingLeft;			
-			iconComponent.y = (h - iconComponent.height) / 2;
+			
+			if(iconComponent.width <= 1 || iconComponent.height <= 1) {
+				iconComponent.visible = false;
+				label.x = 0;
+				label.width = w;
+				
+				if(label.textFormat.align != TextFormatAlign.CENTER) {
+					var tf:TextFormat = label.textFormat;
+					tf.align = TextFormatAlign.CENTER;
+					label.textView.defaultTextFormat = tf;
+				}
+			}
+			else {
+				iconComponent.visible = true;
+				iconComponent.x = iconContainer.paddingLeft;			
+				iconComponent.y = (h - iconComponent.height) / 2;
 
-			var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
-			label.x = labelOffset;
-			label.width = w - labelOffset;
+				var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
+				label.x = labelOffset;
+				label.width = w - labelOffset;
+			}
 			
 			bringToTop(iconContainer.view);
 		}
