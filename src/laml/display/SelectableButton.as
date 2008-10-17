@@ -51,10 +51,27 @@ package laml.display {
 		}
 
 		override protected function updateSize(w:Number, h:Number):void {
-			selectedButtonView.width = w;
-			selectedButtonView.height = h;
-			unselectedButtonView.width = w;
-			unselectedButtonView.height = h;
+			if(selectedButtonView.upState is BasicBackground) {
+				BasicBackground(selectedButtonView.upState).draw(w, h);
+				BasicBackground(selectedButtonView.overState).draw(w, h);
+				BasicBackground(selectedButtonView.downState).draw(w, h);
+				BasicBackground(selectedButtonView.hitTestState).draw(w, h);
+			}
+			else {
+				selectedButtonView.width = w;
+				selectedButtonView.height = h;
+			}
+
+			if(unselectedButtonView.upState is BasicBackground) {
+				BasicBackground(unselectedButtonView.upState).draw(w, h);
+				BasicBackground(unselectedButtonView.overState).draw(w, h);
+				BasicBackground(unselectedButtonView.downState).draw(w, h);
+				BasicBackground(unselectedButtonView.hitTestState).draw(w, h);
+			}
+			else {
+				unselectedButtonView.width = w;
+				unselectedButtonView.height = h;
+			}
 		}
 
 		public function set upSelectedState(upSelectedState:DisplayObject):void {
