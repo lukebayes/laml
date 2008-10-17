@@ -13,10 +13,11 @@ package laml.display{
 		
 		override protected function initialize():void {
 			super.initialize();
-			model.validate_textFormat = validateTextFormat;
-			model.validate_selectable = validateSelectable;
-			model.validate_embedFonts = validateEmbedFonts;
 			model.validate_border = validateBorder;
+			model.validate_embedFonts = validateEmbedFonts;
+			model.validate_selectable = validateSelectable;
+			model.validate_selectionColor = validateSelectionColor;
+			model.validate_textFormat = validateTextFormat;
 			text = "";
 		}
 		
@@ -85,6 +86,18 @@ package laml.display{
 			return model.selectable;
 		}
 		
+		public function set selectionColor(color:Number):void {
+			model.selectionColor = color;
+		}
+		
+		public function get selectionColor():Number {
+			return model.selectionColor;
+		}
+		
+		protected function validateSelectionColor(newValue:*, oldValue:*):void {
+			trace(">> validate selection color");
+		}
+
 		protected function validateSelectable(newValue:*, oldValue:*):void {
 			textView.selectable = newValue;
 			textView.mouseEnabled = newValue;
