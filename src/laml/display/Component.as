@@ -118,6 +118,13 @@ package laml.display {
 			}
 		}
 		
+		protected function addChildViewsToView():void {
+			var len:int = numChildren;
+			for(var i:int; i < len; i++) {
+				view.addChild(getChildAt(i).view);
+			}
+		}
+		
 		protected function createChildrenIfNeeded():void {
 			if(!childrenCreated) {
 				createChildren();
