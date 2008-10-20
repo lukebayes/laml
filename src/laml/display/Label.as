@@ -16,8 +16,9 @@ package laml.display{
 			model.validate_border = validateBorder;
 			model.validate_embedFonts = validateEmbedFonts;
 			model.validate_selectable = validateSelectable;
-			model.validate_selectionColor = validateSelectionColor;
+//			model.validate_selectionColor = validateSelectionColor;
 			model.validate_textFormat = validateTextFormat;
+			verticalAlign = ALIGN_CENTER;
 			text = "";
 		}
 		
@@ -50,10 +51,18 @@ package laml.display{
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
 			textView.text = text;
+			textView.width = w;
 			
 			var magic:Number = 1;
 			var yPosition:Number = Math.round(Math.max((h - textView.textHeight)/2, 0)) - magic;
-			textView.width = w;
+
+			if(verticalAlign == ALIGN_TOP) {
+				yPosition = magic;
+			}
+			else if(verticalAlign == ALIGN_BOTTOM) {
+				yPosition = h - textView.textHeight - magic;
+			}
+			
 			textView.height = h - yPosition + magic;
 			textView.y = yPosition;
 		}
@@ -85,23 +94,30 @@ package laml.display{
 		public function get selectable():Boolean {
 			return model.selectable;
 		}
-		
-		public function set selectionColor(color:Number):void {
-			model.selectionColor = color;
-		}
-		
-		public function get selectionColor():Number {
-			return model.selectionColor;
-		}
-		
-		protected function validateSelectionColor(newValue:*, oldValue:*):void {
-			trace(">> validate selection color");
-		}
 
 		protected function validateSelectable(newValue:*, oldValue:*):void {
 			textView.selectable = newValue;
 			textView.mouseEnabled = newValue;
 		}
+
+		public function setSelection(beginningIndex:Number, endIndex:Number):void {
+			if(selectable) {
+				textView.setSelection(beginningIndex, endIndex);
+			}
+		}		
+		
+		
+//		public function set selectionColor(color:Number):void {
+//			model.selectionColor = color;
+//		}
+//		
+//		public function get selectionColor():Number {
+//			return model.selectionColor;
+//		}
+//		
+//		protected function validateSelectionColor(newValue:*, oldValue:*):void {
+//			trace(">> validate selection color");
+//		}
 		
 		public function set embedFonts(embedFonts:Boolean):void {
 			model.embedFonts = embedFonts;
@@ -126,7 +142,7 @@ package laml.display{
 		protected function validateBorder(newValue:*, oldValue:*):void {
 			textView.border = border;
 		}
-
+		
 		public function set textView(textField:TextField):void {
 			if(_textView && view.contains(_textView)) {
 				view.removeChild(_textView);

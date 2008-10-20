@@ -74,13 +74,6 @@ package laml.display {
 			}
 		}
 
-		override protected function mouseClickHandler(event:MouseEvent):void {
-			if(url) {
-				navigateToURL(new URLRequest(url));
-			} 
-			super.mouseClickHandler(event);
-		}
-		
 		public function set icon(icon:String):void {
 			model.icon = icon;
 		}
