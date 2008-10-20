@@ -156,6 +156,11 @@ package laml.display {
 				model.disabled = true;
 				layout.render(this);
 				updateDisplayList(width, height);
+
+				// TODO: This needs investigated...
+				if(parent && !view.parent) {
+					parent.view.addChild(view);
+				}
 				model.disabled = false;
 			}
 		}
@@ -698,13 +703,17 @@ package laml.display {
 		 * Composable Implementation
 		 */
 		public function addChild(child:Layoutable):void {
+			if(child.id == "carousel") {
+				trace(">> ADDED CHILD WTO: ", this);
+			}
+			childrenCreated = false;
 			child.addEventListener(PayloadEvent.ADDED, childAddedHandler);
 			child.addEventListener(PayloadEvent.REMOVED, childRemovedHandler);
 			children.addItem(child);
 			//view.addChild(child.view);
 			child.parent = this;
 			dispatchPayloadEvent(PayloadEvent.ADDED, child);
-			invalidateDisplayList();
+			invalidateProperties();
 		}
 		
 		public function removeChild(child:Layoutable):void {
@@ -715,7 +724,7 @@ package laml.display {
 				}
 				removeChildFromHash(child);
 				dispatchPayloadEvent(PayloadEvent.REMOVED, child);
-				invalidateDisplayList();
+				invalidateProperties();
 			}
 		}
 		

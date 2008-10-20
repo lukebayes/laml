@@ -21,10 +21,12 @@ package laml.display {
 		private var displayListTimeoutId:Number;
 		private var propertiesAreInvalid:Boolean;
 		private var propertyTimeoutId:Number;
+		private var validationTimeout:Number;
 		private var valueContainer:Object;
 		private var callbacks:Object;
 		
 		public function DynamicModel(component:Component) {
+			validationTimeout = 24;
 			invalidProperties = new Dictionary();
 			dispatcher = new EventDispatcher(component);
 			valueContainer = new Object();
@@ -37,7 +39,7 @@ package laml.display {
 			// Validate asynchronously, unless the modifying
 			// entity manually validates when it's done working...
 			clearTimeout(propertyTimeoutId);
-			propertyTimeoutId = setTimeout(component.validateProperties, 1);
+			propertyTimeoutId = setTimeout(component.validateProperties, validationTimeout);
 		}
 		
 		public function validateProperties():Boolean {
@@ -63,7 +65,7 @@ package laml.display {
 			if(!disabled) {
 				displayListIsInvalid = true;
 				clearTimeout(displayListTimeoutId);
-				displayListTimeoutId = setTimeout(component.validateDisplayList, 1);
+				displayListTimeoutId = setTimeout(component.validateDisplayList, validationTimeout);
 			}
 		}
 		

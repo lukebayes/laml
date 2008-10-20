@@ -68,7 +68,7 @@ package laml.display{
 		}
 		
 		public function set text(text:String):void {
-			model.text = text;
+			model.text = text || '';
 		}
 		
 		public function get text():String {
