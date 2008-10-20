@@ -800,11 +800,15 @@ package laml.display {
 			return model.skin;
 		}
 		
+		// TODO: This throws an exception with 200 milliseconds
+		// TODO: This doesn't respect previously-set alphas.
 		public function show(milliseconds:Number = 0):void {
 			visible = true;
+			this.view.alpha = 1;
 			if(milliseconds != 0) {
 				clearInterval(showHideInterval);
 				var interval:Number = milliseconds * this.view.alpha * .01;
+				interval = Math.max(1, interval);
 				showHideInterval = setInterval(showInterval, interval);
 			}
 		}
