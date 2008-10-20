@@ -843,6 +843,7 @@ package laml.display {
 			else {
 				clearInterval(showHideInterval);
 				var interval:Number = milliseconds * this.view.alpha * .01;
+				interval = Math.max(1, interval);
 				showHideInterval = setInterval(hideInterval, interval);
 			}
 		}
