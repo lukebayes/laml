@@ -25,7 +25,7 @@ package laml.layout {
 			verticalDelegate.minSize = getChildrenMinHeight(verticalDelegate);
 			
 			if(isNaN(verticalDelegate.fixed) && isNaN(verticalDelegate.percent)) {
-				verticalDelegate.actual = getChildrenHeight(horizontalDelegate);
+				verticalDelegate.actual = getChildrenHeight(verticalDelegate);
 			}
 
 			horizontallyScaleChildren(horizontalDelegate);
@@ -52,12 +52,7 @@ package laml.layout {
 			var len:int = kids.length;
 			for(var i:int; i < len; i++) {
 				child = kids[i] as LayoutableDelegate;
-				if(child.minSize) {
-					result = Math.max(result, child.minSize + delegate.padding);
-				}
-				else if(child.fixed) {
-					result = Math.max(result, child.fixed + delegate.padding);
-				}
+				result = Math.max(result, child.minSize + delegate.padding);
 			}
 			return result;
 		}
