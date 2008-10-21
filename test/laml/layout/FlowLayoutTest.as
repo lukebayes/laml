@@ -2,6 +2,7 @@ package laml.layout {
 
 	import laml.LAMLTestCase;
 	import laml.display.Component;
+	import laml.display.ComponentMock;
 	import laml.display.Layoutable;
 	import laml.xml.LAMLParser;
 
@@ -19,7 +20,7 @@ package laml.layout {
 			parser = new LAMLParser();
 
 			component = new Component();
-			component.backgroundColor = 0xFFCC00;
+			component.backgroundColor = 0x666666;
 			component.width = 640;
 			component.height = 480;
 			component.padding = 10;
@@ -201,6 +202,29 @@ package laml.layout {
 			assertRectangle(child, 5, 85, 120, 80);
 			child = box.getChildAt(2);
 			assertRectangle(child, 5, 165, 200, 25);
+		}
+
+
+		public function testNestedChildrenCallCount():void {
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" y="10" padding="5" backgroundColor="#FFCC00">
+				<ComponentMock id="child1" width="100%" height="80" backgroundColor="#FF0000" />
+				<Label id="child2" width="100" height="100" text="what" backgroundColor="#00FF00" />
+				<Component id="child3" width="100%" height="105" backgroundColor="#0000FF" />
+			</VBox>;
+			
+			removeChild(component.view);
+			
+			box = parser.parseLayoutable(xml);
+			
+			box.width = 400;
+			box.height = 330;
+			
+			addChild(box.view);
+			
+			var child:ComponentMock = box.getChildById('child1') as ComponentMock;
+			assertNotNull(child);
+			assertEquals(2, child.widths.length);
+			assertEquals(1, child.heights.length);
 		}
 	}
 }
