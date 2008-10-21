@@ -8,19 +8,13 @@ package laml.display{
 	public class Label extends Component {
 		private var _textView:TextField;
 
-		public function Label() {
-		}
-		
 		override protected function initialize():void {
 			super.initialize();
 			model.validate_border = validateBorder;
 			model.validate_embedFonts = validateEmbedFonts;
-			model.validate_selectable = validateSelectable;
 			model.validate_selectionColor = validateSelectionColor;
 			model.validate_textFormat = validateTextFormat;
 			model.validate_selectable = validateSelectable;
-			model.validate_embedFonts = validateEmbedFonts;
-			model.validate_border = validateBorder;
 			text = "";
 		}
 		

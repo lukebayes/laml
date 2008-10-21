@@ -4,6 +4,7 @@ package laml.display {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	import laml.xml.LAMLParser;
 	
