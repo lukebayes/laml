@@ -164,8 +164,8 @@ package laml.display {
 		}
 		
 		override protected function mouseClickHandler(mouseEvent:MouseEvent):void {
-			mouseEventHandler(mouseEvent);
 			toggleState();
+			mouseEventHandler(mouseEvent);
 		}
 	}
 }
