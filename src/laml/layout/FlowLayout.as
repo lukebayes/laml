@@ -29,7 +29,7 @@ package laml.layout {
 				var len:int = kids.length;
 				for(var i:int; i < len; i++) {
 					child = kids[i] as LayoutableDelegate;
-					result += child.minSize || child.fixed || child.preferred;
+					result += child.fixed || child.preferred || child.minSize;
 				}
 				return result + delegate.gutterSum + delegate.padding;
 			}
