@@ -4,8 +4,6 @@ package laml.display {
 	import fixtures.ComponentFake;
 	import fixtures.ComponentStub;
 	
-	import flash.text.StyleSheet;
-	
 	import laml.events.PayloadEvent;
 
 	public class ComponentTest extends TestCase {
@@ -326,8 +324,8 @@ package laml.display {
 			stub.someProperty = 'foo';
 			stub.render();
 			assertEquals('foo', stub.someProperty);
+			assertFalse('stub.otherProperty should not validate!', stub.otherPropertyValidated);
 			assertTrue('a', stub.somePropertyValidated);
-			assertFalse('Does not validate!', stub.otherPropertyValidated);
 		}
 	}
 }
