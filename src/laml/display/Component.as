@@ -703,9 +703,6 @@ package laml.display {
 		 * Composable Implementation
 		 */
 		public function addChild(child:Layoutable):void {
-			if(child.id == "carousel") {
-				trace(">> ADDED CHILD WTO: ", this);
-			}
 			childrenCreated = false;
 			child.addEventListener(PayloadEvent.ADDED, childAddedHandler);
 			child.addEventListener(PayloadEvent.REMOVED, childRemovedHandler);
