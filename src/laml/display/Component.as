@@ -67,10 +67,11 @@ package laml.display {
 		private var _view:Sprite;
 		private var _enabled:Boolean;
 		
-		private var children:SelectableList;
 		private var childrenHash:Dictionary;
 		private var childrenCreated:Boolean;
 		private var showHideInterval:Number;
+
+		protected var children:SelectableList;
 		
 		public function Component() {
 			initializeComponent();
@@ -454,7 +455,7 @@ package laml.display {
 		}
 		
 		public function get actualWidth():Number {
-			return model.actualWidth || preferredWidth || minWidth;
+			return model.width || model.actualWidth || preferredWidth || minWidth;
 		}
 		
 		public function set actualHeight(height:Number):void {
@@ -467,7 +468,7 @@ package laml.display {
 		}
 		
 		public function get actualHeight():Number {
-			return model.actualHeight || preferredHeight || minHeight;
+			return model.height || model.actualHeight || preferredHeight || minHeight;
 		}
 		
 		public function set excludeFromLayout(exclude:Boolean):void {
@@ -538,7 +539,15 @@ package laml.display {
 		}
 		
 		public function get minWidth():Number {
-			return model.minWidth || horizontalPadding;
+			return model.width || model.minWidth || inferredMinWidth;
+		}
+		
+		protected function get inferredMinWidth():Number {
+			var result:Number = 0;
+			children.forEach(function(child:Layoutable, index:int, items:Array):void {
+				result = Math.max(result, child.minWidth);
+			});
+			return result + horizontalPadding;
 		}
 		
 		public function set minHeight(min:Number):void {
@@ -549,9 +558,17 @@ package laml.display {
 		}
 
 		public function get minHeight():Number {
-			return model.minHeight || verticalPadding;
+			return model.height || model.minHeight || inferredMinHeight;
 		}
-		
+
+		protected function get inferredMinHeight():Number {
+			var result:Number = 0;
+			children.forEach(function(child:Layoutable, index:int, items:Array):void {
+				result = Math.max(result, child.minHeight);
+			});
+			return result + verticalPadding;
+		}
+
 		public function set padding(padding:int):void {
 			paddingBottom 	= padding;
 			paddingLeft 	= padding;
@@ -751,12 +768,16 @@ package laml.display {
 			return _parent;
 		}
 		
-		public function toString():String {
+		public function get path():String {
 			var result:String = '';
 			if(parent) {
-				result = parent.toString();
+				result = parent.path;
 			}
-			return result + '/' + name
+			return result + '/' + name;
+		}
+		
+		public function toString():String {
+			return "[" + getQualifiedClassName(this).split("::").pop() +  " path='" + path + "' x='" + x + "' y='" + y + "' width='" + width + "' height='" + height + "']";
 		}
 		
 		/***************************

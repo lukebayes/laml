@@ -64,6 +64,18 @@ package laml.collections {
 			return -1;
 		}
 		
+		public function forEach(callback:Function, thisObject:* = null):void {
+			items.forEach(callback, thisObject);
+		}
+		
+		public function every(callback:Function, thisObject:* = null):Boolean {
+			return items.every(callback, thisObject);
+		}
+		
+		public function filter(callback:Function, thisObject:* = null):Array {
+			return items.filter(callback, thisObject);
+		}
+		
 		public function get length():int {
 			return items.length;
 		}	

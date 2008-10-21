@@ -1,5 +1,7 @@
 package laml.layout {
 
+	import asunit.errors.AssertionFailedError;
+	
 	import laml.LAMLTestCase;
 	import laml.display.Component;
 	import laml.display.Layoutable;
@@ -50,15 +52,6 @@ package laml.layout {
 				<Component id="child1" percentWidth="1" height="100" backgroundColor="#FF0000" />
 				<Component id="child2" width="150" height="90" backgroundColor="#FFFF00" />
 				<Component id="child3" width="100" height="60" backgroundColor="#0000FF" />
-			</VBox>;
-			return xml;
-		}
-
-		protected function getFlexibleChildrenVBox():XML {
-			var xml:XML = <VBox id="root" width="600" height="300" xmlns="laml.display" padding="5" verticalGutter="5" backgroundColor="#FF00FF">
-				<Component id="child1" width="100%" height="100%" backgroundColor="#FF0000" />
-				<Component id="child2" width="200" height="140" backgroundColor="#FFFF00" />
-				<Component id="child3" width="100%" height="50%" backgroundColor="#0000FF" />
 			</VBox>;
 			return xml;
 		}
@@ -135,16 +128,24 @@ package laml.layout {
 		}
 
 		public function testFlexibleChildrenVertical():void {
-			box = parser.parseLayoutable(getFlexibleChildrenVBox());
+			var xml:XML = <VBox id="root" width="600" height="300" padding="5" verticalGutter="5" backgroundColor="#FF00FF" xmlns="laml.display">
+				<Component id="child1" width="100%" height="100%" backgroundColor="#FF0000" />
+				<Component id="child2" width="200" height="140" backgroundColor="#FFFF00" />
+				<Component id="child3" width="100%" height="50%" backgroundColor="#0000FF" />
+			</VBox>;
+			
+			box = parser.parseLayoutable(xml);
 			//addChild(box.view);
 			box.render();
 			//listenToStage(box);
+			var child:Layoutable;
 			
-			var child:Layoutable = box.getChildAt(0);
+			assertRectangle(box, 0, 0, 600, 300);
+			child = box.getChildById('child1');
 			assertRectangle(child, 5, 5, 590, 93);
-			child = box.getChildAt(1);
+			child = box.getChildById('child2');
 			assertRectangle(child, 5, 103, 200, 140);
-			child = box.getChildAt(2);
+			child = box.getChildById('child3');
 			assertRectangle(child, 5, 248, 590, 46);
 		}
 
@@ -184,7 +185,7 @@ package laml.layout {
 			box = parser.parseLayoutable(xml);
 			addChild(box.view);
 			box.render();
-			listenToStage(box);
+			//listenToStage(box);
 
 			var child:Layoutable = box.getChildAt(0);
 			assertRectangle(child, 10, 10, 620, 460);
@@ -198,7 +199,7 @@ package laml.layout {
 			</VBox>;
 			
 			box = parser.parseLayoutable(xml);
-			addChild(box.view);
+			//addChild(box.view);
 			box.render();
 			//listenToStage(box);
 			
@@ -206,6 +207,39 @@ package laml.layout {
 			assertRectangle(child, 200, 0, 210, 220);
 			child = box.getChildAt(0);
 			assertRectangle(child, 5, 5, 200, 210);			
+		}
+
+		public function testWidthAndHeightShouldNotBeSmallerThanChildrenSize():void {
+		}
+		
+		public function testNestedChildrenShouldExpandParent():void {
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" padding="5" verticalGutter="5" backgroundColor="#FFCC00">
+				<HBox id="hbox" backgroundColor="#00ccff" padding="5" horizontalGutter="5">
+					<Component id="child1" width="60" height="150" backgroundColor="#00ff00" />
+					<Component id="child2" width="65" height="150" backgroundColor="#0000ff" />
+					<Component id="child3" width="50" height="150" backgroundColor="#ff0000" />
+				</HBox>
+				<VBox id="vbox" backgroundColor="#00ffcc" padding="6" verticalGutter="5" horizontalAlign="right">
+					<Component id="child1" width="40" height="20" backgroundColor="#00ff00" />
+					<Component id="child2" width="65" height="40" backgroundColor="#0000ff" />
+					<Component id="child3" width="50" height="30" backgroundColor="#ff0000" />
+				</VBox>
+			</VBox>;
+			
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.render();
+			
+			var hbox:Layoutable = box.getChildById('hbox');
+			var vbox:Layoutable = box.getChildById('vbox');
+			var child1:Layoutable = box.getChildById('child1');
+			var child2:Layoutable = box.getChildById('child2');
+			
+			assertDimensions(box, 205, 287);
+			assertDimensions(hbox, 195, 160);
+			assertDimensions(vbox, 77, 112);
+			assertDimensions(child1, 60, 150);
+			assertDimensions(child2, 65, 150);
 		}
 	}
 }

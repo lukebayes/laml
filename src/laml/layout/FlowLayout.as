@@ -21,32 +21,13 @@ package laml.layout {
 			return (axis == direction);
 		}
 
-		override protected function getDelegateMinSize(delegate:LayoutableDelegate):Number {
-			if(delegate.direction == direction) {
-				var kids:Array = delegate.children;
-				var result:Number = 0;
-				var child:LayoutableDelegate;
-				var len:int = kids.length;
-				for(var i:int; i < len; i++) {
-					child = kids[i] as LayoutableDelegate;
-					result += child.fixed || child.preferred || child.minSize;
-				}
-				return result + delegate.gutterSum + delegate.padding;
-			}
-			else {
-				return super.getDelegateMinSize(delegate);
-			}
-		}
-
 		override protected function getDelegateSize(delegate:LayoutableDelegate):Number {
 			if(delegate.direction == direction) {
-				var kids:Array = delegate.children;
 				var result:Number = 0;
-				var len:int = kids.length;
-				for(var i:int; i < len; i++) {
-					result += kids[i].actual;
-				}
-				return result + delegate.gutterSum + delegate.padding;
+				delegate.children.forEach(function(child:LayoutableDelegate, index:int, kids:Array):void {
+					result += child.size;
+				});
+				return result + delegate.padding;
 			}
 			else {
 				return super.getDelegateSize(delegate);
@@ -135,7 +116,7 @@ package laml.layout {
 		}
 
 		protected function getAvailablePixelsOnAxis(delegate:LayoutableDelegate, axis:String):Number {
-			return (delegate.size - delegate.padding) - (delegate.gutterSum + delegate.staticSize);
+			return (delegate.size - delegate.padding) - (delegate.staticSize);
 		}
 		
 		protected function getFlexibleRatioOnAxis(delegate:LayoutableDelegate, axis:String):Number {

@@ -16,13 +16,9 @@ package laml.layout {
 			var horizontalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.HORIZONTAL);
 			var verticalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.VERTICAL);
 
-			horizontalDelegate.minSize = getChildrenMinWidth(horizontalDelegate);
-			
 			if(isNaN(horizontalDelegate.fixed) && isNaN(horizontalDelegate.percent)) {
 				horizontalDelegate.actual = getChildrenWidth(horizontalDelegate);
 			}
-			
-			verticalDelegate.minSize = getChildrenMinHeight(verticalDelegate);
 			
 			if(isNaN(verticalDelegate.fixed) && isNaN(verticalDelegate.percent)) {
 				verticalDelegate.actual = getChildrenHeight(verticalDelegate);
@@ -37,26 +33,6 @@ package laml.layout {
 			renderChildren();
 		}
 		
-		protected function getChildrenMinWidth(delegate:LayoutableDelegate):Number {
-			return getDelegateMinSize(delegate);
-		}
-		
-		protected function getChildrenMinHeight(delegate:LayoutableDelegate):Number {
-			return getDelegateMinSize(delegate);
-		}
-		
-		protected function getDelegateMinSize(delegate:LayoutableDelegate):Number {
-			var kids:Array = delegate.children;
-			var result:Number = 0;
-			var child:LayoutableDelegate;
-			var len:int = kids.length;
-			for(var i:int; i < len; i++) {
-				child = kids[i] as LayoutableDelegate;
-				result = Math.max(result, child.minSize + delegate.padding);
-			}
-			return result;
-		}
-		
 		protected function getChildrenWidth(delegate:LayoutableDelegate):Number {
 			return getDelegateSize(delegate);
 		}
@@ -66,12 +42,10 @@ package laml.layout {
 		}
 		
 		protected function getDelegateSize(delegate:LayoutableDelegate):Number {
-			var kids:Array = delegate.children;
-			var result:Number = 0;
-			var len:int = kids.length;
-			for(var i:int; i < len; i++) {
-				result = Math.max(result, kids[i].actual + delegate.padding);
-			}
+			var result:Number = delegate.actual;
+			delegate.children.forEach(function(child:LayoutableDelegate, index:int, children:Array):void {
+				result = Math.max(result, child.actual + delegate.padding);
+			});
 			return result;
 		}
 		
@@ -98,8 +72,6 @@ package laml.layout {
 		}
 		
 		protected function scaleChildren(delegate:LayoutableDelegate, axis:String):void {
-			//trace(">> scale children: " + delegate.flexibleChildren.length);
-			//trace(">> delegate w: " + delegate.size);
 			var kids:Array = delegate.flexibleChildren;
 			var len:int = kids.length;
 			var child:LayoutableDelegate;
