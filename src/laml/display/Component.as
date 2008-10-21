@@ -256,6 +256,7 @@ package laml.display {
 		public function get css():String {
 			return model.css;
 		}
+<<<<<<< HEAD:src/laml/display/Component.as
 		
 		public function bringToTop(child:DisplayObject):void {
 			view.setChildIndex(child, view.numChildren - 1);
@@ -264,13 +265,19 @@ package laml.display {
 		public function swapChildren(childOne:DisplayObject, childTwo:DisplayObject):void {
 			view.swapChildren(childOne, childTwo);
 		}
+=======
+>>>>>>> cb1e26797246b8f675dffd9d318181d58a83a906:src/laml/display/Component.as
 
 		public function getTextFormat():TextFormat {
 			var sheet:StyleSheet = buildStyleSheet();
 
 			var styles:Array = new Array();
 			styles.push(getStyleByType(sheet));
+<<<<<<< HEAD:src/laml/display/Component.as
 			styles = styles.concat(getStylesByStyleNames(sheet));
+=======
+			styles.concat(getStylesByStyleNames(sheet));
+>>>>>>> cb1e26797246b8f675dffd9d318181d58a83a906:src/laml/display/Component.as
 			styles.push(getStyleById(sheet));
 			
 			var style:Object = new Object();
@@ -295,7 +302,11 @@ package laml.display {
 			var len:Number = names.length;
 			
 			for(var i:Number = 0; i < len; i++) {
+<<<<<<< HEAD:src/laml/display/Component.as
 				styles.push(sheet.getStyle("." + names[i]));
+=======
+				styles.push(sheet.getStyle(names[i]));
+>>>>>>> cb1e26797246b8f675dffd9d318181d58a83a906:src/laml/display/Component.as
 			}
 			
 			return styles;
