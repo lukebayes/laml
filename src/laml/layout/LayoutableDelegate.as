@@ -187,5 +187,9 @@ package laml.layout {
 		public function get size():Number {
 			return component[keys.size];
 		}
+		
+		public function toString():String {
+			return component.toString();
+		}
 	}
 }

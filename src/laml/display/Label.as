@@ -8,9 +8,6 @@ package laml.display{
 	public class Label extends Component {
 		private var _textView:TextField;
 
-		public function Label() {
-		}
-		
 		override protected function initialize():void {
 			super.initialize();
 			model.validate_border = validateBorder;

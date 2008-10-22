@@ -79,6 +79,17 @@ package laml.xml {
 			assertFalse(result.fakeBoolean);
 		}
 		
+		public function testPreferredWidth():void {
+			var xml:XML = <Component width="~100" height="~200" xmlns="laml.display" />;
+			var result:Layoutable = parser.parseLayoutable(xml);
+			result.render();
+			
+			assertEquals(100, result.preferredWidth);
+			assertEquals(100, result.width);
+			assertEquals(200, result.preferredHeight);
+			assertEquals(200, result.height);
+		}
+
 		public function testAttributeNumber():void {
 			var xml:XML = <Component width="100" xmlns="laml.display" />;
 			var result:Layoutable = parser.parseLayoutable(xml);
@@ -195,6 +206,18 @@ package laml.xml {
 			assertSame(child2, child3.parent);
 			assertTrue(child3.getTextFormat().color, child3.getTextFormat().color == styleSheet.getStyle("child3").color);
 			assertTrue(child3.getTextFormat().size, child3.getTextFormat().size == styleSheet.getStyle("child3").fontSize);
+		}
+		
+		public function testSimpleEvaluation():void {
+			var context:Object = {
+				contextName: 'customName'
+			}
+			
+			var xml:XML = new XML('<Component id="foo" xmlns="laml.display" name="{contextName}" />');
+			var result:Layoutable = parser.parseLayoutable(xml, context);
+			
+			assertEquals('Id should be accepted', 'foo', result.id);
+			assertEquals('Name should have been evaluated', 'customName', result.name);
 		}
 		
 		/*

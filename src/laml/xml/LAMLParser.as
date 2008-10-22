@@ -11,10 +11,28 @@ package laml.xml {
 		public static const PROCESSING_INSTRUCTION:String 	= "processing-instruction";
 		public static const TEXT:String 					= "text";
 		
+		private var capitalized:Object;
+		private var context:Object;
 		private var skin:ISkin;
 		
-		public function parse(xml:XML, skin:ISkin=null):Object {
-			this.skin = skin;
+		// TODO: Maybe skin can be pulled out to become a parameter
+		// of context?
+		// Left it in for now to support two optional arguments - if there is 
+		// only one extra argument, we check to see if it's an ISkin and otherwise
+		// assume it's a context.
+		public function parse(xml:XML, skinOrContext:Object=null, context:Object=null):Object {
+			this.context = context;
+
+			if(skinOrContext) {
+				if(skinOrContext is ISkin) {
+					this.skin = skinOrContext as ISkin;
+				}
+				else if(!context && !this.context) {
+					this.context = skinOrContext;
+				}
+			}
+				
+			capitalized = {};
 
 			var result:Object = parseNode(xml, null, null);
 			//parsePendingAttributes(result);
@@ -25,8 +43,8 @@ package laml.xml {
 			return result;
 		}
 		
-		public function parseLayoutable(xml:XML, skin:ISkin=null):Layoutable {
-			return parse(xml, skin) as Layoutable;
+		public function parseLayoutable(xml:XML, skinOrContext:*=null):Layoutable {
+			return parse(xml, skinOrContext) as Layoutable;
 		}
 		
 		protected function parseNode(xml:XML, parent:Object=null, root:Object=null):Object {
@@ -66,7 +84,7 @@ package laml.xml {
 			}
 			parseAttributes(node, instance, root);
 			instance = parseChildren(node.children(), instance, root);
-			parseComponent(instance as Layoutable, parent as Layoutable, root);
+			parseComponent(node, instance as Layoutable, parent as Layoutable, root);
 			return instance;
 		}
 		
@@ -83,7 +101,34 @@ package laml.xml {
 			}
 		}
 		
+		// TODO: This should actually be done as a second/final pass - after all nodes have been otherwise resolved.
+		// currently, the text node ordering will prevent references to nodes that appear later in the document.
+		private function renderAttributeExpression(name:String, value:String, instance:Object):Object {
+			try {
+				var parts:Array = value.split('.');
+				var tmp:Object = this.context;
+				while(parts.length > 0) {
+					tmp = tmp[parts.shift()];
+				}
+				return tmp;
+			}
+			catch(e:Error) {
+				trace(name, "failed to render attribute expression for", name, "with", value);
+			}
+			return null;
+		}
+
 		protected function parseAttributeValue(name:String, value:*, instance:Object, root:Object=null):* {
+
+			// Look for expression values, and evaluate them:
+			if(value) {
+				var expr:RegExp = new RegExp(/^\{(.*)\}$/);
+				var result:Object = expr.exec(value)
+				if(result) {
+					value = renderAttributeExpression(name, result[1], instance);;
+				}
+			}
+			
 			if(name == 'width' || name == 'height') {
 				return parseWidthOrHeightAttribute(name, value, instance);
 			}
@@ -111,9 +156,16 @@ package laml.xml {
 		}
 		
 		protected function parseWidthOrHeightAttribute(name:String, value:*, instance:Object):Number {
+			var key:String;
 			if(value.match(/\%$/)) {
 				value = Number(value.split('%').join('')) * 0.01;
-				var key:String = 'percent' + capitalize(name);
+				key = 'percent' + capitalize(name);
+				instance[key] = value;
+				return NaN;
+			}
+			else if(value.match(/^\~/)) {
+				value = Number(value.split('~').join(''));
+				key = 'preferred' + capitalize(name);
 				instance[key] = value;
 				return NaN;
 			}
@@ -123,8 +175,11 @@ package laml.xml {
 		}
 		
 		protected function capitalize(name:String):String {
+			if(capitalized[name]) {
+				return capitalized[name];
+			}
 			var letter:String = name.substr(0, 1);
-			return letter.toUpperCase() + name.substr(1);
+			return capitalized[name] = letter.toUpperCase() + name.substr(1);
 		}
 		
 		protected function parseHexString(str:String):uint {
@@ -146,8 +201,10 @@ package laml.xml {
 			return instance;
 		}
 		
-		protected function parseComponent(instance:Layoutable, parent:Layoutable, root:Object=null):void {
+		protected function parseComponent(node:XML, instance:Layoutable, parent:Layoutable, root:Object=null):void {
 			if(parent && instance) {
+				// Set up width and height only after children have been added.
+				// This will ensure that we won't have invalid values...
 				if(parent.id == instance.id) {
 					throw new IllegalOperationError("Duplicate id encountered with: " + instance.id + " at: " + parent);
 				}

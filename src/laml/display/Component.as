@@ -67,10 +67,11 @@ package laml.display {
 		private var _view:Sprite;
 		private var _enabled:Boolean;
 		
-		private var children:SelectableList;
 		private var childrenHash:Dictionary;
 		private var childrenCreated:Boolean;
 		private var showHideInterval:Number;
+
+		protected var children:SelectableList;
 		
 		public function Component() {
 			initializeComponent();
@@ -105,16 +106,26 @@ package laml.display {
 				backgroundImage.name = 'background';
 				view.addChild(backgroundImage);
 			}
-			var len:int = numChildren;
-			for(var i:int; i < len; i++) {
-				view.addChild(getChildAt(i).view);
-			}
 		}
 		
 		protected function addChildViewsToView():void {
 			var len:int = numChildren;
-			for(var i:int; i < len; i++) {
-				view.addChild(getChildAt(i).view);
+			children.forEach(function(child:Layoutable, index:int, children:Array):void {
+				if(child.view !== view) {
+					view.addChild(child.view);
+				}
+			});
+		}
+		
+		// Ensure that width and height are not 
+		// smaller than the minimums
+		private function updateSizeIfNeeded():void {
+			if(model.width < inferredMinWidth) {
+				width = inferredMinWidth;
+			}
+			
+			if(model.height < inferredMinHeight) {
+				height = inferredMinHeight;
 			}
 		}
 		
@@ -122,6 +133,7 @@ package laml.display {
 			if(!childrenCreated) {
 				createChildren();
 				addChildViewsToView();
+				updateSizeIfNeeded();
 				childrenCreated = true;
 			}
 		}
@@ -147,6 +159,11 @@ package laml.display {
 		}
 		
 		public function invalidateDisplayList():void {
+			// invalidate root too!
+			if(root !== this) {
+				root.invalidateDisplayList();
+			}
+			// invalidate this control's model
 			model.invalidateDisplayList();
 		}
 		
@@ -251,7 +268,15 @@ package laml.display {
 		}
 		
 		public function get name():String {
-			return model.name ||= id;
+			return model.name || id;
+		}
+		
+		public function set data(data:*):void {
+			model.data = data;
+		}
+		
+		public function get data():* {
+			return model.data;
 		}
 		
 		public function set css(css:String):void {
@@ -275,7 +300,7 @@ package laml.display {
 
 			var styles:Array = new Array();
 			styles.push(getStyleByType(sheet));
-			styles = styles.concat(getStylesByStyleNames(sheet));
+			styles.concat(getStylesByStyleNames(sheet));
 			styles.push(getStyleById(sheet));
 			
 			var style:Object = new Object();
@@ -300,7 +325,7 @@ package laml.display {
 			var len:Number = names.length;
 			
 			for(var i:Number = 0; i < len; i++) {
-				styles.push(sheet.getStyle("." + names[i]));
+				styles.push(sheet.getStyle(names[i]));
 			}
 			
 			return styles;
@@ -420,7 +445,9 @@ package laml.display {
 		}
 		
 		public function set width(width:Number):void {
-			model.width = actualWidth = width;
+			if(model.width != width) {
+				model.width = actualWidth = width;
+			}
 		}
 		
 		public function get width():Number {
@@ -431,7 +458,9 @@ package laml.display {
 		}
 		
 		public function set height(height:Number):void {
-			model.height = actualHeight = height;
+			if(model.height != height) {
+				model.height = actualHeight = height;
+			}
 		}
 		
 		public function get height():Number {
@@ -459,7 +488,7 @@ package laml.display {
 		}
 		
 		public function get actualWidth():Number {
-			return model.actualWidth || preferredWidth || minWidth;
+			return model.width || model.actualWidth || preferredWidth || minWidth;
 		}
 		
 		public function set actualHeight(height:Number):void {
@@ -472,7 +501,7 @@ package laml.display {
 		}
 		
 		public function get actualHeight():Number {
-			return model.actualHeight || preferredHeight || minHeight;
+			return model.height || model.actualHeight || preferredHeight || minHeight;
 		}
 		
 		public function set excludeFromLayout(exclude:Boolean):void {
@@ -543,7 +572,15 @@ package laml.display {
 		}
 		
 		public function get minWidth():Number {
-			return model.minWidth || horizontalPadding;
+			return model.width || model.minWidth || inferredMinWidth;
+		}
+		
+		protected function get inferredMinWidth():Number {
+			var result:Number = 0;
+			children.forEach(function(child:Layoutable, index:int, items:Array):void {
+				result = Math.max(result, child.minWidth);
+			});
+			return result + horizontalPadding;
 		}
 		
 		public function set minHeight(min:Number):void {
@@ -554,9 +591,17 @@ package laml.display {
 		}
 
 		public function get minHeight():Number {
-			return model.minHeight || verticalPadding;
+			return model.height || model.minHeight || inferredMinHeight;
 		}
-		
+
+		protected function get inferredMinHeight():Number {
+			var result:Number = 0;
+			children.forEach(function(child:Layoutable, index:int, items:Array):void {
+				result = Math.max(result, child.minHeight);
+			});
+			return result + verticalPadding;
+		}
+
 		public function set padding(padding:int):void {
 			paddingBottom 	= padding;
 			paddingLeft 	= padding;
@@ -707,7 +752,6 @@ package laml.display {
 			child.addEventListener(PayloadEvent.ADDED, childAddedHandler);
 			child.addEventListener(PayloadEvent.REMOVED, childRemovedHandler);
 			children.addItem(child);
-			//view.addChild(child.view);
 			child.parent = this;
 			dispatchPayloadEvent(PayloadEvent.ADDED, child);
 			invalidateProperties();
@@ -753,16 +797,27 @@ package laml.display {
 			_parent = parent;
 		}
 		
+		public function get root():Layoutable {
+			if(parent) {
+				return parent.root;
+			}
+			return this;
+		}
+		
 		public function get parent():Layoutable {
 			return _parent;
 		}
 		
-		public function toString():String {
+		public function get path():String {
 			var result:String = '';
 			if(parent) {
-				result = parent.toString();
+				result = parent.path;
 			}
-			return result + '/' + name
+			return result + '/' + name;
+		}
+		
+		public function toString():String {
+			return "[" + getQualifiedClassName(this).split("::").pop() +  " path='" + path + "' x='" + x + "' y='" + y + "' width='" + width + "' height='" + height + "']";
 		}
 		
 		/***************************
