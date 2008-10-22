@@ -16,13 +16,15 @@ package laml.display {
 		 */
 		function set id(id:String):void;
 		function get id():String;
-		function set name(name:String):void;
-		function get name():String;
+		function set name(name:String):void; // TODO: remove me
+		function get name():String; // TODO: remove me
 		
 		function set model(model:DynamicModel):void;
 		function get model():DynamicModel;
 		function set view(view:Sprite):void;
 		function get view():Sprite;
+		function set data(data:*):void;
+		function get data():*;
 		
 		/* Positionable */
 		function set x(x:int):void;
@@ -147,5 +149,7 @@ package laml.display {
 		function get numChildren():int;
 		function set parent(parent:Layoutable):void;
 		function get parent():Layoutable;
+		function get path():String;
+		function get root():Layoutable;
 	}
 }

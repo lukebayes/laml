@@ -36,13 +36,12 @@ package laml.display {
 			configureChildren();
 			textFormat = getTextFormat();
 		}
-
+		
 		protected function configureChildren():void {
 			iconComponent = getChildById(ICON) as Image;
 			label = getChildById(LABEL) as Label;
 
 			iconContainer = getChildById(ICON_CONTAINER) as Component;
-
 			// TODO: not accessing the view directly results in not taking the
 			// children's size into consideration - maybe a missed invalidate call?
 			iconContainer.view.mouseEnabled = false;
