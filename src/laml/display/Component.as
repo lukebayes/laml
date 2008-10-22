@@ -106,16 +106,26 @@ package laml.display {
 				backgroundImage.name = 'background';
 				view.addChild(backgroundImage);
 			}
-			var len:int = numChildren;
-			for(var i:int; i < len; i++) {
-				view.addChild(getChildAt(i).view);
-			}
 		}
 		
 		protected function addChildViewsToView():void {
 			var len:int = numChildren;
-			for(var i:int; i < len; i++) {
-				view.addChild(getChildAt(i).view);
+			children.forEach(function(child:Layoutable, index:int, children:Array):void {
+				if(child.view !== view) {
+					view.addChild(child.view);
+				}
+			});
+		}
+		
+		// Ensure that width and height are not 
+		// smaller than the minimums
+		private function updateSizeIfNeeded():void {
+			if(model.width < inferredMinWidth) {
+				width = inferredMinWidth;
+			}
+			
+			if(model.height < inferredMinHeight) {
+				height = inferredMinHeight;
 			}
 		}
 		
@@ -123,6 +133,7 @@ package laml.display {
 			if(!childrenCreated) {
 				createChildren();
 				addChildViewsToView();
+				updateSizeIfNeeded();
 				childrenCreated = true;
 			}
 		}
@@ -718,7 +729,6 @@ package laml.display {
 			child.addEventListener(PayloadEvent.ADDED, childAddedHandler);
 			child.addEventListener(PayloadEvent.REMOVED, childRemovedHandler);
 			children.addItem(child);
-			//view.addChild(child.view);
 			child.parent = this;
 			dispatchPayloadEvent(PayloadEvent.ADDED, child);
 			invalidateDisplayList();

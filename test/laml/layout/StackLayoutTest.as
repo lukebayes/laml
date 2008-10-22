@@ -208,12 +208,9 @@ package laml.layout {
 			child = box.getChildAt(0);
 			assertRectangle(child, 5, 5, 200, 210);			
 		}
-
-		public function testWidthAndHeightShouldNotBeSmallerThanChildrenSize():void {
-		}
 		
 		public function testNestedChildrenShouldExpandParent():void {
-			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" padding="5" verticalGutter="5" backgroundColor="#FFCC00">
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" width="100" height="120" padding="5" verticalGutter="5" backgroundColor="#FFCC00">
 				<HBox id="hbox" backgroundColor="#00ccff" padding="5" horizontalGutter="5">
 					<Component id="child1" width="60" height="150" backgroundColor="#00ff00" />
 					<Component id="child2" width="65" height="150" backgroundColor="#0000ff" />
@@ -229,6 +226,7 @@ package laml.layout {
 			box = parser.parseLayoutable(xml);
 			addChild(box.view);
 			box.render();
+			listenToStage(box);
 			
 			var hbox:Layoutable = box.getChildById('hbox');
 			var vbox:Layoutable = box.getChildById('vbox');

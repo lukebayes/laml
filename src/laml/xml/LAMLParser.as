@@ -66,7 +66,7 @@ package laml.xml {
 			}
 			parseAttributes(node, instance, root);
 			instance = parseChildren(node.children(), instance, root);
-			parseComponent(instance as Layoutable, parent as Layoutable, root);
+			parseComponent(node, instance as Layoutable, parent as Layoutable, root);
 			return instance;
 		}
 		
@@ -82,7 +82,7 @@ package laml.xml {
 				instance[attributeName] = parseAttributeValue(attributeName, attributes[i].valueOf(), instance, root);
 			}
 		}
-		
+
 		protected function parseAttributeValue(name:String, value:*, instance:Object, root:Object=null):* {
 			if(name == 'width' || name == 'height') {
 				return parseWidthOrHeightAttribute(name, value, instance);
@@ -146,8 +146,10 @@ package laml.xml {
 			return instance;
 		}
 		
-		protected function parseComponent(instance:Layoutable, parent:Layoutable, root:Object=null):void {
+		protected function parseComponent(node:XML, instance:Layoutable, parent:Layoutable, root:Object=null):void {
 			if(parent && instance) {
+				// Set up width and height only after children have been added.
+				// This will ensure that we won't have invalid values...
 				if(parent.id == instance.id) {
 					throw new IllegalOperationError("Duplicate id encountered with: " + instance.id + " at: " + parent);
 				}
