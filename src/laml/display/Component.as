@@ -266,6 +266,14 @@ package laml.display {
 			return model.name || id;
 		}
 		
+		public function set data(data:*):void {
+			model.data = data;
+		}
+		
+		public function get data():* {
+			return model.data;
+		}
+		
 		public function set css(css:String):void {
 			model.css = css;
 		}
