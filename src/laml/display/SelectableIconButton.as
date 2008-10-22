@@ -132,7 +132,6 @@ package laml.display {
 			label.selectable = newValue;
 		}
 		
-		
 		public function set embedFonts(embedFonts:Boolean):void {
 			model.embedFonts = embedFonts;
 		}
