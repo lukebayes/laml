@@ -11,7 +11,7 @@ package laml.display {
 	public class IconButton extends Button {
 		private var classId:String = generateId();
 		private var ICON:String = classId + "_icon_button_icon";
-		private var LABEL:String = classId + "_icon_button_label";		
+		private var LABEL:String = classId + "_icon_button_label";
 		private var ICON_CONTAINER:String = classId + "_icon_container";
 		
 		private var iconComponent:Image;
@@ -64,11 +64,12 @@ package laml.display {
 			}
 			else {
 				iconComponent.visible = true;
-				iconComponent.x = iconContainer.paddingLeft;			
+				iconComponent.x = iconContainer.paddingLeft;
 				iconComponent.y = (h - iconComponent.height) / 2;
 
 				var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
 				label.x = labelOffset;
+				label.y = (h - label.height)/2 - 2;
 				label.width = w - labelOffset;
 			}
 		}
@@ -143,7 +144,7 @@ package laml.display {
 		}			
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">			
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">
 							<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
