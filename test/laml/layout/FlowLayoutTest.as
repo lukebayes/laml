@@ -169,7 +169,6 @@ package laml.layout {
 			child = box.getChildAt(2);
 			assertRectangle(child, 5, 165, 200, 105);
 
-			trace("-------------");
 			// Change the size of a child
 			child.width = 300;
 			child.height = 200;
@@ -205,7 +204,6 @@ package laml.layout {
 			child = box.getChildAt(2);
 			assertRectangle(child, 5, 165, 200, 25);
 		}
-
 
 		public function testNestedChildrenCallCount():void {
 			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" y="10" padding="5" backgroundColor="#FFCC00">
