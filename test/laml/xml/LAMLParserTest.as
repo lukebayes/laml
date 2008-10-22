@@ -79,6 +79,17 @@ package laml.xml {
 			assertFalse(result.fakeBoolean);
 		}
 		
+		public function testPreferredWidth():void {
+			var xml:XML = <Component width="~100" height="~200" xmlns="laml.display" />;
+			var result:Layoutable = parser.parseLayoutable(xml);
+			result.render();
+			
+			assertEquals(100, result.preferredWidth);
+			assertEquals(100, result.width);
+			assertEquals(200, result.preferredHeight);
+			assertEquals(200, result.height);
+		}
+
 		public function testAttributeNumber():void {
 			var xml:XML = <Component width="100" xmlns="laml.display" />;
 			var result:Layoutable = parser.parseLayoutable(xml);

@@ -4,6 +4,7 @@ package {
 	import laml.display.Component;
 	import laml.display.HBox;
 	import laml.display.VBox;
+	import laml.xml.LAMLParserTest;
 	
 	public class LAMLRunner extends TestRunner {
 		

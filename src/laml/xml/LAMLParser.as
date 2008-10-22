@@ -12,9 +12,11 @@ package laml.xml {
 		public static const TEXT:String 					= "text";
 		
 		private var skin:ISkin;
+		private var capitalized:Object;
 		
 		public function parse(xml:XML, skin:ISkin=null):Object {
 			this.skin = skin;
+			capitalized = {};
 
 			var result:Object = parseNode(xml, null, null);
 			//parsePendingAttributes(result);
@@ -111,9 +113,16 @@ package laml.xml {
 		}
 		
 		protected function parseWidthOrHeightAttribute(name:String, value:*, instance:Object):Number {
+			var key:String;
 			if(value.match(/\%$/)) {
 				value = Number(value.split('%').join('')) * 0.01;
-				var key:String = 'percent' + capitalize(name);
+				key = 'percent' + capitalize(name);
+				instance[key] = value;
+				return NaN;
+			}
+			else if(value.match(/^\~/)) {
+				value = Number(value.split('~').join(''));
+				key = 'preferred' + capitalize(name);
 				instance[key] = value;
 				return NaN;
 			}
@@ -123,8 +132,11 @@ package laml.xml {
 		}
 		
 		protected function capitalize(name:String):String {
+			if(capitalized[name]) {
+				return capitalized[name];
+			}
 			var letter:String = name.substr(0, 1);
-			return letter.toUpperCase() + name.substr(1);
+			return capitalized[name] = letter.toUpperCase() + name.substr(1);
 		}
 		
 		protected function parseHexString(str:String):uint {
