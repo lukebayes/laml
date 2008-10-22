@@ -148,5 +148,6 @@ package laml.display {
 		function set parent(parent:Layoutable):void;
 		function get parent():Layoutable;
 		function get path():String;
+		function get root():Layoutable;
 	}
 }

@@ -3,14 +3,15 @@ package {
 	
 	import laml.display.Component;
 	import laml.display.HBox;
+	import laml.display.Label;
 	import laml.display.VBox;
-	import laml.xml.LAMLParserTest;
 	
 	public class LAMLRunner extends TestRunner {
 		
 		private var hboxRef:HBox;
 		private var vboxRef:VBox;
-		private var component:Component;
+		private var componentRef:Component;
+		private var labelRef:Label;
 		
 		public function LAMLRunner() {
 			// start(clazz:Class, methodName:String, showTrace:Boolean)

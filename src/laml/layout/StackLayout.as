@@ -10,7 +10,7 @@ package laml.layout {
 			if(component.numChildren == 0) {
 				return;
 			}
-			
+
 			this.component = component;
 
 			var horizontalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.HORIZONTAL);

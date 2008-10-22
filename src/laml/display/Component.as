@@ -159,6 +159,11 @@ package laml.display {
 		}
 		
 		public function invalidateDisplayList():void {
+			// invalidate root too!
+			if(root !== this) {
+				root.invalidateDisplayList();
+			}
+			// invalidate this control's model
 			model.invalidateDisplayList();
 		}
 		
@@ -258,7 +263,7 @@ package laml.display {
 		}
 		
 		public function get name():String {
-			return model.name ||= id;
+			return model.name || id;
 		}
 		
 		public function set css(css:String):void {
@@ -427,7 +432,9 @@ package laml.display {
 		}
 		
 		public function set width(width:Number):void {
-			model.width = actualWidth = width;
+			if(model.width != width) {
+				model.width = actualWidth = width;
+			}
 		}
 		
 		public function get width():Number {
@@ -438,7 +445,9 @@ package laml.display {
 		}
 		
 		public function set height(height:Number):void {
-			model.height = actualHeight = height;
+			if(model.height != height) {
+				model.height = actualHeight = height;
+			}
 		}
 		
 		public function get height():Number {
@@ -772,6 +781,13 @@ package laml.display {
 		
 		public function set parent(parent:Layoutable):void {
 			_parent = parent;
+		}
+		
+		public function get root():Layoutable {
+			if(parent) {
+				return parent.root;
+			}
+			return this;
 		}
 		
 		public function get parent():Layoutable {

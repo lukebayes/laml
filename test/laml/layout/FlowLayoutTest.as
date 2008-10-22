@@ -168,7 +168,9 @@ package laml.layout {
 			assertRectangle(child, 5, 85, 120, 80);
 			child = box.getChildAt(2);
 			assertRectangle(child, 5, 165, 200, 105);
-			
+
+			trace("-------------");
+			// Change the size of a child
 			child.width = 300;
 			child.height = 200;
 			box.render();

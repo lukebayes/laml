@@ -208,6 +208,18 @@ package laml.xml {
 			assertTrue(child3.getTextFormat().size, child3.getTextFormat().size == styleSheet.getStyle("child3").fontSize);
 		}
 		
+		public function testSimpleEvaluation():void {
+			var context:Object = {
+				contextName: 'customName'
+			}
+			
+			var xml:XML = new XML('<Component id="foo" xmlns="laml.display" name="{contextName}" />');
+			var result:Layoutable = parser.parseLayoutable(xml, context);
+			
+			assertEquals('Id should be accepted', 'foo', result.id);
+			assertEquals('Name should have been evaluated', 'customName', result.name);
+		}
+		
 		/*
 		public function testNestedChildrenWithDuplicateIds():void {
 			var xml:XML = <Component xmlns="laml.display">

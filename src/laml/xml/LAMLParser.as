@@ -11,11 +11,27 @@ package laml.xml {
 		public static const PROCESSING_INSTRUCTION:String 	= "processing-instruction";
 		public static const TEXT:String 					= "text";
 		
-		private var skin:ISkin;
 		private var capitalized:Object;
+		private var context:Object;
+		private var skin:ISkin;
 		
-		public function parse(xml:XML, skin:ISkin=null):Object {
-			this.skin = skin;
+		// TODO: Maybe skin can be pulled out to become a parameter
+		// of context?
+		// Left it in for now to support two optional arguments - if there is 
+		// only one extra argument, we check to see if it's an ISkin and otherwise
+		// assume it's a context.
+		public function parse(xml:XML, skinOrContext:Object=null, context:Object=null):Object {
+			this.context = context;
+
+			if(skinOrContext) {
+				if(skinOrContext is ISkin) {
+					this.skin = skinOrContext as ISkin;
+				}
+				else if(!context && !this.context) {
+					this.context = skinOrContext;
+				}
+			}
+				
 			capitalized = {};
 
 			var result:Object = parseNode(xml, null, null);
@@ -27,8 +43,8 @@ package laml.xml {
 			return result;
 		}
 		
-		public function parseLayoutable(xml:XML, skin:ISkin=null):Layoutable {
-			return parse(xml, skin) as Layoutable;
+		public function parseLayoutable(xml:XML, skinOrContext:*=null):Layoutable {
+			return parse(xml, skinOrContext) as Layoutable;
 		}
 		
 		protected function parseNode(xml:XML, parent:Object=null, root:Object=null):Object {
@@ -84,8 +100,34 @@ package laml.xml {
 				instance[attributeName] = parseAttributeValue(attributeName, attributes[i].valueOf(), instance, root);
 			}
 		}
+		
+		private function renderAttributeExpression(name:String, value:String, instance:Object):Object {
+			try {
+				trace("render attr:", name);
+				var parts:Array = value.split('.');
+				var tmp:Object = this.context;
+				while(parts.length > 0) {
+					tmp = tmp[parts.shift()];
+				}
+				return tmp;
+			}
+			catch(e:Error) {
+				trace(name, "failed to render attribute expression for", name, "with", value);
+			}
+			return null;
+		}
 
 		protected function parseAttributeValue(name:String, value:*, instance:Object, root:Object=null):* {
+
+			// Look for expression values, and evaluate them:
+			if(value) {
+				var expr:RegExp = new RegExp(/^\{(.*)\}$/);
+				var result:Object = expr.exec(value)
+				if(result) {
+					value = renderAttributeExpression(name, result[1], instance);;
+				}
+			}
+			
 			if(name == 'width' || name == 'height') {
 				return parseWidthOrHeightAttribute(name, value, instance);
 			}
