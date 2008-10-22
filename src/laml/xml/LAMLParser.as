@@ -101,9 +101,10 @@ package laml.xml {
 			}
 		}
 		
+		// TODO: This should actually be done as a second/final pass - after all nodes have been otherwise resolved.
+		// currently, the text node ordering will prevent references to nodes that appear later in the document.
 		private function renderAttributeExpression(name:String, value:String, instance:Object):Object {
 			try {
-				trace("render attr:", name);
 				var parts:Array = value.split('.');
 				var tmp:Object = this.context;
 				while(parts.length > 0) {
