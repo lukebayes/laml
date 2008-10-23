@@ -3,7 +3,9 @@ package {
 	
 	import laml.display.Component;
 	import laml.display.HBox;
+	import laml.display.IconButton;
 	import laml.display.Label;
+	import laml.display.Row;
 	import laml.display.VBox;
 	
 	public class LAMLRunner extends TestRunner {
@@ -11,7 +13,9 @@ package {
 		private var hboxRef:HBox;
 		private var vboxRef:VBox;
 		private var componentRef:Component;
+		private var iconButtonRef:IconButton;
 		private var labelRef:Label;
+		private var rowRef:Row;
 		
 		public function LAMLRunner() {
 			// start(clazz:Class, methodName:String, showTrace:Boolean)
