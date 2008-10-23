@@ -49,6 +49,7 @@ package laml.xml {
 			assertTrue("result is a Component", result is Layoutable);
 		}
 
+/*
 		public function testStringNode():void {
 			var xml:XML = <String>Luke</String>
 			var result:Object = parser.parse(xml);
@@ -60,6 +61,7 @@ package laml.xml {
 			var result:Object = parser.parse(xml);
 			assertEquals(10, result);
 		}
+*/
 		
 		public function testBooleanTrueAttribute():void {
 			var xml:XML = <ComponentStub fakeBoolean="true" xmlns="fixtures" />;

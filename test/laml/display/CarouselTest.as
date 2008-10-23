@@ -3,6 +3,7 @@ package laml.display {
 	import laml.LAMLTestCase;
 	import laml.collections.ISelectableList;
 	import laml.collections.SelectableList;
+	import laml.tween.TweenLiteAdapter;
 
 	public class CarouselTest extends LAMLTestCase {
 		private var carousel:Carousel;
@@ -48,6 +49,7 @@ package laml.display {
 			collection.addItem(getDataProviderItem('six'));
 	
 			carousel.dataProvider = collection;
+			carousel.tweenAdapter = new TweenLiteAdapter();
 		}
 	}
 }

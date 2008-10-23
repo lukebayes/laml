@@ -384,7 +384,6 @@ package laml.display {
 		
 		protected function validateMask(newValue:*, oldValue:*):void {
 			if(newValue) {
-				trace(">> updating mask with: " + viewPath(), "and", viewPath(newValue.view));
 				view.mask = newValue.view;
 			}
 			else if(oldValue) {

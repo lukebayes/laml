@@ -80,7 +80,7 @@ package laml.display {
 			});
 			newItem.addEventListener(PayloadEvent.SELECTION_CHANGED, selectionChangedHandler);
 			
-			if(newItem.selectedIndex == -1) {
+			if(newItem.selectedIndex == -1 && newItem.length > 0) {
 				newItem.selectedIndex = 0;
 			}
 				
@@ -129,7 +129,7 @@ package laml.display {
 			leftButton.enabled = leftButtonIsEnabled();
 			rightButton.enabled = rightButtonIsEnabled();
 			
-			contentContainer.x = getContainerPosition();
+			contentContainer.animate({x:getContainerPosition()}, 300, null);
 		}
 		
 		private function leftButtonIsEnabled():Boolean {
@@ -170,6 +170,7 @@ package laml.display {
 
 			if(!contentContainer.mask) {
 				contentContainer.mask = contentMask;
+				contentContainer.view.cacheAsBitmap = true;
 			}
 
 			contentContainer.x = getContainerPosition();
