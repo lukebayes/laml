@@ -218,6 +218,7 @@ package laml.display {
 				backgroundImage.alpha = backgroundAlpha;
 				backgroundImage.width = w;
 				backgroundImage.height = h;
+				backgroundImage.cacheAsBitmap = true;
 			}
 		}
 
