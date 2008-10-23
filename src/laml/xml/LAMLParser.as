@@ -20,7 +20,8 @@ package laml.xml {
 		// Left it in for now to support two optional arguments - if there is 
 		// only one extra argument, we check to see if it's an ISkin and otherwise
 		// assume it's a context.
-		public function parse(xml:XML, skinOrContext:Object=null, context:Object=null):Object {
+		public function parse(xml:XML, skinOrContext:Object=null, context:Object=null):* {
+			xml = prepareXml(xml);
 			this.context = context;
 
 			if(skinOrContext) {
@@ -47,6 +48,22 @@ package laml.xml {
 			return parse(xml, skinOrContext) as Layoutable;
 		}
 		
+		private function prepareXml(xml:XML):XML {
+			var declarations:Array = xml.inScopeNamespaces();
+			var lamlNamespace:Namespace = new Namespace('laml.display');
+			var hasDefault:Boolean;
+			
+			declarations.forEach(function(ns:Namespace, index:int, items:Array):void {
+				if(ns.prefix == null) {
+					hasDefault = true;
+				}
+			})
+			if(!hasDefault) {
+				xml.setNamespace(lamlNamespace);
+			}
+			return xml;
+		}
+				
 		protected function parseNode(xml:XML, parent:Object=null, root:Object=null):Object {
 			root = (root == null) ? parent : root;
 			preVisitNode(xml, parent, root);
