@@ -338,6 +338,7 @@ package laml.display {
 			
 			var hideHandler:Function = function():void {
 				assertTrue(stub.visible);
+				removeChild(stub.view);
 			};
 			
 			addChild(stub.view);
@@ -353,6 +354,7 @@ package laml.display {
 			
 			var hideHandler:Function = function():void {
 				assertFalse(stub.visible);
+				removeChild(stub.view);
 			};
 			
 			addChild(stub.view);
@@ -368,6 +370,7 @@ package laml.display {
 			
 			var hideHandler:Function = function():void {
 				assertFalse(stub.visible);
+				removeChild(stub.view);
 			};
 			
 			addChild(stub.view);
@@ -375,7 +378,7 @@ package laml.display {
 		}
 
 		protected function createStub(width:Number=250, height:Number=120, backgroundColor:Number=0xFFCC00):Layoutable {
-			var stub:Layoutable = new ComponentStub();
+			var stub:ComponentStub = component as ComponentStub;
 			stub.width = width;
 			stub.height = height;
 			stub.backgroundColor = backgroundColor;

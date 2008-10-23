@@ -54,12 +54,17 @@ package laml.xml {
 			var hasDefault:Boolean;
 			
 			declarations.forEach(function(ns:Namespace, index:int, items:Array):void {
-				if(ns.prefix == null) {
+				if(ns.prefix == "" && ns.uri != "") {
 					hasDefault = true;
 				}
 			})
 			if(!hasDefault) {
-				xml.setNamespace(lamlNamespace);
+				if(xml.namespace().prefix == "") {
+					xml.setNamespace(lamlNamespace);
+				}
+				else {
+					xml.addNamespace(lamlNamespace);
+				}
 			}
 			return xml;
 		}
@@ -94,7 +99,13 @@ package laml.xml {
 		}
 		
 		protected function visitDefault(node:XML, parent:Object=null, root:Object=null):Object {
-			var dynamicConstructor:Object = getDefinitionByName(node.name());
+			var dynamicConstructor:Object;
+			try {
+				dynamicConstructor = getDefinitionByName(node.name());
+			}
+			catch(e:ReferenceError) {
+				throw new ReferenceError("ReferenceError: Error #1065: Variable " + node.name() + " is not defined.");
+			}
 			var instance:Object = new dynamicConstructor();
 			if(root == null) {
 				root = instance;
