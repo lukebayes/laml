@@ -8,7 +8,9 @@ package laml.tween {
 			for(var key:String in params) {
 				component[key] = params[key];
 			}
-			callback();
+			if(callback is Function) {
+				callback();
+			}
 		}
 	}
 }
