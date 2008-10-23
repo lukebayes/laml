@@ -9,14 +9,14 @@ package laml.display {
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-	import flash.utils.clearInterval;
 	import flash.utils.getQualifiedClassName;
-	import flash.utils.setInterval;
 	
 	import laml.collections.SelectableList;
 	import laml.events.PayloadEvent;
 	import laml.layout.ILayout;
 	import laml.layout.StackLayout;
+	import laml.tween.DefaultTweenAdapter;
+	import laml.tween.ITweenAdapter;
 	
 	/**
 	 * Component is the primary base class for the visual composite structure.
@@ -69,7 +69,6 @@ package laml.display {
 		
 		private var childrenHash:Dictionary;
 		private var childrenCreated:Boolean;
-		private var showHideInterval:Number;
 
 		protected var children:SelectableList;
 		
@@ -911,58 +910,39 @@ package laml.display {
 			return model.skin;
 		}
 		
-		// TODO: This throws an exception with 200 milliseconds
-		// TODO: This doesn't respect previously-set alphas.
-		public function show(milliseconds:Number = 0):void {
+		public function set tweenAdapter(tweenAdapter:ITweenAdapter):void {
+			model.tweenAdapter = tweenAdapter;
+		}
+		
+		public function get tweenAdapter():ITweenAdapter {
+			if(model.tweenAdapter) {
+				return model.tweenAdapter;
+			}
+			else if(parent) {
+				return parent.tweenAdapter;
+			} 
+			else {
+				return new DefaultTweenAdapter();
+			}
+		}
+		
+		public function animate(params:Object, milliseconds:Number=0, easing:String=null, callback:Function=null):void {
+			tweenAdapter.animate(this, params, milliseconds, easing, callback);
+		}
+		
+		public function show(milliseconds:Number=0, callback:Function=null):void {
 			visible = true;
-			this.view.alpha = 1;
-			if(milliseconds != 0) {
-				clearInterval(showHideInterval);
-				var interval:Number = milliseconds * this.view.alpha * .01;
-				interval = Math.max(1, interval);
-				showHideInterval = setInterval(showInterval, interval);
-			}
+			animate({alpha:1}, milliseconds, null, callback);
 		}
 		
-		protected function showInterval():void {
-			var alpha:Number = this.view.alpha;
-			if(alpha < 100) {
-				this.view.alpha += .01; 
-			}
-			else {
-				clearInterval(showHideInterval);
-				showCompleteHandler();
-			}
-		}
-		
-		protected function showCompleteHandler():void {
-		}
-		
-		public function hide(milliseconds:Number = 0):void {
-			if(milliseconds == 0) {
+		public function hide(milliseconds:Number=0, callback:Function=null):void {
+			var wrappedCallback:Function = function(...params):void {
 				visible = false;
-			}
-			else {
-				clearInterval(showHideInterval);
-				var interval:Number = milliseconds * this.view.alpha * .01;
-				interval = Math.max(1, interval);
-				showHideInterval = setInterval(hideInterval, interval);
-			}
-		}
-		
-		protected function hideInterval():void {
-			var alpha:Number = this.view.alpha;
-			if(alpha > 0) {
-				this.view.alpha -= .01; 
-			}
-			else {
-				clearInterval(showHideInterval);			
-				hideCompleteHandler();
-			}
-		}
-		
-		protected function hideCompleteHandler():void {
-			visible = false;
+				if(callback is Function) {
+					callback.apply(null, params);
+				}
+			};		
+			animate({alpha:0}, milliseconds, null, wrappedCallback);
 		}
 		
 		public function toggle():void {

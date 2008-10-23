@@ -6,6 +6,7 @@ package laml.display {
 	import flash.text.TextFormat;
 	
 	import laml.layout.ILayout;
+	import laml.tween.ITweenAdapter;
 
 	public interface Layoutable extends IEventDispatcher {
 		
@@ -139,14 +140,20 @@ package laml.display {
 		function set mouseEnabled(mouseEnabled:Boolean):void;
 		function get mouseEnabled():Boolean;
 
-		function hide(milliseconds:Number = 0):void;
-		function show(milliseconds:Number = 0):void;
-		function toggle():void;
 
 		function getBitmapByName(name:String):DisplayObject;
 		function getTextFormat():TextFormat;
 		function buildStyleSheet(sheet:StyleSheet=null):StyleSheet;
 		
+		/* Tweening */
+		function set tweenAdapter(tweenAdapter:ITweenAdapter):void;
+		function get tweenAdapter():ITweenAdapter;
+
+		function animate(params:Object, milliseconds:Number=0, easing:String=null, callback:Function=null):void;
+		function hide(milliseconds:Number=0, callback:Function=null):void;
+		function show(milliseconds:Number=0, callback:Function=null):void;
+		function toggle():void;
+
 		/* Composable */
 		function get numChildren():int;
 		function set parent(parent:Layoutable):void;
