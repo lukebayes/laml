@@ -5,6 +5,7 @@ package laml.display {
 	    private var bgColor:uint;
 	    private var radius:uint;
 	    private var corners:String;
+		private var bgAlpha:Number;
 	    
 	    public static var ALL:String = "ALL";
 	    public static var TOP:String = "TOP";
@@ -12,15 +13,16 @@ package laml.display {
 	    public static var BOTTOM:String = "BOTTOM";
 	    public static var LEFT:String = "LEFT";
 
-		public function BasicBackground(bgColor:uint, radius:uint=0, corners:String="ALL") {
+		public function BasicBackground(bgColor:uint, radius:uint=0, corners:String="ALL", bgAlpha:Number=1.0) {
 			this.bgColor = bgColor;
 			this.radius = radius;
 			this.corners = corners;
+			this.bgAlpha = bgAlpha;
 		}
 		
 		public function draw(w:Number, h:Number):void {
 			graphics.clear();
-			graphics.beginFill(bgColor);
+			graphics.beginFill(bgColor, bgAlpha);
 			if(radius > 0) {
 				if(corners == ALL) {
 					graphics.drawRoundRect(0, 0, w, h, radius);

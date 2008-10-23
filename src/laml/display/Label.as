@@ -4,6 +4,8 @@ package laml.display{
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	
 	public class Label extends Component {
 		private var _textView:TextField;
@@ -103,7 +105,6 @@ package laml.display{
 			}
 		}		
 		
-		
 //		public function set selectionColor(color:Number):void {
 //			model.selectionColor = color;
 //		}
@@ -126,6 +127,12 @@ package laml.display{
 		
 		protected function validateEmbedFonts(newValue:*, oldValue:*):void {
 			textView.embedFonts = newValue;
+			
+			if (textView.embedFonts) {
+				textView.antiAliasType = AntiAliasType.ADVANCED;
+				textView.gridFitType = GridFitType.PIXEL;
+				textView.sharpness = 200;
+			}
 		}
 		
 		public function set border(border:Boolean):void {
