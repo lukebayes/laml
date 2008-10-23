@@ -8,6 +8,7 @@ package laml.events {
 		public static const ERROR:String 				= 'error';
 		public static const LOADING_COMPLETED:String 	= 'loadingCompleted';
 		public static const REMOVED:String 				= 'removed';
+		public static const SELECTION_CHANGED:String	= 'selectionChanged';
 		
 		public var payload:Object;
 
