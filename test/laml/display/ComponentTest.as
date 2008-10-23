@@ -1,12 +1,12 @@
 package laml.display {
-	import asunit.framework.TestCase;
-	
 	import fixtures.ComponentFake;
 	import fixtures.ComponentStub;
 	
+	import laml.LAMLTestCase;
 	import laml.events.PayloadEvent;
+	import laml.tween.TweenLiteAdapter;
 
-	public class ComponentTest extends TestCase {
+	public class ComponentTest extends LAMLTestCase {
 		private var component:Layoutable;
 
 		public function ComponentTest(methodName:String=null) {
@@ -326,6 +326,61 @@ package laml.display {
 			assertEquals('foo', stub.someProperty);
 			assertTrue('a', stub.somePropertyValidated);
 			//assertFalse('stub.otherProperty should not validate!', stub.otherPropertyValidated);
+		}
+		
+		public function testShow():void {
+			var stub:Layoutable = createStub();
+			stub.x = 40;
+			stub.y = 40;
+			stub.hide();
+			
+			stub.show(900, addAsync(hideHandler));
+			
+			var hideHandler:Function = function():void {
+				assertTrue(stub.visible);
+			};
+			
+			addChild(stub.view);
+			stub.render();
+		}
+		
+		public function testHide():void {
+			var stub:Layoutable = createStub();
+			stub.x = 40;
+			stub.y = 40;
+			
+			stub.hide(900, addAsync(hideHandler));
+			
+			var hideHandler:Function = function():void {
+				assertFalse(stub.visible);
+			};
+			
+			addChild(stub.view);
+			stub.render();
+		}
+		
+		public function testAnimate():void {
+			var stub:Layoutable = createStub();
+			stub.x = 40;
+			stub.y = 40;
+			
+			stub.animate({x:240}, 900, null, addAsync(hideHandler));
+			
+			var hideHandler:Function = function():void {
+				assertFalse(stub.visible);
+			};
+			
+			addChild(stub.view);
+			stub.render();
+		}
+
+		protected function createStub(width:Number=250, height:Number=120, backgroundColor:Number=0xFFCC00):Layoutable {
+			var stub:Layoutable = new ComponentStub();
+			stub.width = width;
+			stub.height = height;
+			stub.backgroundColor = backgroundColor;
+			stub.tweenAdapter = new TweenLiteAdapter();
+			return stub;
 		}
 	}
 }

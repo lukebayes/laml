@@ -142,7 +142,7 @@ package laml.xml {
 				var expr:RegExp = new RegExp(/^\{(.*)\}$/);
 				var result:Object = expr.exec(value)
 				if(result) {
-					value = renderAttributeExpression(name, result[1], instance);;
+					value = renderAttributeExpression(name, result[1], instance);
 				}
 			}
 			
