@@ -82,6 +82,7 @@ package laml.display {
 			model = new DynamicModel(this);
 			model.validate_mouseChildren = validateMouseChildren;
 			model.validate_mouseEnabled = validateMouseEnabled;
+			model.validate_mask = validateMask;
 
 			children = new SelectableList();
 			childrenHash = new Dictionary();
@@ -367,12 +368,40 @@ package laml.display {
 			return model.visible;
 		}
 		
+		public function set mask(mask:Layoutable):void {
+			model.mask = mask;	
+		}
+		
+		public function get mask():Layoutable {
+			return model.mask;
+		}
+		
 		public function set mouseChildren(mouseChildren:Boolean):void {
 			model.mouseChildren = mouseChildren;
 		}
 		
 		public function get mouseChildren():Boolean {
 			return model.mouseChildren;
+		}
+		
+		protected function validateMask(newValue:*, oldValue:*):void {
+			if(newValue) {
+				trace(">> updating mask with: " + viewPath(), "and", viewPath(newValue.view));
+				view.mask = newValue.view;
+			}
+			else if(oldValue) {
+				view.mask = null;
+			}
+		}
+		
+		private function viewPath(v:DisplayObject=null):String {
+			v = (v) ? v : view;
+			var path:String = v.name;
+			while(v && v.parent) {
+				path = v.parent.name + '/' + path;
+				v = v.parent;
+			}
+			return '/' + path;
 		}
 		
 		protected function validateMouseChildren(newValue:*, oldValue:*):void {
@@ -579,7 +608,9 @@ package laml.display {
 		protected function get inferredMinWidth():Number {
 			var result:Number = 0;
 			children.forEach(function(child:Layoutable, index:int, items:Array):void {
-				result = Math.max(result, child.minWidth);
+				if(!child.excludeFromLayout) {
+					result = Math.max(result, child.minWidth);
+				}
 			});
 			return result + horizontalPadding;
 		}
@@ -598,7 +629,9 @@ package laml.display {
 		protected function get inferredMinHeight():Number {
 			var result:Number = 0;
 			children.forEach(function(child:Layoutable, index:int, items:Array):void {
-				result = Math.max(result, child.minHeight);
+				if(!child.excludeFromLayout) {
+					result = Math.max(result, child.minHeight);
+				}
 			});
 			return result + verticalPadding;
 		}
@@ -789,7 +822,23 @@ package laml.display {
 			}
 			return null;
 		}
+
+		public function every(callback:Function, thisObject:* = null):Boolean {
+			return children.every(callback, thisObject);
+		}
 		
+		public function filter(callback:Function, thisObject:* = null):Array {
+			return children.filter(callback, thisObject);
+		}
+		
+		public function forEach(callback:Function, thisObject:* = null):void {
+			children.forEach(callback, thisObject);
+		}
+		
+		public function map(callback:Function, thisObject:* = null):Array {
+			return children.map(callback, thisObject);
+		}
+				
 		public function get numChildren():int {
 			return children.length;
 		}
