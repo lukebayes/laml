@@ -220,6 +220,26 @@ package laml.xml {
 			assertEquals('Name should have been evaluated', 'customName', result.name);
 		}
 		
+		public function testMissingNamespace():void {
+			var result:Layoutable;
+			var node:XML;
+			node = <Component id="one" />;
+			result = parser.parse(node);
+			assertNotNull('one', result);
+
+			node = <Component id="two" xmlns="laml.display" />;
+			result = parser.parse(node);
+			assertNotNull('two', result);
+
+			node = <Component id="three" xmlns:ep="foo.ep" />;
+			result = parser.parse(node);
+			assertNotNull('three', result);
+
+			node = <Component id="four" xmlns="laml.display" xmlns:ep="foo.ep" />;
+			result = parser.parse(node);
+			assertNotNull('four', result);
+
+		}
 		/*
 		public function testNestedChildrenWithDuplicateIds():void {
 			var xml:XML = <Component xmlns="laml.display">
