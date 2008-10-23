@@ -112,6 +112,8 @@ package laml.display {
 		function set skin(skin:ISkin):void;
 		function get skin():ISkin;
 
+		// TODO: Should this change to 'styles' and get handled
+		// in the parser?
 		function set styleNames(names:String):void;
 		function get styleNames():String;
 
@@ -126,8 +128,12 @@ package laml.display {
 		function invalidateProperties():void;
 		function validateDisplayList():void;
 		function validateProperties():void;
-		function render():void;		
+		function render():void;
 
+		function set enabled(enabled:Boolean):void;
+		function get enabled():Boolean;
+		function set mask(mask:Layoutable):void;
+		function get mask():Layoutable;
 		function set mouseChildren(mouseChildren:Boolean):void;
 		function get mouseChildren():Boolean;
 		function set mouseEnabled(mouseEnabled:Boolean):void;
@@ -142,14 +148,19 @@ package laml.display {
 		function buildStyleSheet(sheet:StyleSheet=null):StyleSheet;
 		
 		/* Composable */
-		function addChild(child:Layoutable):void;
-		function getChildAt(index:int):Layoutable;
-		function getChildById(id:String):Layoutable;
-		function removeChild(child:Layoutable):void;
 		function get numChildren():int;
 		function set parent(parent:Layoutable):void;
 		function get parent():Layoutable;
 		function get path():String;
 		function get root():Layoutable;
+		
+		function addChild(child:Layoutable):void;
+		function getChildAt(index:int):Layoutable;
+		function getChildById(id:String):Layoutable;
+		function removeChild(child:Layoutable):void;
+		function every(callback:Function, thisObject:* = null):Boolean;
+		function filter(callback:Function, thisObject:* = null):Array;
+		function forEach(callback:Function, thisObject:* = null):void;
+		function map(callback:Function, thisObject:* = null):Array;
 	}
 }
