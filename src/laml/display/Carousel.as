@@ -27,7 +27,7 @@ package laml.display {
 			dataProvider = new SelectableList();
 			horizontalGutter = DEFAULT_HORIZONTAL_GUTTER;
 			padding = DEFAULT_PADDING;
-			defaultItemRenderer = '<IconButton backgroundColor="#ffcc00" height="100%" text="{name}" />';
+			defaultItemRenderer = '<IconButton backgroundColor="#ffcc00" height="100%" text="{title}" />';
 			model.validate_dataProvider = validateDataProvider;
 		}
 		
@@ -55,21 +55,18 @@ package laml.display {
 			return model.itemRenderer || defaultItemRenderer;
 		}
 		
-		public function set dataProvider(dataProvider:ISelectableList):void {
+		override public function set dataProvider(dataProvider:ISelectableList):void {
 			if(dataProvider == null) {
 				dataProvider = new SelectableList();
 			}
-			model.dataProvider = dataProvider;
-		}
-		
-		public function get dataProvider():ISelectableList {
-			return model.dataProvider;
+			super.dataProvider = dataProvider;
 		}
 		
 		protected function validateDataProvider(newItem:ISelectableList, oldItem:ISelectableList):void {
 			if(oldItem) {
 				// clear all old views...
 				oldItem.removeEventListener(PayloadEvent.SELECTION_CHANGED, selectionChangedHandler);
+				contentContainer.removeAllChildren();
 			}
 			
 			// newItem is never null - check setter
@@ -108,6 +105,8 @@ package laml.display {
 		protected function configureChildren():void {
 			contentMask = getChildById(CONTENT_MASK);
 			contentContainer = getChildById(CONTENT_CONTAINER);
+			trace(">> CONFIGUR CHILDREN");
+			contentContainer.mask = contentMask;
 			
 			leftButton.addEventListener(MouseEvent.CLICK, leftButtonClickHandler);
 			rightButton.addEventListener(MouseEvent.CLICK, rightButtonClickHandler);
@@ -168,14 +167,12 @@ package laml.display {
 				child.height = h - (verticalPadding * 3);
 			});
 
-			if(!contentContainer.mask) {
-				contentContainer.mask = contentMask;
-				contentContainer.view.cacheAsBitmap = true;
-			}
-
 			contentContainer.x = getContainerPosition();
 			contentContainer.invalidateDisplayList();
 			contentContainer.render();
+
+			contentContainer.mask = contentMask;
+			contentContainer.view.cacheAsBitmap = true;
 		}
 		
 		private function getItemSize(w:Number):Number {
@@ -185,7 +182,7 @@ package laml.display {
 		}
 		
 		protected function get configXml():XML {
-			var xml:XML = <HBox width="100%" height="100%" horizontalGutter={horizontalGutter} padding="5" backgroundColor="#cccccc" xmlns="laml.display">
+			var xml:XML = <HBox width="100%" height="100%" horizontalGutter={horizontalGutter} padding={padding} xmlns="laml.display">
 							<Button id={LEFT_BUTTON} width="30" height="100" backgroundColor="#ff0000" />
 							<Component width="100%" height="100%">
 								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" backgroundColor="#ff0000" horizontalGutter={horizontalGutter} padding={padding} />

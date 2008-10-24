@@ -6,7 +6,12 @@ package laml.tween {
 
 		public function animate(component:Layoutable, params:Object, milliseconds:Number=0, easing:String=null, callback:Function=null):void {
 			for(var key:String in params) {
-				component[key] = params[key];
+				if(Object(component).hasOwnProperty('key')) {
+					component[key] = params[key];
+				}
+				else {
+					component.view[key] = params[key];
+				}
 			}
 			if(callback is Function) {
 				callback();

@@ -11,6 +11,7 @@ package laml.display {
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
+	import laml.collections.ISelectableList;
 	import laml.collections.SelectableList;
 	import laml.events.PayloadEvent;
 	import laml.layout.ILayout;
@@ -270,6 +271,14 @@ package laml.display {
 		
 		public function get name():String {
 			return model.name || id;
+		}
+
+		public function set dataProvider(dataProvider:ISelectableList):void {
+			model.dataProvider = dataProvider;
+		}
+		
+		public function get dataProvider():ISelectableList {
+			return model.dataProvider;
 		}
 		
 		public function set data(data:*):void {
@@ -787,6 +796,13 @@ package laml.display {
 			child.parent = this;
 			dispatchPayloadEvent(PayloadEvent.ADDED, child);
 			invalidateProperties();
+		}
+		
+		public function removeAllChildren():void {
+			while(numChildren > 0) {
+				// TODO: implement removeChildAt();
+				removeChild(getChildAt(0));
+			}
 		}
 		
 		public function removeChild(child:Layoutable):void {

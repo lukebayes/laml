@@ -5,6 +5,7 @@ package laml.display {
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 	
+	import laml.collections.ISelectableList;
 	import laml.layout.ILayout;
 	import laml.tween.ITweenAdapter;
 
@@ -24,6 +25,8 @@ package laml.display {
 		function get model():DynamicModel;
 		function set view(view:Sprite):void;
 		function get view():Sprite;
+		function set dataProvider(dataProvider:ISelectableList):void;
+		function get dataProvider():ISelectableList;
 		function set data(data:*):void;
 		function get data():*;
 		
@@ -164,6 +167,7 @@ package laml.display {
 		function addChild(child:Layoutable):void;
 		function getChildAt(index:int):Layoutable;
 		function getChildById(id:String):Layoutable;
+		function removeAllChildren():void;
 		function removeChild(child:Layoutable):void;
 		function every(callback:Function, thisObject:* = null):Boolean;
 		function filter(callback:Function, thisObject:* = null):Array;
