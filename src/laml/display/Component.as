@@ -445,7 +445,7 @@ package laml.display {
 		public function get gutter():int {
 			return model.gutter;
 		}
-		
+
 		public function set verticalAlign(align:String):void {
 			if(align != ALIGN_TOP && align != ALIGN_CENTER && align != ALIGN_BOTTOM) {
 				throw new IllegalOperationError("verticallAlign must be top, center or bottom");
