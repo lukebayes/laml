@@ -105,8 +105,6 @@ package laml.display {
 		protected function configureChildren():void {
 			contentMask = getChildById(CONTENT_MASK);
 			contentContainer = getChildById(CONTENT_CONTAINER);
-			trace(">> CONFIGUR CHILDREN");
-			contentContainer.mask = contentMask;
 			
 			leftButton.addEventListener(MouseEvent.CLICK, leftButtonClickHandler);
 			rightButton.addEventListener(MouseEvent.CLICK, rightButtonClickHandler);
@@ -171,8 +169,10 @@ package laml.display {
 			contentContainer.invalidateDisplayList();
 			contentContainer.render();
 
-			contentContainer.mask = contentMask;
-			contentContainer.view.cacheAsBitmap = true;
+			if(!contentContainer.mask) {
+				contentContainer.mask = contentMask;
+				contentContainer.view.cacheAsBitmap = true;
+			}
 		}
 		
 		private function getItemSize(w:Number):Number {
@@ -185,7 +185,7 @@ package laml.display {
 			var xml:XML = <HBox width="100%" height="100%" horizontalGutter={horizontalGutter} padding={padding} xmlns="laml.display">
 							<Button id={LEFT_BUTTON} width="30" height="100" backgroundColor="#ff0000" />
 							<Component width="100%" height="100%">
-								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" backgroundColor="#ff0000" horizontalGutter={horizontalGutter} padding={padding} />
+								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" horizontalGutter={horizontalGutter} padding={padding} />
 								<Component id={CONTENT_MASK} backgroundColor="#0000ff" width="100%" height="100%" />
 							</Component>
 							<Button id={RIGHT_BUTTON} width="30" height="100" backgroundColor="#ff0000" />
