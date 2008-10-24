@@ -218,6 +218,7 @@ package laml.display {
 				backgroundImage.alpha = backgroundAlpha;
 				backgroundImage.width = w;
 				backgroundImage.height = h;
+				backgroundImage.cacheAsBitmap = true;
 			}
 		}
 
@@ -300,7 +301,7 @@ package laml.display {
 
 			var styles:Array = new Array();
 			styles.push(getStyleByType(sheet));
-			styles.concat(getStylesByStyleNames(sheet));
+			styles = styles.concat(getStylesByStyleNames(sheet));
 			styles.push(getStyleById(sheet));
 			
 			var style:Object = new Object();
@@ -325,7 +326,7 @@ package laml.display {
 			var len:Number = names.length;
 			
 			for(var i:Number = 0; i < len; i++) {
-				styles.push(sheet.getStyle(names[i]));
+				styles.push(sheet.getStyle("." + names[i]));
 			}
 			
 			return styles;

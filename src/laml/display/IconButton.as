@@ -11,7 +11,7 @@ package laml.display {
 	public class IconButton extends Button {
 		private var classId:String = generateId();
 		private var ICON:String = classId + "_icon_button_icon";
-		private var LABEL:String = classId + "_icon_button_label";		
+		private var LABEL:String = classId + "_icon_button_label";
 		private var ICON_CONTAINER:String = classId + "_icon_container";
 		
 		private var iconComponent:Image;
@@ -54,6 +54,7 @@ package laml.display {
 			if(iconComponent.width <= 1 || iconComponent.height <= 1) {
 				iconComponent.visible = false;
 				label.x = 0;
+				label.y -= 2;
 				label.width = w;
 				
 				if(label.textFormat.align != TextFormatAlign.CENTER) {
@@ -64,11 +65,12 @@ package laml.display {
 			}
 			else {
 				iconComponent.visible = true;
-				iconComponent.x = iconContainer.paddingLeft;			
+				iconComponent.x = iconContainer.paddingLeft;
 				iconComponent.y = (h - iconComponent.height) / 2;
 
 				var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
-				label.x = labelOffset;
+				label.x = labelOffset + 6;
+				label.y = (h - label.height)/2 - 1;
 				label.width = w - labelOffset;
 			}
 		}
@@ -129,7 +131,6 @@ package laml.display {
 			label.selectable = newValue;
 		}
 		
-		
 		public function set embedFonts(embedFonts:Boolean):void {
 			model.embedFonts = embedFonts;
 		}
@@ -143,8 +144,8 @@ package laml.display {
 		}
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" padding="3" xmlns="laml.display">			
-							<Image id={ICON} preferredWidth="1" preferredHeight="1" backgroundColor="#CCCCCC"></Image>
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" xmlns="laml.display">
+							<Image id={ICON} width="~1" height="~1"></Image>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
 			return xml;
