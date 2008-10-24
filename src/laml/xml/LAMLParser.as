@@ -37,20 +37,15 @@ package laml.xml {
 
 			var result:Object = parseNode(xml, null, null);
 			//parsePendingAttributes(result);
-			if(result is Layoutable) {
-				
-				if(skin) {
-					result.skin = skin;
-				}
-				else if(result.skin) {
-					skin = result.skin;
-				}
+			if(result is Layoutable && skin) {
+				result.skin = skin;
 			}
 			
 			return result;
 		}
 		
 		public function parseLayoutable(xml:XML, skinOrContext:*=null):Layoutable {
+		
 			return parse(xml, skinOrContext) as Layoutable;
 		}
 		
@@ -168,7 +163,7 @@ package laml.xml {
 				return parseWidthOrHeightAttribute(name, value, instance);
 			}
 			else if(name == 'backgroundImage') {
-				return skin.getBitmapByName(value);
+				return instance.skin.getBitmapByName(value);
 			}
 			else if(value == "true") {
 				return true;

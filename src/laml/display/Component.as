@@ -446,6 +446,22 @@ package laml.display {
 			return model.gutter;
 		}
 
+		public function set horizontalGutter(gutter:int):void {
+			model.gutter = gutter;
+		}
+		
+		public function get horizontalGutter():int {
+			return model.gutter;
+		}
+
+		public function set verticalGutter(gutter:int):void {
+			model.gutter = gutter;
+		}
+		
+		public function get verticalGutter():int {
+			return model.gutter;
+		}
+
 		public function set verticalAlign(align:String):void {
 			if(align != ALIGN_TOP && align != ALIGN_CENTER && align != ALIGN_BOTTOM) {
 				throw new IllegalOperationError("verticallAlign must be top, center or bottom");
@@ -932,7 +948,10 @@ package laml.display {
 			else if(parent) {
 				return parent.skin;
 			}
-			return null;
+			else {
+				return model.skin = new Skin();
+			}
+			
 		}
 		
 		public function set tweenAdapter(tweenAdapter:ITweenAdapter):void {
