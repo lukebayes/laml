@@ -239,5 +239,44 @@ package laml.layout {
 			assertDimensions(child1, 60, 150);
 			assertDimensions(child2, 65, 150);
 		}
+		
+		public function testContractionProblem():void {
+			var xml:XML = <Component id="parent" width="400" height="100" x="300" y="20" xmlns="laml.display" padding="5" backgroundColor="#0000ff" />;
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.render();
+
+			// Setting width should always accept 
+			// as long the new value is within defined boundaries	
+			box.width = 300;
+			box.width = 180;
+			box.width = 150;
+			box.render();
+			listenToStage(box);
+
+			assertDimensions(box, 150, 100);
+		}
+		
+		public function testChildrenHoldActualSizeOut():void {
+			var xml:XML = <HBox id="parent" x="300" y="20" xmlns="laml.display" padding="5" horizontalGutter="5"  backgroundColor="#0000ff">
+							<VBox verticalGutter="5">
+								<Component width="200" height="220"  backgroundColor="#ff0000" />
+								<Component width="200" height="220"  backgroundColor="#ff0000" />
+						  	</VBox>
+						  </HBox>
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.render();
+			
+			assertDimensions(box, 210, 455);
+
+			box.width = 100;
+			box.height = 110;
+			assertDimensions(box, 210, 455);
+			
+			box.actualWidth = 100;
+			box.actualHeight = 110;
+			assertDimensions(box, 210, 455);
+		}
 	}
 }

@@ -40,7 +40,7 @@ package laml {
 				assertEquals('Unexpected height for ' + layoutable, height, layoutable.height);
 			}
 		}
-				
+
 		protected function listenToStage(subscriber:Layoutable):void {
 			getContext().stage.addEventListener(Event.RESIZE, function(event:Event):void {
 				subscriber.width = getContext().stage.stageWidth - 10;
