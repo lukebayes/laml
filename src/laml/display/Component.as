@@ -920,9 +920,16 @@ package laml.display {
 		public function set skin(skin:ISkin):void {
 			model.skin = skin;
 		}
-
+		
+		// TODO: why do we have to do this?
 		public function get skin():ISkin {
-			return model.skin;
+			if (model.skin) {
+				return model.skin;
+			}
+			else if (parent) {
+				return parent.skin;
+			}
+			return null;
 		}
 		
 		public function set tweenAdapter(tweenAdapter:ITweenAdapter):void {
