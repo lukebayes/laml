@@ -5,9 +5,13 @@ package laml.display {
 	import laml.events.PayloadEvent;
 
 	public class ImageTest extends TestCase {
+		// Relative url from this SOURCE file:
 		[Embed(source="../../fixtures/assets/ProjectSprouts.png")]
 		private var sproutsLogo:Class;
-		
+
+		// Relative url from SWF:
+		private var imageUrl:String = '../test/fixtures/assets/ProjectSprouts.png';
+
 		private var image:Image;
 
 		public function ImageTest(methodName:String=null) {
@@ -41,7 +45,7 @@ package laml.display {
 				assertEquals(104, image.height);
 			}
 			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(handler));
-			image.source = 'images/ProjectSprouts.png';
+			image.source = imageUrl;
 		}
 	}
 }
