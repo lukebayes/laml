@@ -170,13 +170,13 @@ package laml.xml {
 			else if(value == "false") {
 				return false;
 			}
-			else if(value.indexOf('#') == 0) {
+			else if(value && value.indexOf('#') == 0) {
 				return parseHexString(value);
 			}
 			else if(!isNaN(value)) {
 				return Number(value);
 			}
-			else if(value.indexOf("{") == 0) {
+			else if(value && value.indexOf("{") == 0) {
 				//instance.pendingAttributes[name] = value;
 			}
 			else {
