@@ -1,4 +1,5 @@
 package laml.xml {
+	import flash.display.Bitmap;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
 	
@@ -162,7 +163,12 @@ package laml.xml {
 				return parseWidthOrHeightAttribute(name, value, instance);
 			}
 			else if(name == 'backgroundImage') {
-				return skin.getBitmapByName(value);
+				if(skin) {
+					return skin.getBitmapByName(value);
+				}
+				else {
+					return new Bitmap();
+				}
 			}
 			else if(value == "true") {
 				return true;
