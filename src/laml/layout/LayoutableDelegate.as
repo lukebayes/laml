@@ -25,7 +25,6 @@ package laml.layout {
 				align:			'horizontalAlign',
 				direction: 		'horizontal',
 				fixed:			'fixedWidth',
-				gutter: 		'horizontalGutter',
 				minSize:		'minWidth',
 				paddingFirst: 	'paddingLeft',
 				paddingLast: 	'paddingRight',
@@ -43,7 +42,6 @@ package laml.layout {
 				align:			'verticalAlign',
 				direction: 		'vertical',
 				fixed:	 		'fixedHeight',
-				gutter: 		'verticalGutter',
 				minSize:		'minHeight',
 				paddingFirst: 	'paddingTop',
 				paddingLast: 	'paddingBottom',
@@ -142,7 +140,7 @@ package laml.layout {
 		}
 		
 		public function get gutter():Number {
-			return component[keys.gutter];
+			return component.gutter;
 		}
 		
 		public function get gutterSum():Number {

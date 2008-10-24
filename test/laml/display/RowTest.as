@@ -17,7 +17,7 @@ package laml.display {
 			row.y = 20;
 			row.backgroundColor = 0x00ff00;
 			row.padding = 5;
-			row.horizontalGutter = 5;
+			row.gutter = 5;
 		}
 
 		override protected function tearDown():void {

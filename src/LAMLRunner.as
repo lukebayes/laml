@@ -1,6 +1,8 @@
 package {
 	import asunit.textui.TestRunner;
 	
+	import laml.display.CarouselNextButton;
+	import laml.display.CarouselPreviousButton;
 	import laml.display.Component;
 	import laml.display.HBox;
 	import laml.display.IconButton;
@@ -12,6 +14,8 @@ package {
 		
 		private var hboxRef:HBox;
 		private var vboxRef:VBox;
+		private var carouselPreviousButton:CarouselPreviousButton;
+		private var carouselNextButton:CarouselNextButton;
 		private var componentRef:Component;
 		private var iconButtonRef:IconButton;
 		private var labelRef:Label;

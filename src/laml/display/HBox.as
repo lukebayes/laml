@@ -18,7 +18,7 @@ package laml.display {
 		}
 
 		override public function get horizontalPadding():int {
-			return super.horizontalPadding + (horizontalGutter * (numChildren - 1));
+			return super.horizontalPadding + (gutter * (numChildren - 1));
 		}
 	}
 }
