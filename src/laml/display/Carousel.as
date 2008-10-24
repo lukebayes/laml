@@ -27,7 +27,7 @@ package laml.display {
 			dataProvider = new SelectableList();
 			horizontalGutter = DEFAULT_HORIZONTAL_GUTTER;
 			padding = DEFAULT_PADDING;
-			defaultItemRenderer = '<IconButton backgroundColor="#ffcc00" height="100%" text="{title}" />';
+			itemRenderer = "<IconButton width='100%' height='100%' text='{title}' />";
 			model.validate_dataProvider = validateDataProvider;
 		}
 		
@@ -47,12 +47,20 @@ package laml.display {
 			return model.textFormat as TextFormat;
 		}
 		
-		public function set itemRenderer(itemRenderer:String):void {
-			model.itemRenderer = itemRenderer;
+		public function set itemRenderer(itemRenderer:*):void {
+			if(itemRenderer is String) {
+				model.itemRendererString = itemRenderer;
+			}
+			else if(itemRenderer is Class) {
+				model.itemRendererClass = itemRenderer;
+			}
+			else {
+				model.itemRenderer = itemRenderer;
+			}
 		}
 		
-		public function get itemRenderer():String {
-			return model.itemRenderer || defaultItemRenderer;
+		public function get itemRenderer():* {
+			return model.itemRendererString || model.itemRendererClass || model.itemRenderer || defaultItemRenderer;
 		}
 		
 		override public function set dataProvider(dataProvider:ISelectableList):void {
@@ -61,7 +69,7 @@ package laml.display {
 			}
 			super.dataProvider = dataProvider;
 		}
-		
+
 		protected function validateDataProvider(newItem:ISelectableList, oldItem:ISelectableList):void {
 			if(oldItem) {
 				// clear all old views...
@@ -69,12 +77,11 @@ package laml.display {
 				contentContainer.removeAllChildren();
 			}
 			
-			// newItem is never null - check setter
 			var parser:LAMLParser = new LAMLParser();
-			var xml:XML = new XML(itemRenderer);
 			newItem.forEach(function(item:Object, index:int, items:Array):void {
-				createItemView(item, xml, parser);
+				createItemView(item, parser);
 			});
+			
 			newItem.addEventListener(PayloadEvent.SELECTION_CHANGED, selectionChangedHandler);
 			
 			if(newItem.selectedIndex == -1 && newItem.length > 0) {
@@ -84,8 +91,20 @@ package laml.display {
 			updateSelection();
 		}
 		
-		protected function createItemView(data:Object, itemXml:XML, parser:LAMLParser):void {
-			var itemView:Layoutable = parser.parseLayoutable(itemXml, data);
+		protected function createItemView(data:Object, parser:LAMLParser):void {
+			var itemView:Layoutable;
+			if(model.itemRendererString) {
+				var itemXml:XML = new XML(itemRenderer);
+				itemView = parser.parseLayoutable(itemXml, data);
+			}
+			else if(model.itemRendererClass) {
+				itemView = new model.itemRendererClass();
+				itemView.data = data;
+			}
+			else {
+				trace(">> WARNING itemRenderer set with unknown type");
+			}
+
 			contentContainer.addChild(itemView);
 		}
 
@@ -153,10 +172,6 @@ package laml.display {
 			return -((displayedIndex * getItemSize(contentMask.width)) + (horizontalGutter * dataProvider.selectedIndex));
 		}
 		
-		override protected function commitProperties():void {
-			super.commitProperties();
-		}
-		
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
 			var childSize:Number = getItemSize(contentMask.width);
@@ -170,7 +185,7 @@ package laml.display {
 			contentContainer.render();
 
 			if(!contentContainer.mask) {
-				contentContainer.mask = contentMask;
+				contentContainer.view.mask = contentMask.view;
 				contentContainer.view.cacheAsBitmap = true;
 			}
 		}
