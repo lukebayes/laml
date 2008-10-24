@@ -438,12 +438,12 @@ package laml.display {
 			return model.horizontalAlign;
 		}
 		
-		public function set horizontalGutter(gutter:int):void {
-			model.horizontalGutter = gutter;
+		public function set gutter(gutter:int):void {
+			model.gutter = gutter;
 		}
 		
-		public function get horizontalGutter():int {
-			return model.horizontalGutter;
+		public function get gutter():int {
+			return model.gutter;
 		}
 		
 		public function set verticalAlign(align:String):void {
@@ -455,14 +455,6 @@ package laml.display {
 
 		public function get verticalAlign():String {
 			return model.verticalAlign;
-		}
-		
-		public function set verticalGutter(gutter:int):void {
-			model.verticalGutter = gutter;
-		}
-		
-		public function get verticalGutter():int {
-			return model.verticalGutter;
 		}
 		
 		public function set x(x:int):void {

@@ -89,14 +89,13 @@ package laml.display {
 		function set css(css:String):void;
 		function get css():String;
 
+		function set gutter(gutter:int):void;
+		function get gutter():int;
+		
 		function set horizontalAlign(align:String):void;
 		function get horizontalAlign():String;
-		function set horizontalGutter(gutter:int):void;
-		function get horizontalGutter():int;
 		function set verticalAlign(align:String):void;
 		function get verticalAlign():String;
-		function set verticalGutter(gutter:int):void;
-		function get verticalGutter():int;
 		
 		function get horizontalPadding():int;
 		function get verticalPadding():int;
