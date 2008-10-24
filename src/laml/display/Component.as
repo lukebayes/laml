@@ -445,6 +445,28 @@ package laml.display {
 		public function get gutter():int {
 			return model.gutter;
 		}
+
+		// NOTE: horizontal and vertical Gutter are both
+		// deprecated any usage should be replaced with
+		// Layoutable.gutter
+		public function set horizontalGutter(gutter:int):void {
+			trace(">> Warning: horizontalGutter has beend deprecated - use regular old gutter instead");
+			this.gutter = gutter;
+		}
+		
+		public function get horizontalGutter():int {
+			return gutter;	
+		}
+		
+		public function set verticalGutter(gutter:int):void {
+			trace(">> Warning: verticalGutter has beend deprecated - use regular old gutter instead");
+			this.gutter = gutter;
+		}
+		
+		public function get verticalGutter():int {
+			return gutter;
+		}
+
 		
 		public function set verticalAlign(align:String):void {
 			if(align != ALIGN_TOP && align != ALIGN_CENTER && align != ALIGN_BOTTOM) {

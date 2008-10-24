@@ -249,11 +249,7 @@ package laml.layout {
 		}
 
 		public function testDistributeMissingFinalFourPixels():void {
-<<<<<<< HEAD:test/laml/layout/FlowLayoutTest.as
-			var xml:XML = <HBox id="parent" width="101" height="100" x="300" y="20" horizontalGutter="1" padding="1" xmlns="laml.display" backgroundColor="#0000ff">
-=======
 			var xml:XML = <HBox id="parent" width="101" height="100" x="300" y="20" gutter="1" padding="1" xmlns="laml.display" backgroundColor="#0000ff">
->>>>>>> tmp3:test/laml/layout/FlowLayoutTest.as
 							<Component id="child1" width="100%" height="100%" backgroundColor="#ff0000" />
 							<Component id="child2" width="100%" height="100%" backgroundColor="#ff0000" />
 							<Component id="child3" width="50%" height="50%" backgroundColor="#ff0000" />

@@ -258,13 +258,8 @@ package laml.layout {
 		}
 		
 		public function testChildrenHoldActualSizeOut():void {
-<<<<<<< HEAD:test/laml/layout/StackLayoutTest.as
-			var xml:XML = <HBox id="parent" x="300" y="20" xmlns="laml.display" padding="5" horizontalGutter="5"  backgroundColor="#0000ff">
-							<VBox verticalGutter="5">
-=======
 			var xml:XML = <HBox id="parent" x="300" y="20" xmlns="laml.display" padding="5" gutter="5"  backgroundColor="#0000ff">
 							<VBox gutter="5">
->>>>>>> tmp3:test/laml/layout/StackLayoutTest.as
 								<Component width="200" height="220"  backgroundColor="#ff0000" />
 								<Component width="200" height="220"  backgroundColor="#ff0000" />
 						  	</VBox>
