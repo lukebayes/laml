@@ -2,6 +2,8 @@ package laml.display {
 
 	import asunit.framework.TestCase;
 	
+	import flash.utils.setTimeout;
+	
 	import laml.events.PayloadEvent;
 
 	public class ImageTest extends TestCase {
@@ -39,12 +41,32 @@ package laml.display {
 			image.source = sproutsLogo;
 		}
 		
-		public function testUrl():void {
-			var handler:Function = function(event:PayloadEvent):void {
+		public function testSourceChanged():void {
+			image.preferredWidth = 300;
+			image.preferredHeight = 200;
+			image.x = 300;
+			image.y = 20;
+			image.backgroundColor = 0xFFCC00;
+			
+			var completed:Function = function(event:PayloadEvent):void {
 				assertEquals(205, image.width);
 				assertEquals(104, image.height);
 			}
-			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(handler));
+			
+			var updateSource:Function = function():void {
+				image.source = imageUrl;
+			}
+			
+			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(completed));
+			setTimeout(updateSource, 100);
+		}
+		
+		public function testUrl():void {
+			var completed:Function = function(event:PayloadEvent):void {
+				assertEquals(205, image.width);
+				assertEquals(104, image.height);
+			}
+			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(completed));
 			image.source = imageUrl;
 		}
 	}
