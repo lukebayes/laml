@@ -2,10 +2,10 @@ package laml.display {
 	import flash.display.Shape;
 
 	public class BasicBackground extends Shape {
-	    private var bgColor:uint;
-	    private var radius:uint;
-	    private var corners:String;
-		private var bgAlpha:Number;
+	    protected var bgColor:uint;
+	    protected var radius:uint;
+	    protected var corners:String;
+		protected var bgAlpha:Number;
 	    
 	    public static var ALL:String = "ALL";
 	    public static var TOP:String = "TOP";
