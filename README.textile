@@ -15,5 +15,5 @@ There are many similarities between this framework and Flex, but following are s
 * Supports simple separation of an application into multiple SWF files
 * Applications and components can be developed identically
 
-Feel free to add some [[Issues]] as you come across them.
+Feel free to add some "Issues":https://github.com/lukebayes/laml/wikis/issues as you come across them.
 
