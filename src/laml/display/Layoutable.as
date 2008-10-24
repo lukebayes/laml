@@ -92,14 +92,6 @@ package laml.display {
 		function set gutter(gutter:int):void;
 		function get gutter():int;
 
-		// NOTE: horizontal and vertical Gutter are both
-		// deprecated any usage should be replaced with
-		// Layoutable.gutter
-		function set horizontalGutter(gutter:int):void;
-		function get horizontalGutter():int;
-		function set verticalGutter(gutter:int):void;
-		function get verticalGutter():int;
-		
 		function set horizontalAlign(align:String):void;
 		function get horizontalAlign():String;
 		function set verticalAlign(align:String):void;
