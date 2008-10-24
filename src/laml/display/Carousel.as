@@ -10,7 +10,7 @@ package laml.display {
 	public class Carousel extends Component {
 		private static const CONTENT_CONTAINER:String 		= 'content-container';
 		private static const CONTENT_MASK:String 			= 'content-mask';
-		private static const DEFAULT_HORIZONTAL_GUTTER:int 	= 5;
+		private static const DEFAULT_GUTTER:int 			= 5;
 		private static const DEFAULT_PADDING:int 			= 5;
 		private static const DEFAULT_VISIBLE_ITEM_COUNT:int = 4;
 		private static const LEFT_BUTTON:String 			= 'left-button';
@@ -25,7 +25,7 @@ package laml.display {
 		override protected function initialize():void {
 			super.initialize();
 			dataProvider = new SelectableList();
-			horizontalGutter = DEFAULT_HORIZONTAL_GUTTER;
+			gutter = DEFAULT_GUTTER;
 			padding = DEFAULT_PADDING;
 			itemRenderer = "<IconButton width='100%' height='100%' text='{title}' />";
 			model.validate_dataProvider = validateDataProvider;
@@ -174,7 +174,7 @@ package laml.display {
 				displayedIndex = Math.min(displayedIndex, dataProvider.length - visibleItemCount);
 			}
 
-			return -((displayedIndex * getItemSize(contentMask.width)) + (horizontalGutter * dataProvider.selectedIndex));
+			return -((displayedIndex * getItemSize(contentMask.width)) + (gutter * dataProvider.selectedIndex));
 		}
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
@@ -196,16 +196,16 @@ package laml.display {
 		}
 		
 		private function getItemSize(w:Number):Number {
-			var negativeSpace:Number = paddingLeft + (contentContainer.horizontalGutter * visibleItemCount);
+			var negativeSpace:Number = paddingLeft + (contentContainer.gutter * visibleItemCount);
 			var available:Number = w - negativeSpace;
 			return available / Math.min(visibleItemCount, dataProvider.length);
 		}
 		
 		protected function get configXml():XML {
-			var xml:XML = <HBox width="100%" height="100%" horizontalGutter={horizontalGutter} padding={padding} xmlns="laml.display">
+			var xml:XML = <HBox width="100%" height="100%" gutter={gutter} padding={padding} xmlns="laml.display">
 							<CarouselPreviousButton id={LEFT_BUTTON} width="15" height="65" />
 							<Component width="100%" height="100%">
-								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" horizontalGutter={horizontalGutter} padding={padding} />
+								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" gutter={gutter} padding={padding} />
 								<Component id={CONTENT_MASK} backgroundColor="#0000ff" width="100%" height="100%" />
 							</Component>
 							<CarouselNextButton id={RIGHT_BUTTON} width="15" height="65" />

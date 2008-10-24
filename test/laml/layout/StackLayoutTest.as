@@ -30,7 +30,7 @@ package laml.layout {
 		}
 		
 		protected function getStaticHBox(hAlign:String):XML {
-			var xml:XML = <HBox id="root" xmlns="laml.display" padding="5" horizontalAlign={hAlign} horizontalGutter="5" backgroundColor="#FF00FF" width="600" height="300">
+			var xml:XML = <HBox id="root" xmlns="laml.display" padding="5" horizontalAlign={hAlign} gutter="5" backgroundColor="#FF00FF" width="600" height="300">
 				<Component id="child1" width="200" percentHeight="1" backgroundColor="#FF0000" />
 				<Component id="child2" width="150" percentHeight="1" backgroundColor="#FFFF00" />
 				<Component id="child3" width="100" percentHeight="1" backgroundColor="#0000FF" />
@@ -39,7 +39,7 @@ package laml.layout {
 		}
 
 		protected function getFlexibleHBox():XML {
-			var xml:XML = <HBox id="root" xmlns="laml.display" padding="5" horizontalGutter="5" backgroundColor="#FF00FF" width="600" height="300">
+			var xml:XML = <HBox id="root" xmlns="laml.display" padding="5" gutter="5" backgroundColor="#FF00FF" width="600" height="300">
 				<Component id="child1" percentWidth="100" percentHeight="1" backgroundColor="#FF0000" />
 				<Component id="child2" width="200" height="180" backgroundColor="#FFFF00" />
 				<Component id="child3" percentWidth="100" height="100%" backgroundColor="#0000FF" />
@@ -48,7 +48,7 @@ package laml.layout {
 		}
 		
 		protected function getStaticChildrenVBox(hAlign:String):XML {
-			var xml:XML = <VBox id="root" xmlns="laml.display" padding="5" verticalAlign={hAlign} verticalGutter="5" backgroundColor="#FF00FF" width="600" height="300">
+			var xml:XML = <VBox id="root" xmlns="laml.display" padding="5" verticalAlign={hAlign} gutter="5" backgroundColor="#FF00FF" width="600" height="300">
 				<Component id="child1" percentWidth="1" height="100" backgroundColor="#FF0000" />
 				<Component id="child2" width="150" height="90" backgroundColor="#FFFF00" />
 				<Component id="child3" width="100" height="60" backgroundColor="#0000FF" />
@@ -128,7 +128,7 @@ package laml.layout {
 		}
 
 		public function testFlexibleChildrenVertical():void {
-			var xml:XML = <VBox id="root" width="600" height="300" padding="5" verticalGutter="5" backgroundColor="#FF00FF" xmlns="laml.display">
+			var xml:XML = <VBox id="root" width="600" height="300" padding="5" gutter="5" backgroundColor="#FF00FF" xmlns="laml.display">
 				<Component id="child1" width="100%" height="100%" backgroundColor="#FF0000" />
 				<Component id="child2" width="200" height="140" backgroundColor="#FFFF00" />
 				<Component id="child3" width="100%" height="50%" backgroundColor="#0000FF" />
@@ -151,7 +151,7 @@ package laml.layout {
 
 		public function testNestedLayout():void {
 			var container:Component;
-			var xml:XML = <VBox id="player" verticalAlign="bottom" x="200" width="640" verticalGutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
+			var xml:XML = <VBox id="player" verticalAlign="bottom" x="200" width="640" gutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
 							<Component id="video_container" width="100%" height="100%" backgroundColor="#FFCC00" />
 							<VBox width="100%" height="57" backgroundColor="#333333" />
 						  </VBox>;
@@ -169,10 +169,10 @@ package laml.layout {
 
 		public function testNestedComplexLayout():void {
 			var container:Component;
-			var xml:XML = <Component id="player" verticalAlign="bottom" x="200" width="640" verticalGutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
+			var xml:XML = <Component id="player" verticalAlign="bottom" x="200" width="640" gutter="10" height="480" padding="10" backgroundColor="#FFFFFF" xmlns="laml.display">
 							<Component id="video_container" width="100%" height="100%" backgroundColor="#33333" />
 							<VBox width="100%" height="57">
-								<HBox width="100%" height="57" padding="4" backgroundColor="#333333" backgroundAlpha=".8" horizontalGutter="4" verticalAlign="center">
+								<HBox width="100%" height="57" padding="4" backgroundColor="#333333" backgroundAlpha=".8" gutter="4" verticalAlign="center">
 									<Component id="play_pause_button" width="50" height="100%" backgroundColor="#FF0000" />
 									<VBox width="100%" height="100%" paddingTop="18">
 										<Component id="progress_handle" width="100%" height="10" backgroundColor="#00FF00" />
@@ -210,13 +210,13 @@ package laml.layout {
 		}
 		
 		public function testNestedChildrenShouldExpandParent():void {
-			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" width="100" height="120" padding="5" verticalGutter="5" backgroundColor="#FFCC00">
-				<HBox id="hbox" backgroundColor="#00ccff" padding="5" horizontalGutter="5">
+			var xml:XML = <VBox id="root" xmlns="laml.display" x="200" width="100" height="120" padding="5" gutter="5" backgroundColor="#FFCC00">
+				<HBox id="hbox" backgroundColor="#00ccff" padding="5" gutter="5">
 					<Component id="child1" width="60" height="150" backgroundColor="#00ff00" />
 					<Component id="child2" width="65" height="150" backgroundColor="#0000ff" />
 					<Component id="child3" width="50" height="150" backgroundColor="#ff0000" />
 				</HBox>
-				<VBox id="vbox" backgroundColor="#00ffcc" padding="6" verticalGutter="5" horizontalAlign="right">
+				<VBox id="vbox" backgroundColor="#00ffcc" padding="6" gutter="5" horizontalAlign="right">
 					<Component id="child1" width="40" height="20" backgroundColor="#00ff00" />
 					<Component id="child2" width="65" height="40" backgroundColor="#0000ff" />
 					<Component id="child3" width="50" height="30" backgroundColor="#ff0000" />
@@ -258,8 +258,8 @@ package laml.layout {
 		}
 		
 		public function testChildrenHoldActualSizeOut():void {
-			var xml:XML = <HBox id="parent" x="300" y="20" xmlns="laml.display" padding="5" horizontalGutter="5"  backgroundColor="#0000ff">
-							<VBox verticalGutter="5">
+			var xml:XML = <HBox id="parent" x="300" y="20" xmlns="laml.display" padding="5" gutter="5"  backgroundColor="#0000ff">
+							<VBox gutter="5">
 								<Component width="200" height="220"  backgroundColor="#ff0000" />
 								<Component width="200" height="220"  backgroundColor="#ff0000" />
 						  	</VBox>

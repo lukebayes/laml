@@ -14,7 +14,7 @@ package laml.layout {
 			component.forEach(function(child:Layoutable, index:int, children:Array):void {
 				child.x = position;
 				child.y = paddingTop;
-				position += child.width + component.horizontalGutter;
+				position += child.width + component.gutter;
 				child.render();
 			});
 		}
