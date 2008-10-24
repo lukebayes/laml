@@ -1,7 +1,8 @@
 package laml.layout {
+	import flash.sampler.DeleteObjectSample;
+	
 	
 	dynamic public class FlowLayout extends StackLayout {
-		
 		private var direction:String;
 		
 		public function FlowLayout(direction:String) {
@@ -15,6 +16,15 @@ package laml.layout {
 			else {
 				super.scaleChildren(delegate, axis);
 			}
+		}
+
+		private function aggregateActualChildrenSize(delegate:LayoutableDelegate):Number {
+			var kids:Array = delegate.children;
+			var size:Number = 0;
+			kids.forEach(function(child:LayoutableDelegate, index:int, children:Array):void {
+				size += child.actual;
+			});
+			return size;
 		}
 		
 		protected function shouldScaleChildren(delegate:LayoutableDelegate, axis:String):Boolean {
@@ -67,6 +77,23 @@ package laml.layout {
 				child = kids[i] as LayoutableDelegate;
 				child.actual = Math.floor(child.percent * unitSize);
 			}
+			
+			// Spread remainder pixels from right to left
+			var difference:Number = (delegate.actual - delegate.padding) - aggregateActualChildrenSize(delegate);
+			var index:int = kids.length - 1;
+			if(index == -1) {
+				return;
+			}
+			while(difference-- > 0) {
+				if(index == 0) {
+					// We've reached the first child, 
+					// go ahead and push the entire remainder
+					kids[index].actual += difference;
+					break;
+				}
+				kids[index].actual += 1;
+				index--;
+			}
 		}
 		
 		protected function positionChildrenOnAxis_first(delegate:LayoutableDelegate, axis:String):void {
@@ -102,7 +129,7 @@ package laml.layout {
 		protected function getUnitSizeOnAxis(delegate:LayoutableDelegate, axis:String):Number {
 			var available:Number = 	getAvailablePixelsOnAxis(delegate, axis);
 			var percentSum:Number = getPercentSum(delegate, axis);
-			return available / percentSum;	
+			return available / percentSum;
 		}
 		
 		protected function getPercentSum(delegate:LayoutableDelegate, axis:String):Number {
