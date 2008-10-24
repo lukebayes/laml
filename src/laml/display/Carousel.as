@@ -1,4 +1,6 @@
 package laml.display {
+	import episodic.events.EpisodicEvent;
+	
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
 	
@@ -48,6 +50,8 @@ package laml.display {
 		}
 		
 		public function set itemRenderer(itemRenderer:*):void {
+			trace(">> set itemRenderer :: " + itemRenderer);
+			
 			if(itemRenderer is String) {
 				model.itemRendererString = itemRenderer;
 			}
@@ -93,19 +97,27 @@ package laml.display {
 		
 		protected function createItemView(data:Object, parser:LAMLParser):void {
 			var itemView:Layoutable;
-			if(model.itemRendererString) {
-				var itemXml:XML = new XML(itemRenderer);
-				itemView = parser.parseLayoutable(itemXml, data);
-			}
-			else if(model.itemRendererClass) {
+			if(model.itemRendererClass) {
 				itemView = new model.itemRendererClass();
 				itemView.data = data;
+			}
+			else if(model.itemRendererString) {
+				var itemXml:XML = new XML(itemRenderer);
+				itemView = parser.parseLayoutable(itemXml, data);
 			}
 			else {
 				trace(">> WARNING itemRenderer set with unknown type");
 			}
 
+			itemView.addEventListener(EpisodicEvent.CHANGE, changeHandler, false, 0, true);
 			contentContainer.addChild(itemView);
+		}
+		
+		protected function changeHandler(event:EpisodicEvent):void {
+			event.stopPropagation();
+			var episodicEvent:EpisodicEvent = new EpisodicEvent(EpisodicEvent.CHANGE);
+			episodicEvent.payload = event.payload;
+			dispatchEvent(episodicEvent);
 		}
 
 		override protected function createChildren():void {
