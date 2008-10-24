@@ -141,7 +141,7 @@ package laml.display {
 		
 		protected function validateEmbedFonts(newValue:*, oldValue:*):void {
 			label.embedFonts = newValue;
-		}
+		}			
 
 		protected function get configXml():XML {
 			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" xmlns="laml.display">
