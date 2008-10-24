@@ -20,7 +20,7 @@ package laml.display {
 				return new this[alias]() as DisplayObject;
 			}
 			
-			return null;
+			return new Sprite();
 		}
 	}
 }

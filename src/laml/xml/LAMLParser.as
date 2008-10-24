@@ -1,5 +1,4 @@
 package laml.xml {
-	import flash.display.Bitmap;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
 	
@@ -39,7 +38,13 @@ package laml.xml {
 			var result:Object = parseNode(xml, null, null);
 			//parsePendingAttributes(result);
 			if(result is Layoutable) {
-				result.skin = skin;
+				
+				if(skin) {
+					result.skin = skin;
+				}
+				else if(result.skin) {
+					skin = result.skin;
+				}
 			}
 			
 			return result;
@@ -163,12 +168,7 @@ package laml.xml {
 				return parseWidthOrHeightAttribute(name, value, instance);
 			}
 			else if(name == 'backgroundImage') {
-				if(skin) {
-					return skin.getBitmapByName(value);
-				}
-				else {
-					return new Bitmap();
-				}
+				return skin.getBitmapByName(value);
 			}
 			else if(value == "true") {
 				return true;
