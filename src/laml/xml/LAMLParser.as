@@ -21,7 +21,7 @@ package laml.xml {
 		// only one extra argument, we check to see if it's an ISkin and otherwise
 		// assume it's a context.
 		public function parse(xml:XML, skinOrContext:Object=null, context:Object=null):* {
-			xml = prepareXml(xml);
+			//xml = prepareXml(xml);
 			this.context = context;
 
 			if(skinOrContext) {
@@ -78,6 +78,7 @@ package laml.xml {
 		}
 		
 		protected function preVisitNode(node:XML, parent:Object=null, root:Object=null):void {
+			prepareXml(node);
 		}
 		
 		protected function visitNode(node:XML, parent:Object=null, root:Object=null):Object {
