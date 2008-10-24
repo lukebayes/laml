@@ -78,6 +78,10 @@ package laml.layout {
 				child.actual = Math.floor(child.percent * unitSize);
 			}
 			
+			spreadRemainder(delegate, kids);
+		}
+		
+		private function spreadRemainder(delegate:LayoutableDelegate, kids:Array):void {
 			// Spread remainder pixels from right to left
 			var difference:Number = (delegate.actual - delegate.padding) - aggregateActualChildrenSize(delegate);
 			var index:int = kids.length - 1;

@@ -121,12 +121,12 @@ package laml.display {
 		// Ensure that width and height are not 
 		// smaller than the minimums
 		private function updateSizeIfNeeded():void {
-			if(model.width < inferredMinWidth) {
-				width = inferredMinWidth;
+			if(model.actualWidth < inferredMinWidth) {
+				actualWidth = inferredMinWidth;
 			}
 			
-			if(model.height < inferredMinHeight) {
-				height = inferredMinHeight;
+			if(model.actualHeight < inferredMinHeight) {
+				actualHeight = inferredMinHeight;
 			}
 		}
 		
@@ -483,7 +483,9 @@ package laml.display {
 		
 		public function set width(width:Number):void {
 			if(model.width != width) {
-				model.width = actualWidth = width;
+				model.width = undefined;
+				actualWidth = width;
+				model.width = actualWidth;
 			}
 		}
 		
@@ -496,7 +498,9 @@ package laml.display {
 		
 		public function set height(height:Number):void {
 			if(model.height != height) {
-				model.height = actualHeight = height;
+				model.height = undefined;
+				actualHeight = height;
+				model.height = actualHeight;
 			}
 		}
 		
@@ -515,26 +519,34 @@ package laml.display {
 			return model.height;
 		}
 		
-		public function set actualWidth(width:Number):void {
+		private function widthInBounds(width:Number):Number {
 			var min:Number = minWidth;
 			var max:Number = maxWidth;
 			width = Math.round(width);
 			width = (min) ? Math.max(min, width) : width;
 			width = (max) ? Math.min(max, width) : width;
-			model.actualWidth = width;
+			return width;
+		}
+		
+		public function set actualWidth(width:Number):void {
+			model.actualWidth = widthInBounds(width);
 		}
 		
 		public function get actualWidth():Number {
 			return model.width || model.actualWidth || preferredWidth || minWidth;
 		}
 		
-		public function set actualHeight(height:Number):void {
+		private function heightInBounds(height:Number):Number {
 			var min:Number = minHeight;
 			var max:Number = maxHeight;
 			height = Math.round(height);
 			height = (min) ? Math.max(min, height) : height;
 			height = (max) ? Math.min(max, height) : height;
-			model.actualHeight = height;
+			return height;
+		}
+		
+		public function set actualHeight(height:Number):void {
+			model.actualHeight = heightInBounds(height);
 		}
 		
 		public function get actualHeight():Number {
@@ -920,16 +932,9 @@ package laml.display {
 		public function set skin(skin:ISkin):void {
 			model.skin = skin;
 		}
-		
-		// TODO: why do we have to do this?
+
 		public function get skin():ISkin {
-			if (model.skin) {
-				return model.skin;
-			}
-			else if (parent) {
-				return parent.skin;
-			}
-			return null;
+			return model.skin;
 		}
 		
 		public function set tweenAdapter(tweenAdapter:ITweenAdapter):void {

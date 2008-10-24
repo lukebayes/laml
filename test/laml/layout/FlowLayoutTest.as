@@ -18,15 +18,6 @@ package laml.layout {
 		override protected function setUp():void {
 			super.setUp();
 			parser = new LAMLParser();
-
-			component = new Component();
-			component.backgroundColor = 0x666666;
-			component.width = 640;
-			component.height = 480;
-			component.padding = 10;
-			component.paddingTop = 10;
-			component.x = 300;
-			addChild(component.view);
 		}
 
 		override protected function tearDown():void {
@@ -35,8 +26,21 @@ package laml.layout {
 				removeChild(box.view);
 			}
 
-			removeChild(component.view);
+			if(component && component.view.parent) {
+				removeChild(component.view);
+			}
 			component = null;
+		}
+		
+		private function createComponent():void {
+			component = new Component();
+			component.backgroundColor = 0x666666;
+			component.width = 640;
+			component.height = 480;
+			component.padding = 10;
+			component.paddingTop = 10;
+			component.x = 300;
+			addChild(component.view);
 		}
 		
 		private function createChild(color:uint=0xFF000, percentWidth:Number=NaN, percentHeight:Number=NaN, maxWidth:Number=NaN, maxHeight:Number=NaN):Layoutable {
@@ -64,8 +68,9 @@ package laml.layout {
 		}
 		
 		public function testSingleFixedWidthChildTopLeft():void {
-			var child:Layoutable = createChild();
+			createComponent();
 
+			var child:Layoutable = createChild();
 			component.addChild(child);
 			component.render();
 			assertEquals(200, child.width);
@@ -74,6 +79,8 @@ package laml.layout {
 		}
 		
 		public function testSingleFixedWidthBottomRight():void {
+			createComponent();
+
 			component.horizontalAlign = Component.ALIGN_RIGHT;
 			component.verticalAlign = Component.ALIGN_BOTTOM;
 			
@@ -85,6 +92,8 @@ package laml.layout {
 		}
 		
 		public function testSingleFixedWidthCenter():void {
+			createComponent();
+
 			component.horizontalAlign = Component.ALIGN_CENTER;
 			component.verticalAlign = Component.ALIGN_CENTER;
 			
@@ -96,6 +105,8 @@ package laml.layout {
 		}
 		
 		public function testSingleFlexibleChild():void {
+			createComponent();
+
 			var child:Layoutable = createChild();
 			child.percentWidth = 1;
 			child.percentHeight = 1;
@@ -109,6 +120,8 @@ package laml.layout {
 		}
 		
 		public function testThreeFlexibleChildren():void {
+			createComponent();
+
 			var child1:Layoutable = createChild(0xFF0000, 1, 1);
 			var child2:Layoutable = createChild(0x00FF00, 1, 1, 200, 220);
 			var child3:Layoutable = createChild(0x0000FF, 1, 1, 180, 160);
@@ -130,8 +143,6 @@ package laml.layout {
 				<Component id="child1" height="100%" width="200" backgroundColor="#CCCCCC"/>
 				<Component id="child2" height="200" width="300" excludeFromLayout="true" backgroundColor="#0FFFF0" />
 			</VBox>;
-			
-			removeChild(component.view);
 			
 			box = parser.parseLayoutable(xml);
 			addChild(box.view);
@@ -186,8 +197,6 @@ package laml.layout {
 				<Component id="child3" minWidth="20" minHeight="25" width="100%" height="50%" backgroundColor="#0000FF" />
 			</VBox>;
 			
-			removeChild(component.view);
-			
 			box = parser.parseLayoutable(xml);
 			addChild(box.view);
 			box.width = 100; // Set invalid (too small) width
@@ -212,8 +221,6 @@ package laml.layout {
 				<Component id="child3" width="100%" height="105" backgroundColor="#0000FF" />
 			</VBox>;
 			
-			removeChild(component.view);
-			
 			box = parser.parseLayoutable(xml);
 			
 			box.width = 400;
@@ -228,8 +235,6 @@ package laml.layout {
 		}
 
 		public function testDistributeMissingFinalPixel():void {
-			removeChild(component.view);
-			
 			var xml:XML = <HBox id="parent" width="401" height="100" x="300" y="20" xmlns="laml.display" backgroundColor="#0000ff">
 							<Component id="child1" width="100%" height="100%" backgroundColor="#ff0000" />
 							<Component id="child2" width="100%" height="100%" backgroundColor="#ff0000" />
@@ -244,8 +249,6 @@ package laml.layout {
 		}
 
 		public function testDistributeMissingFinalFourPixels():void {
-			removeChild(component.view);
-			
 			var xml:XML = <HBox id="parent" width="101" height="100" x="300" y="20" horizontalGutter="1" padding="1" xmlns="laml.display" backgroundColor="#0000ff">
 							<Component id="child1" width="100%" height="100%" backgroundColor="#ff0000" />
 							<Component id="child2" width="100%" height="100%" backgroundColor="#ff0000" />
