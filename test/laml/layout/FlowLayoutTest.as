@@ -226,5 +226,18 @@ package laml.layout {
 			assertEquals(2, child.widths.length);
 			assertEquals(1, child.heights.length);
 		}
+
+		public function testDistributeMissingPixels():void {
+			removeChild(component.view);
+			
+			var xml:XML = <HBox width="400" height="100" x="" y="" xmlns="laml.display">
+							<Component width="50" height="100%" backgroundColor="#ff0000" />
+							<Component width="100%" height="100%" backgroundColor="#00ff00" />
+							<Component width="50" height="100%" backgroundColor="#ff0000" />
+						  </HBox>;
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			box.render();
+		}
 	}
 }
