@@ -203,12 +203,12 @@ package laml.display {
 		
 		protected function get configXml():XML {
 			var xml:XML = <HBox width="100%" height="100%" horizontalGutter={horizontalGutter} padding={padding} xmlns="laml.display">
-							<CarouselPreviousButton id={LEFT_BUTTON} width="30" height="100" />
+							<CarouselPreviousButton id={LEFT_BUTTON} width="15" height="65" />
 							<Component width="100%" height="100%">
 								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" horizontalGutter={horizontalGutter} padding={padding} />
 								<Component id={CONTENT_MASK} backgroundColor="#0000ff" width="100%" height="100%" />
 							</Component>
-							<CarouselNextButton id={RIGHT_BUTTON} width="30" height="100" />
+							<CarouselNextButton id={RIGHT_BUTTON} width="15" height="65" />
 						  </HBox>
 			return xml;
 		}
