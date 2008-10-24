@@ -227,17 +227,61 @@ package laml.layout {
 			assertEquals(1, child.heights.length);
 		}
 
-		public function testDistributeMissingPixels():void {
+		public function testDistributeMissingFinalPixel():void {
 			removeChild(component.view);
 			
-			var xml:XML = <HBox width="400" height="100" x="" y="" xmlns="laml.display">
-							<Component width="50" height="100%" backgroundColor="#ff0000" />
-							<Component width="100%" height="100%" backgroundColor="#00ff00" />
-							<Component width="50" height="100%" backgroundColor="#ff0000" />
+			var xml:XML = <HBox id="parent" width="401" height="100" x="300" y="20" xmlns="laml.display" backgroundColor="#0000ff">
+							<Component id="child1" width="100%" height="100%" backgroundColor="#ff0000" />
+							<Component id="child2" width="100%" height="100%" backgroundColor="#ff0000" />
 						  </HBox>;
 			box = parser.parseLayoutable(xml);
 			addChild(box.view);
 			box.render();
+			
+			var child1:Layoutable = box.getChildById('child1');
+			var child2:Layoutable = box.getChildById('child2');
+			assertEquals('Remainder pixel should go to last child', 201, child2.width);
+		}
+
+		public function testDistributeMissingFinalFourPixels():void {
+			removeChild(component.view);
+			
+			var xml:XML = <HBox id="parent" width="101" height="100" x="300" y="20" horizontalGutter="1" padding="1" xmlns="laml.display" backgroundColor="#0000ff">
+							<Component id="child1" width="100%" height="100%" backgroundColor="#ff0000" />
+							<Component id="child2" width="100%" height="100%" backgroundColor="#ff0000" />
+							<Component id="child3" width="50%" height="50%" backgroundColor="#ff0000" />
+							<Component id="child4" width="100%" height="100%" backgroundColor="#ff0000" />
+							<Component id="child5" width="50%" height="50%" backgroundColor="#ff0000" />
+							<Component id="child6" width="100%" height="100%" backgroundColor="#ff0000" />
+							<Component id="child7" width="100%" height="100%" backgroundColor="#ff0000" />
+						  </HBox>;
+			box = parser.parseLayoutable(xml);
+			addChild(box.view);
+			listenToStage(box);
+			box.render();
+			
+			var child:Layoutable;
+			
+			child = box.getChildById('child1');
+			assertEquals('1', 15, child.width);
+			
+			child = box.getChildById('child2');
+			assertEquals('2', 15, child.width);
+			
+			child = box.getChildById('child3');
+			assertEquals('3', 7, child.width);
+			
+			child = box.getChildById('child4');
+			assertEquals('4 added', 16, child.width);
+			
+			child = box.getChildById('child5');
+			assertEquals('5 added', 8, child.width);
+			
+			child = box.getChildById('child6');
+			assertEquals('6 added', 16, child.width);
+			
+			child = box.getChildById('child7');
+			assertEquals('7 added', 16, child.width);
 		}
 	}
 }

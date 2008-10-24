@@ -135,7 +135,7 @@ package laml.layout {
 			</VBox>;
 			
 			box = parser.parseLayoutable(xml);
-			//addChild(box.view);
+			addChild(box.view);
 			box.render();
 			//listenToStage(box);
 			var child:Layoutable;
@@ -146,7 +146,7 @@ package laml.layout {
 			child = box.getChildById('child2');
 			assertRectangle(child, 5, 103, 200, 140);
 			child = box.getChildById('child3');
-			assertRectangle(child, 5, 248, 590, 46);
+			assertRectangle(child, 5, 248, 590, 47);
 		}
 
 		public function testNestedLayout():void {
