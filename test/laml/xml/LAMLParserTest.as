@@ -4,7 +4,6 @@ package laml.xml {
 	
 	import fixtures.ComponentStub;
 	
-	import flash.errors.IllegalOperationError;
 	import flash.text.StyleSheet;
 	
 	import laml.display.Layoutable;
@@ -140,14 +139,20 @@ package laml.xml {
 
 		public function testChildWithSameAsParentId():void {
 			var xml:XML = <Component xmlns="laml.display" id="foo">
-						<Component id="foo" />
+						<Component id="foo" width="200" />
+						<Component id="foo" width="300" />
 					  </Component>;
-			try {
-				var result:Layoutable = parser.parseLayoutable(xml);
-				fail("Duplicate id should have thrown an error");
-			}
-			catch(e:IllegalOperationError) {
-			}
+
+			var result:Layoutable = parser.parseLayoutable(xml);
+			var found:Layoutable = result.getChildById('foo');
+			assertEquals('In case of duplicates, getChildById should return the FIRST found CHILD element', 200, found.width);
+
+//			try {
+//				var result:Layoutable = parser.parseLayoutable(xml);
+//				fail("Duplicate id should have thrown an error");
+//			}
+//			catch(e:IllegalOperationError) {
+//			}
 		}
 		
 		public function testHexValues():void {
