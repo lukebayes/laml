@@ -8,12 +8,13 @@ There are many similarities between this framework and Flex, but following are s
 * Avoids Singletons and custom compilation units (like extra frames and pre-loaders)
 * Tiny download footprint
 * Minimize duplicate boilerplate code
-* Supports workflow and views built using Flash Authoring
-* Simple creation of skins and themes
-* Supports both compile time and run time XML layout documents
-* Composite component structure does not extend DisplayObject
-* Supports simple separation of an application into multiple SWF files
-* Applications and components can be developed identically
+* Supports workflow and views built using Flash Authoring, Flex Builder or any other ActionScript editor
+* Simplified creation of skins and themes
+* Supports both compile time and run time XML layout/configuration
+* Component model composes DisplayObject instead of extending it, enhancing the flexibility and implications of view creation
+* Support modular applications (separate SWF files)
+* Applications and components can be developed using the same concepts
+* Built to interfaces instead of base classes, making it easier to adapt and extend
 
 Feel free to add some "Issues":https://github.com/lukebayes/laml/wikis/issues as you come across them.
 
