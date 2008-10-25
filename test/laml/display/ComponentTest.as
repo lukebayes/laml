@@ -1,6 +1,7 @@
 package laml.display {
 	import fixtures.ComponentFake;
 	import fixtures.ComponentStub;
+	import fixtures.ComponentWithLayout;
 	
 	import laml.LAMLTestCase;
 	import laml.events.PayloadEvent;
@@ -384,6 +385,18 @@ package laml.display {
 			stub.backgroundColor = backgroundColor;
 			stub.tweenAdapter = new TweenLiteAdapter();
 			return stub;
+		}
+		
+		public function testEmbeddedXml():void {
+			removeChild(component.view);
+			
+			component = new ComponentWithLayout();
+			addChild(component.view);
+			
+			// The included Layout was loaded, parsed and modified
+			// the parent size with preferred values:
+			assertEquals(200, component.width);
+			assertEquals(140, component.height);
 		}
 	}
 }

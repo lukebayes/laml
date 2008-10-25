@@ -1,6 +1,4 @@
 package laml.display {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
@@ -19,6 +17,8 @@ package laml.display {
 	import laml.tween.DefaultTweenAdapter;
 	import laml.tween.ITweenAdapter;
 	import laml.xml.LAMLParser;
+	
+	import mx.core.ByteArrayAsset;
 	
 	/**
 	 * Component is the primary base class for the visual composite structure.
@@ -105,6 +105,12 @@ package laml.display {
 		
 		protected function createChildren():void {
 			view = new Sprite();
+			if(hasOwnProperty('Config') && this['Config'] is Class) {
+				var ba:ByteArrayAsset = ByteArrayAsset( new this['Config']() );
+				var xml:XML = new XML( ba.readUTFBytes( ba.length ) );
+				addChild(parser.parseLayoutable(xml));
+			}
+			
 			if(backgroundImage) {
 				backgroundImage.name = 'background';
 				view.addChild(backgroundImage);
