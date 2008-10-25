@@ -30,7 +30,6 @@ package laml.display {
 
 		override protected function createChildren():void {
 			super.createChildren();
-			var parser:LAMLParser = new LAMLParser();
 			var parsedXml:Component = parser.parseLayoutable(configXml, skin) as Component;
 			addChild(parsedXml);
 			configureChildren();

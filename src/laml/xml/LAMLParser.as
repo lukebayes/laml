@@ -1,7 +1,7 @@
 package laml.xml {
-	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
 	
+	import laml.display.Component;
 	import laml.display.ISkin;
 	import laml.display.Layoutable;
 	
@@ -32,20 +32,14 @@ package laml.xml {
 					this.context = skinOrContext;
 				}
 			}
-				
+			
 			capitalized = {};
 
 			var result:Object = parseNode(xml, null, null);
-			//parsePendingAttributes(result);
-			if(result is Layoutable && skin) {
-				result.skin = skin;
-			}
-			
 			return result;
 		}
 		
 		public function parseLayoutable(xml:XML, skinOrContext:*=null):Layoutable {
-		
 			return parse(xml, skinOrContext) as Layoutable;
 		}
 		
@@ -111,7 +105,17 @@ package laml.xml {
 			var instance:Object = new dynamicConstructor();
 			if(root == null) {
 				root = instance;
+				if(skin && instance is Layoutable) {
+					Layoutable(root).skin = skin;
+				}
 			}
+			if(parent && instance is Layoutable) {
+				Layoutable(instance).parent = parent as Layoutable;
+			}
+			if(instance is Component) {
+				Component(instance).parser = this;
+			}
+			
 			parseAttributes(node, instance, root);
 			instance = parseChildren(node.children(), instance, root);
 			parseComponent(node, instance as Layoutable, parent as Layoutable, root);
@@ -235,9 +239,9 @@ package laml.xml {
 			if(parent && instance) {
 				// Set up width and height only after children have been added.
 				// This will ensure that we won't have invalid values...
-				if(parent.id == instance.id) {
-					throw new IllegalOperationError("Duplicate id encountered with: " + instance.id + " at: " + parent);
-				}
+				//if(parent.id == instance.id) {
+				//	throw new IllegalOperationError("Duplicate id encountered with: " + instance.id + " at: " + parent);
+				//}
 				parent.addChild(instance);
 			}
 		}

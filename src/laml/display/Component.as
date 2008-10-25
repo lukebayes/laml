@@ -18,6 +18,7 @@ package laml.display {
 	import laml.layout.StackLayout;
 	import laml.tween.DefaultTweenAdapter;
 	import laml.tween.ITweenAdapter;
+	import laml.xml.LAMLParser;
 	
 	/**
 	 * Component is the primary base class for the visual composite structure.
@@ -64,6 +65,7 @@ package laml.display {
 		private var _layout:ILayout;
 		private var _model:DynamicModel;
 		private var _parent:Layoutable;
+		private var _parser:LAMLParser;
 		private var _qualifiedClassName:String;
 		private var _view:Sprite;
 		private var _enabled:Boolean;
@@ -255,9 +257,9 @@ package laml.display {
 		}
 
 		public function set id(id:String):void {
-			if(model.id != undefined) {
-				throw new IllegalOperationError("Component.id is immutable once it has been set (or requested)");
-			}
+			//if(model.id != undefined) {
+			//	throw new IllegalOperationError("Component.id is immutable once it has been set (or requested)");
+			//}
 			model.id = id;
 		}
 		
@@ -877,6 +879,17 @@ package laml.display {
 			return children.length;
 		}
 		
+		public function set parser(parser:LAMLParser):void {
+			_parser = parser;
+		}
+		
+		public function get parser():LAMLParser {
+			if(!_parser) {
+				_parser = new LAMLParser();
+			}
+			return _parser;
+		}
+		
 		public function set parent(parent:Layoutable):void {
 			_parent = parent;
 		}
@@ -901,7 +914,7 @@ package laml.display {
 		}
 		
 		public function toString():String {
-			return "[" + getQualifiedClassName(this).split("::").pop() +  " path='" + path + "' x='" + x + "' y='" + y + "' width='" + width + "' height='" + height + "']";
+			return "[" + getQualifiedClassName(this).split("::").pop() +  " id='" + id + "' path='" + path + "' x='" + x + "' y='" + y + "' width='" + width + "' height='" + height + "']";
 		}
 		
 		/***************************
@@ -1030,26 +1043,11 @@ package laml.display {
 
 		public function getBitmapByName(alias:String):DisplayObject {
 			var result:DisplayObject;
-			if(hasOwnProperty(alias)) {
+			if(hasOwnProperty(alias) && this[alias] is DisplayObject) {
 				return new this[alias]() as DisplayObject;
 			}
 			
-			if(skin) {
-				result = skin.getBitmapByName(alias);
-				if(result) {
-					return result;
-				} 
-			}
-			
-			if(parent) {
-				result = parent.getBitmapByName(alias);
-				if(result) {
-					return result;
-				}
-			}
-
-			var bitmapData:BitmapData = new BitmapData(1, 1, true, 0x00FFCC00);
-			return new Bitmap(bitmapData);
+			return skin.getBitmapByName(alias);
 		}
 
 		protected function generateId():String {

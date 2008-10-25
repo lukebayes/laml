@@ -77,7 +77,6 @@ package laml.display {
 				contentContainer.removeAllChildren();
 			}
 			
-			var parser:LAMLParser = new LAMLParser();
 			newItem.forEach(function(item:Object, index:int, items:Array):void {
 				createItemView(item, parser);
 			});
@@ -115,7 +114,6 @@ package laml.display {
 
 		override protected function createChildren():void {
 			super.createChildren();
-			var parser:LAMLParser = new LAMLParser();
 			var parsedXml:Component = parser.parseLayoutable(configXml, skin) as Component;
 			addChild(parsedXml);
 			textFormat = getTextFormat();

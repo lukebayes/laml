@@ -1,4 +1,6 @@
 package laml.display {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	
@@ -19,8 +21,10 @@ package laml.display {
 			if(hasOwnProperty(alias)) {
 				return new this[alias]() as DisplayObject;
 			}
-			
-			return null;
+			// Uncomment to see skin elements that cannot be found:
+			//trace(">> skin unable to find: " + alias);
+			var bitmapData:BitmapData = new BitmapData(1, 1, true, 0x00FFCC00);
+			return new Bitmap(bitmapData);
 		}
 	}
 }

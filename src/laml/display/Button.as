@@ -16,6 +16,11 @@ package laml.display {
 		protected const OVER_STATE:String = "Over";
 		protected const DOWN_STATE:String = "Down";
 		protected const HIT_TEST_STATE:String = "HitTest";
+		
+		protected var _defaultUpState:DisplayObject;
+		protected var _defaultOverState:DisplayObject;
+		protected var _defaultDownState:DisplayObject;
+		protected var _defaultHitTestState:DisplayObject;
 
 		protected var _buttonView:SimpleButton;
 		
@@ -140,24 +145,37 @@ package laml.display {
 		}
 
 		public function get defaultUpState():DisplayObject {
+			if(_defaultUpState) {
+				return _defaultUpState;
+			}
 			var alias:String = unQualifiedClassName + UP_STATE;
-			return getBitmapByName(alias);
+			return _defaultUpState = getBitmapByName(alias);
 		}
 		
 		public function get defaultOverState():DisplayObject {
+			if(_defaultOverState) {
+				return _defaultOverState;
+			}
 			var alias:String = unQualifiedClassName + OVER_STATE;
-			return getBitmapByName(alias);
+			return _defaultOverState = getBitmapByName(alias);
 		}
 
 		public function get defaultDownState():DisplayObject {
+			if(_defaultDownState) {
+				return _defaultDownState;
+			}
 			var alias:String = unQualifiedClassName + DOWN_STATE;
-			return getBitmapByName(alias);
+			return _defaultDownState = getBitmapByName(alias);
 		}
 
 		public function get defaultHitTestState():DisplayObject {
+			if(_defaultHitTestState) {
+				return _defaultHitTestState;
+			}
+
 			if(width > 0 && height > 0) {
 				var bitmapData:BitmapData = new BitmapData(width, height);
-				return new Bitmap(bitmapData);
+				return _defaultHitTestState = new Bitmap(bitmapData);
 			}
 			
 			return null;
