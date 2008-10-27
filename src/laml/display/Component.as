@@ -105,15 +105,25 @@ package laml.display {
 		
 		protected function createChildren():void {
 			view = new Sprite();
-			if(hasOwnProperty('Config') && this['Config'] is Class) {
-				var ba:ByteArrayAsset = ByteArrayAsset( new this['Config']() );
-				var xml:XML = new XML( ba.readUTFBytes( ba.length ) );
-				addChild(parser.parseLayoutable(xml));
-			}
-			
+
 			if(backgroundImage) {
 				backgroundImage.name = 'background';
 				view.addChild(backgroundImage);
+			}
+			
+			// TODO: This implementation will not allow subclasses
+			// to easily define layouts that have already been
+			// defined by superclasses
+			if(hasOwnProperty('Config')) {
+				var xml:XML;
+				if(this['Config'] is Class) {
+					var ba:ByteArrayAsset = ByteArrayAsset( new this['Config']() );
+					xml = new XML( ba.readUTFBytes( ba.length ) );
+				}
+				if(this['Config'] is XML) {
+					xml = this['Config'];
+				}
+				addChild(parser.parseLayoutable(xml));
 			}
 		}
 		
