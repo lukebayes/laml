@@ -2,11 +2,15 @@ package laml.display {
 
 	import asunit.framework.TestCase;
 	
+	import flash.display.DisplayObject;
 	import flash.utils.setTimeout;
 	
 	import laml.events.PayloadEvent;
 
 	public class ImageTest extends TestCase {
+		
+		private var logoWidth:Number = 202;
+		private var logoHeight:Number = 102;
 		// Relative url from this SOURCE file:
 		[Embed(source="../../fixtures/assets/ProjectSprouts.png")]
 		private var sproutsLogo:Class;
@@ -49,8 +53,8 @@ package laml.display {
 			image.backgroundColor = 0xFFCC00;
 			
 			var completed:Function = function(event:PayloadEvent):void {
-				assertEquals(205, image.width);
-				assertEquals(104, image.height);
+				assertEquals(logoWidth, image.width);
+				assertEquals(logoHeight, image.height);
 			}
 			
 			var updateSource:Function = function():void {
@@ -63,11 +67,29 @@ package laml.display {
 		
 		public function testUrl():void {
 			var completed:Function = function(event:PayloadEvent):void {
-				assertEquals(205, image.width);
-				assertEquals(104, image.height);
+				assertEquals(logoWidth, image.width);
+				assertEquals(logoHeight, image.height);
 			}
 			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(completed));
 			image.source = imageUrl;
+		}
+		
+		public function testMaintainAspectRatio():void {
+			image.preferredWidth = 300;
+			image.preferredHeight = 200;
+			image.x = 300;
+			image.y = 20;
+			image.width = 500;
+			image.height = 450;
+			image.padding = 5;
+			image.backgroundColor = 0xFFCC00;
+			image.source = sproutsLogo;
+			image.maintainAspectRatio = true;
+			image.render();
+			
+			var loaded:DisplayObject = image.view.getChildAt(0);
+			assertEquals(490, loaded.width);
+			assertEquals(247, loaded.height);
 		}
 	}
 }
