@@ -20,6 +20,8 @@ package {
 		private var iconButtonRef:IconButton;
 		private var labelRef:Label;
 		private var rowRef:Row;
+		private var hBoxRef:HBox;
+		private var vBoxRef:VBox;
 
 		public function LAML() {
 			trace("LAML instantiated!");
