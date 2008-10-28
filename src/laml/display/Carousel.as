@@ -203,7 +203,7 @@ package laml.display {
 			var xml:XML = <HBox width="100%" height="100%" gutter={gutter} padding={padding} xmlns="laml.display">
 							<CarouselPreviousButton id={LEFT_BUTTON} width="15" height="65" />
 							<Component width="100%" height="100%">
-								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" gutter={gutter} padding={padding} />
+								<Row id={CONTENT_CONTAINER} excludeFromLayout="true" gutter={gutter} />
 								<Component id={CONTENT_MASK} backgroundColor="#0000ff" width="100%" height="100%" />
 							</Component>
 							<CarouselNextButton id={RIGHT_BUTTON} width="15" height="65" />
