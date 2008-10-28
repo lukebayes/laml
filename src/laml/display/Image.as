@@ -57,6 +57,7 @@ package laml.display {
 			newValue = createImageFromValue(newValue);
 			if(newValue) {
 				bitmap = newValue;
+				bitmap.smoothing = true;
 				view.addChild(bitmap);
 				preferredWidth = originalWidth = bitmap.width;
 				preferredHeight = originalHeight = bitmap.height;
