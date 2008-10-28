@@ -81,7 +81,7 @@ package laml.display {
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			updateSize(w, h);
 			super.updateDisplayList(w, h);
-		}
+		} 
 		
 		protected function updateSize(w:Number, h:Number):void {
 			if(buttonView.upState is BasicBackground) {

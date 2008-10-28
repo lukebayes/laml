@@ -50,29 +50,6 @@ package laml.display {
 		
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
-			
-			if(iconComponent.width <= 1 || iconComponent.height <= 1) {
-				iconComponent.visible = false;
-				label.x = 0;
-				label.width = w;
-				
-				if(label.textFormat.align != TextFormatAlign.CENTER) {
-					var tf:TextFormat = label.textFormat;
-					tf.align = TextFormatAlign.CENTER;
-					label.textView.defaultTextFormat = tf;
-				}
-			}
-			else {
-				iconComponent.visible = true;
-				iconComponent.x = iconContainer.paddingLeft;
-				iconComponent.y = (h - iconComponent.height) / 2;
-
-				var labelOffset:Number = (iconComponent.x * 2) + iconComponent.width; 
-				label.x = labelOffset + 6;
-				label.y = (h - label.height)/2 - 1;
-				label.width = w - labelOffset;
-			}
-			
 			bringToTop(iconContainer.view);
 		}
 		
@@ -145,7 +122,7 @@ package laml.display {
 		}			
 
 		protected function get configXml():XML {
-			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" xmlns="laml.display">
+			var xml:XML = <HBox id={ICON_CONTAINER} width="100%" height="100%" gutter="4" verticalAlign="center" xmlns="laml.display">
 							<Image id={ICON} width="~1" height="~1"></Image>
 							<Label id={LABEL} width="100%" height="100%"></Label>
 						</HBox>;
