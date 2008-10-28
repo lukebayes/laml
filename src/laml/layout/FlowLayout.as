@@ -109,7 +109,7 @@ package laml.layout {
 			for(var i:int; i < len; i++) {
 				child = kids[i] as LayoutableDelegate;
 				child.position = first;
-				first = first + child.actual + gutter;
+				first = first + child.size + gutter;
 			}
 		}
 		
