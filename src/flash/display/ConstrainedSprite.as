@@ -14,7 +14,6 @@ package flash.display {
 		private function addedHandler(event:Event):void {
 			var child:DisplayObject = event.target as DisplayObject;
 			if(child.parent == this) {
-				trace(">> insdie");
 				drawChild(child);
 			}
 		}
@@ -40,7 +39,6 @@ package flash.display {
 		}
 		
 		private function shouldDrawChild(child:DisplayObject):Boolean {
-			trace("_width: ", _width, "_height", _height, "visible", child.visible, "child width", child.width, "child.height", child.height);
 			return (!isNaN(_width) && 
 					!isNaN(_height) &&
 					_width != 0 && 
@@ -51,9 +49,11 @@ package flash.display {
 		
 		private function drawChild(child:DisplayObject):void {
 			if(shouldDrawChild(child)) {
-				trace(">>a ");
 				var rect:Rectangle;
-				rect = constrainedSize(child.width, child.height, _width, _height);
+				var childWidth:Number = child.hasOwnProperty('videoWidth') ? Object(child).videoWidth : child.width;
+				var childHeight:Number = child.hasOwnProperty('videoHeight') ? Object(child).videoHeight: child.height;
+				
+				rect = constrainedSize(childWidth, childHeight, _width, _height);
 				child.width = rect.width;
 				child.height = rect.height;
 				child.x = Math.round((_width/2) - (child.width/2));
