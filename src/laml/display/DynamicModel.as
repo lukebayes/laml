@@ -87,7 +87,9 @@ package laml.display {
 		
 		protected function invalidateProperty(name:*, oldValue:*, newValue:*):void {
 			invalidProperties[name] = {name: name, oldValue: oldValue, newValue:newValue};
-			component.invalidateProperties();
+			if(!propertiesAreInvalid) {
+				component.invalidateProperties();
+			}
 		}
 		
 		override flash_proxy function hasProperty(name:*):Boolean {
