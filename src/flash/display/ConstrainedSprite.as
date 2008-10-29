@@ -8,28 +8,32 @@ package flash.display {
 		private var _height:Number;
 		
 		public function ConstrainedSprite() {
-			addEventListener(Event.ADDED, addedHandler);
+//			addEventListener(Event.ADDED, addedHandler);
 		}
 		
-		private function addedHandler(event:Event):void {
-			var child:DisplayObject = event.target as DisplayObject;
-			if(child.parent == this) {
-				drawChild(child);
-			}
-		}
+//		private function addedHandler(event:Event):void {
+//			var child:DisplayObject = event.target as DisplayObject;
+//			if(child.parent == this) {
+//				drawChild(child);
+//			}
+//		}
 		
 		public function draw():void {
 			drawChildren();
 		}
 		
 		override public function set width(width:Number):void {
-			_width = width;
-			drawChildren();
+			if(width != _width) {
+				_width = width;
+				drawChildren();
+			}
 		}
 		
 		override public function set height(height:Number):void {
-			_height = height;
-			drawChildren();
+			if(height != _height) {
+				_height = height;
+				drawChildren();
+			}
 		}
 		
 		private function drawChildren():void {
@@ -39,7 +43,8 @@ package flash.display {
 		}
 		
 		private function shouldDrawChild(child:DisplayObject):Boolean {
-			return (!isNaN(_width) && 
+			return (
+					!isNaN(_width) && 
 					!isNaN(_height) &&
 					_width != 0 && 
 					_height != 0 && 
@@ -50,14 +55,13 @@ package flash.display {
 		private function drawChild(child:DisplayObject):void {
 			if(shouldDrawChild(child)) {
 				var rect:Rectangle;
-				var childWidth:Number = child.hasOwnProperty('videoWidth') ? Object(child).videoWidth : child.width;
-				var childHeight:Number = child.hasOwnProperty('videoHeight') ? Object(child).videoHeight: child.height;
 				
-				rect = constrainedSize(childWidth, childHeight, _width, _height);
+				rect = constrainedSize(child.width, child.height, _width, _height);
 				child.width = rect.width;
 				child.height = rect.height;
 				child.x = Math.round((_width/2) - (child.width/2));
 				child.y = Math.round((_height/2) - (child.height/2));
+				//trace(">> drawing child with: ", child, rect, "vis", child.visible, "actual w", child.width, "actual h", child.height, "x", child.x, "y", child.y);
 			}
 		}
 
