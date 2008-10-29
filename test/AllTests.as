@@ -7,6 +7,7 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
+	import flash.display.ConstrainedSpriteTest;
 	import laml.collections.SelectableListTest;
 	import laml.display.ButtonTest;
 	import laml.display.CarouselTest;
@@ -23,6 +24,7 @@ package {
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
+			addTest(new flash.display.ConstrainedSpriteTest());
 			addTest(new laml.collections.SelectableListTest());
 			addTest(new laml.display.ButtonTest());
 			addTest(new laml.display.CarouselTest());
