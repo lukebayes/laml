@@ -71,6 +71,7 @@ package laml.display {
 		
 		protected function validateIcon(newValue:*, oldValue:*):void {
 			iconComponent.source = getBitmapByName(newValue) as Bitmap;
+			iconComponent.render();
 		}
 		
 		public function set text(text:String):void {
