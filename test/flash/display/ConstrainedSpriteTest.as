@@ -1,12 +1,14 @@
 package flash.display {
 
-	import asunit.framework.TestCase;
+	import laml.LAMLTestCase;
 
-	public class ConstrainedSpriteTest extends TestCase {
+	public class ConstrainedSpriteTest extends LAMLTestCase {
 		private var instance:ConstrainedSprite;
 
 		[Embed(source="../../fixtures/assets/ProjectSprouts.png")]
 		private var SproutsLogo:Class;
+		[Embed(source="../../fixtures/assets/ProjectSproutsVertical.png")]
+		private var SproutsLogoVertical:Class;
 
 		public function ConstrainedSpriteTest(methodName:String=null) {
 			super(methodName)
@@ -42,6 +44,7 @@ package flash.display {
 			instance.addChild(bitmap);
 
 			instance.width = 300;
+			instance.height = 300;
 			assertEquals(300, instance.width);
 			assertEquals(151, instance.height);
 		}
@@ -78,8 +81,7 @@ package flash.display {
 		
 		public function testTwoChildren():void {
 			var child1:DisplayObject = new SproutsLogo() as DisplayObject;
-			var child2:DisplayObject = new SproutsLogo() as DisplayObject;
-			child2.rotation = 90;
+			var child2:DisplayObject = new SproutsLogoVertical() as DisplayObject;
 			
 			instance.addChild(child1);
 			instance.addChild(child2);
@@ -89,6 +91,16 @@ package flash.display {
 			
 			assertEquals(300, instance.width);
 			assertEquals(300, instance.height);
+			
+			assertEquals(0, child1.x);
+			assertEquals(75, child1.y);
+			assertEquals(300, child1.width);
+			assertEquals(151, child1.height);
+
+			assertEquals(75, child2.x);
+			assertEquals(0, child2.y);
+			assertEquals(151, child2.width);
+			assertEquals(300, child2.height);
 		}
 	}
 }
