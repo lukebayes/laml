@@ -48,6 +48,7 @@ package laml.display {
 			iconContainer.view.mouseChildren = false;
 		}
 		
+		// TODO: I don't think the label width is being set properly
 		override protected function updateDisplayList(w:Number, h:Number):void {
 			super.updateDisplayList(w, h);
 			bringToTop(iconContainer.view);
