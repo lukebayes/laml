@@ -1,6 +1,9 @@
 package flash.display {
+	import episodic.core.Playable;
+	
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.media.Video;
 	
 	public class ConstrainedSprite extends Sprite {
 		
@@ -8,15 +11,15 @@ package flash.display {
 		private var _height:Number;
 		
 		public function ConstrainedSprite() {
-//			addEventListener(Event.ADDED, addedHandler);
+			addEventListener(Event.ADDED, addedHandler);
 		}
 		
-//		private function addedHandler(event:Event):void {
-//			var child:DisplayObject = event.target as DisplayObject;
-//			if(child.parent == this) {
-//				drawChild(child);
-//			}
-//		}
+		private function addedHandler(event:Event):void {
+			var child:DisplayObject = event.target as DisplayObject;
+			if(child.parent == this) {
+				drawChild(child);
+			}
+		}
 		
 		public function draw():void {
 			drawChildren();
@@ -43,8 +46,7 @@ package flash.display {
 		}
 		
 		private function shouldDrawChild(child:DisplayObject):Boolean {
-			return (
-					!isNaN(_width) && 
+			return (!isNaN(_width) && 
 					!isNaN(_height) &&
 					_width != 0 && 
 					_height != 0 && 
@@ -56,7 +58,27 @@ package flash.display {
 			if(shouldDrawChild(child)) {
 				var rect:Rectangle;
 				
-				rect = constrainedSize(child.width, child.height, _width, _height);
+				var childWidth:Number = child.width;
+				var childHeight:Number = child.height;
+
+				// NOTE: This is some ugliness that had to be done
+				// because the flash.display.Video object doesn't
+				// provide .videoWidth or .videoHeight until AFTER
+				// that asset has actually been on screen for an arbitrary
+				//  number of frames. SO  - the Stream object now
+				// collects those values from metaData and holds onto them				
+				if(child.hasOwnProperty('stream')) {
+					var stream:Playable = child['stream'] as Playable;
+					if(stream.videoWidth > 0 && stream.videoHeight > 0) {
+						childWidth = stream.videoWidth;
+						childHeight = stream.videoHeight;
+					}
+					else {
+						return;
+					}
+				}
+				
+				rect = constrainedSize(childWidth, childHeight, _width, _height);
 				child.width = rect.width;
 				child.height = rect.height;
 				child.x = Math.round((_width/2) - (child.width/2));
