@@ -51,7 +51,6 @@ package laml.display{
 			super.updateDisplayList(w, h);
 			textView.text = text;
 			textView.width = w;
-			
 			var magic:Number = 1;
 			var yPosition:Number = Math.round(Math.max((h - textView.textHeight)/2, 0)) - magic;
 

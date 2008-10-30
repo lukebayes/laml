@@ -1,6 +1,9 @@
 package flash.display {
+	import episodic.core.Playable;
+	
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.media.Video;
 	
 	public class ConstrainedSprite extends Sprite {
 		
@@ -23,13 +26,17 @@ package flash.display {
 		}
 		
 		override public function set width(width:Number):void {
-			_width = width;
-			drawChildren();
+			if(width != _width) {
+				_width = width;
+				drawChildren();
+			}
 		}
 		
 		override public function set height(height:Number):void {
-			_height = height;
-			drawChildren();
+			if(height != _height) {
+				_height = height;
+				drawChildren();
+			}
 		}
 		
 		private function drawChildren():void {
@@ -50,14 +57,33 @@ package flash.display {
 		private function drawChild(child:DisplayObject):void {
 			if(shouldDrawChild(child)) {
 				var rect:Rectangle;
-				var childWidth:Number = child.hasOwnProperty('videoWidth') ? Object(child).videoWidth : child.width;
-				var childHeight:Number = child.hasOwnProperty('videoHeight') ? Object(child).videoHeight: child.height;
+				
+				var childWidth:Number = child.width;
+				var childHeight:Number = child.height;
+
+				// NOTE: This is some ugliness that had to be done
+				// because the flash.display.Video object doesn't
+				// provide .videoWidth or .videoHeight until AFTER
+				// that asset has actually been on screen for an arbitrary
+				//  number of frames. SO  - the Stream object now
+				// collects those values from metaData and holds onto them				
+				if(child.hasOwnProperty('stream')) {
+					var stream:Playable = child['stream'] as Playable;
+					if(stream.videoWidth > 0 && stream.videoHeight > 0) {
+						childWidth = stream.videoWidth;
+						childHeight = stream.videoHeight;
+					}
+					else {
+						return;
+					}
+				}
 				
 				rect = constrainedSize(childWidth, childHeight, _width, _height);
 				child.width = rect.width;
 				child.height = rect.height;
 				child.x = Math.round((_width/2) - (child.width/2));
 				child.y = Math.round((_height/2) - (child.height/2));
+				//trace(">> drawing child with: ", child, rect, "vis", child.visible, "actual w", child.width, "actual h", child.height, "x", child.x, "y", child.y);
 			}
 		}
 
