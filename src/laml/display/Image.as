@@ -1,5 +1,6 @@
 package laml.display {
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -10,7 +11,7 @@ package laml.display {
 	import laml.events.PayloadEvent;
 	
 	public class Image extends Component {
-		private var bitmap:Bitmap;
+		private var bitmap:DisplayObject;
 		private var originalWidth:Number;
 		private var originalHeight:Number;
 		
@@ -57,15 +58,15 @@ package laml.display {
 			newValue = createImageFromValue(newValue);
 			if(newValue) {
 				bitmap = newValue;
-				bitmap.smoothing = true;
+				if (bitmap is Bitmap) Bitmap(bitmap).smoothing = true;
 				view.addChild(bitmap);
 				preferredWidth = originalWidth = bitmap.width;
 				preferredHeight = originalHeight = bitmap.height;
 			}
 		}
 		
-		private function createImageFromValue(value:*):Bitmap {
-			if(value is Bitmap) {
+		private function createImageFromValue(value:*):DisplayObject {
+			if(value is DisplayObject) {
 				return value;
 			}
 			else if(value is Class) {
