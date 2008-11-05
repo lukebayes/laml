@@ -11,6 +11,9 @@ package laml.display {
 		
 		private var logoWidth:Number = 202;
 		private var logoHeight:Number = 102;
+
+		private var largeImageSource:String = '../test/fixtures/assets/LargeSquare.png';
+
 		// Relative url from this SOURCE file:
 		[Embed(source="../../fixtures/assets/ProjectSprouts.png")]
 		private var sproutsLogo:Class;
@@ -90,6 +93,25 @@ package laml.display {
 			var loaded:DisplayObject = image.view.getChildAt(0);
 			assertEquals(490, loaded.width);
 			assertEquals(247, loaded.height);
+		}
+		
+		public function testLargeImage():void {
+			image.backgroundColor = 0xffcc00;
+			image.maintainAspectRatio = true;
+			image.padding = 10;
+			image.width = 450;
+			image.height = 280;
+			image.render();
+			
+			var complete:Function = function(event:PayloadEvent):void {
+				var child:DisplayObject = image.view.getChildAt(0);
+				// Image maintained it's aspect ratio - even after a load operation:
+				assertEquals(272, child.width);
+				assertEquals(260, child.height);
+			}
+			
+			image.addEventListener(PayloadEvent.LOADING_COMPLETED, addAsync(complete));
+			image.source = largeImageSource;
 		}
 	}
 }
