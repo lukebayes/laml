@@ -105,10 +105,15 @@ package laml.display {
 			}
 
 			itemView.addEventListener(PayloadEvent.CHANGED, itemChangedHandler, false, 0, true);
+			itemView.addEventListener(PayloadEvent.SELECTION_CHANGED, itemSelectionChangedHandler, false, 0, true);
 			contentContainer.addChild(itemView);
 		}
 		
 		protected function itemChangedHandler(event:PayloadEvent):void {
+			dispatchEvent(event);
+		}
+		
+		protected function itemSelectionChangedHandler(event:PayloadEvent):void {
 			dispatchEvent(event);
 		}
 
