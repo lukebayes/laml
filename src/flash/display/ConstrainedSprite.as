@@ -1,5 +1,4 @@
 package flash.display {
-	import episodic.core.Playable;
 	
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -68,7 +67,7 @@ package flash.display {
 				//  number of frames. SO  - the Stream object now
 				// collects those values from metaData and holds onto them				
 				if(child.hasOwnProperty('stream')) {
-					var stream:Playable = child['stream'] as Playable;
+					var stream:* = child['stream'];
 					if(stream.videoWidth > 0 && stream.videoHeight > 0) {
 						childWidth = stream.videoWidth;
 						childHeight = stream.videoHeight;
