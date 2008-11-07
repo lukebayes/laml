@@ -161,13 +161,17 @@ package laml.display {
 		}
 		
 		private function rightButtonIsEnabled():Boolean {
-			if(dataProvider.length > visibleItemCount) {
-				var limit:Number = dataProvider.length - visibleItemCount - 1;
+			var numItems:Number = dataProvider.length;
+			if(numItems <= visibleItemCount) {
+				return false;
+			}
+			else {
+				var limit:Number = numItems - visibleItemCount - 1;
 				if(dataProvider.selectedIndex > limit) {
 					return false;
 				}
 			}
-			 return !(dataProvider.lastItem == dataProvider.selectedItem);
+			return !(dataProvider.lastItem == dataProvider.selectedItem);
 		}
 		
 		private function getContainerPosition():Number {
