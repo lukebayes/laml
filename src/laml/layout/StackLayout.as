@@ -5,16 +5,23 @@ package laml.layout {
 		protected var component:Layoutable;
 		
 		private var cache:Object;
+		private var horizontalDelegate:LayoutableDelegate;
+		private var verticalDelegate:LayoutableDelegate;
 		
 		public function render(component:Layoutable):void {
 			if(component.numChildren == 0) {
 				return;
 			}
+			
+			if(!horizontalDelegate) {
+				horizontalDelegate = new LayoutableDelegate(component, LayoutableDelegate.HORIZONTAL);
+			}
+
+			if(!verticalDelegate) {
+				verticalDelegate = new LayoutableDelegate(component, LayoutableDelegate.VERTICAL);
+			}
 
 			this.component = component;
-
-			var horizontalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.HORIZONTAL);
-			var verticalDelegate:LayoutableDelegate = new LayoutableDelegate(component, LayoutableDelegate.VERTICAL);
 
 			if(isNaN(horizontalDelegate.fixed) && isNaN(horizontalDelegate.percent)) {
 				horizontalDelegate.actual = getChildrenWidth(horizontalDelegate);
