@@ -3,6 +3,7 @@ package laml.display {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.system.Security;
 	
 	import mx.core.BitmapAsset;
 	import mx.core.FontAsset;
@@ -16,6 +17,10 @@ package laml.display {
 		private var iFlexAsset:IFlexAsset;
 		private var iFlexDisplayObject:IFlexDisplayObject;
 		private var spriteAsset:SpriteAsset;
+		
+		public function Skin() {
+			Security.allowDomain("*");
+		}
 
 		public function getBitmapByName(alias:String):DisplayObject {
 			if(hasOwnProperty(alias)) {
