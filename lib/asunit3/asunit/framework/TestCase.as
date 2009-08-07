@@ -1,17 +1,15 @@
 package asunit.framework {
-	import asunit.errors.AssertionFailedError;
-	import asunit.util.ArrayIterator;
-	import asunit.util.Iterator;
-	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
+
+	import asunit.errors.AssertionFailedError;
+	import asunit.util.ArrayIterator;
+	import asunit.util.Iterator;
 
 	/**
 	 * A test case defines the fixture to run multiple tests. To define a test case<br>
@@ -22,83 +20,75 @@ package asunit.framework {
 	 * Each test runs in its own fixture so there
 	 * can be no side effects among test runs.
 	 * Here is an example:
-	 * <pre>
+	 * <listing>
 	 * public class MathTest extends TestCase {
-	 *     protected double fValue1;
-	 *     protected double fValue2;
+	 *      private var value1:Number;
+	 *      private var value2:Number;
 	 *
-	 *    protected void setUp() {
-	 *         fValue1= 2.0;
-	 *         fValue2= 3.0;
-	 *     }
+	 *      public function MathTest(methodName:String=null) {
+	 *         super(methodName);
+	 *      }
+	 *
+	 *      override protected function setUp():void {
+	 *         super.setUp();
+	 *         value1 = 2;
+	 *         value2 = 3;
+	 *      }
 	 * }
-	 * </pre>
+	 * </listing>
 	 *
 	 * For each test implement a method which interacts
 	 * with the fixture. Verify the expected results with assertions specified
-	 * by calling <code>assertTrue</code> with a boolean.
-	 * <pre>
-	 *    public void testAdd() {
-	 *        double result= fValue1 + fValue2;
-	 *        assertTrue(result == 5.0);
+	 * by calling <code>assertTrue</code> with a boolean, or <code>assertEquals</code>
+	 * with two primitive values that should match.
+	 * <listing>
+	 *    public function testAdd():void {
+	 *        var result:Number = value1 + value2;
+	 *        assertEquals(5, result);
 	 *    }
-	 * </pre>
-	 * Once the methods are defined you can run them. The framework supports
-	 * both a static type safe and more dynamic way to run a test.
-	 * In the static way you override the runTest method and define the method to
-	 * be invoked. A convenient way to do so is with an anonymous inner class.
-	 * <pre>
-	 * TestCase test= new MathTest("add") {
-	 *        public void runTest() {
-	 *            testAdd();
-	 *        }
-	 * };
-	 * test.run();
-	 * </pre>
-	 * The dynamic way uses reflection to implement <code>runTest</code>. It dynamically finds
-	 * and invokes a method.
-	 * In this case the name of the test case has to correspond to the test method
-	 * to be run.
-	 * <pre>
-	 * TestCase= new MathTest("testAdd");
-	 * test.run();
-	 * </pre>
-	 * The tests to be run can be collected into a TestSuite. JUnit provides
-	 * different <i>test runners</i> which can run a test suite and collect the results.
-	 * A test runner either expects a static method <code>suite</code> as the entry
-	 * point to get a test to run or it will extract the suite automatically.
-	 * <pre>
-	 * public static Test suite() {
-	 *      suite.addTest(new MathTest("testAdd"));
-	 *      suite.addTest(new MathTest("testDivideByZero"));
-	 *      return suite;
-	 *  }
-	 * </pre>
-	 * @see TestResult
-	 * @see TestSuite
+	 * </listing>
+	 *
+	 *  There are three common types of test cases:
+	 *
+	 *  <ol>
+	 *  <li>Simple unit test</li>
+	 *  <li>Visual integration test</li>
+	 *  <li>Asynchronous test</li>
+	 *  </ol>
+	 *
+	 *  @includeExample MathUtilTest.as
+	 *  @includeExample ComponentTestIntroduction.as
+	 *  @includeExample ComponentUnderTest.as
+	 *  @includeExample ComponentTestExample.as
+	 *  @includeExample AsynchronousTestMethodExample.as
 	 */
 	public class TestCase extends Assert implements Test {
-		protected static const PRE_SET_UP:int		= 0;
-		protected static const SET_UP:int 			= 1;
-		protected static const RUN_METHOD:int 		= 2;
-		protected static const TEAR_DOWN:int		= 3;
-		protected static const DEFAULT_TIMEOUT:int 	= 1000;
+		protected static const PRE_SET_UP:int        = 0;
+		protected static const SET_UP:int             = 1;
+		protected static const RUN_METHOD:int         = 2;
+		protected static const TEAR_DOWN:int        = 3;
+		protected static const DEFAULT_TIMEOUT:int     = 1000;
+
+		protected var context:DisplayObjectContainer;
 		protected var fName:String;
+		protected var isComplete:Boolean;
 		protected var result:TestListener;
 		protected var testMethods:Array;
-		protected var isComplete:Boolean;
-		protected var context:DisplayObjectContainer;
-		protected var methodIsAsynchronous:Boolean;
-		protected var timeout:Timer;
-		private var setUpIsAsynchronous:Boolean;
+
+		private var asyncQueue:Array;
 		private var currentMethod:String;
-		private var runSingle:Boolean;
-		private var methodIterator:Iterator;
-		private var layoutManager:Object;
 		private var currentState:int;
+		private var layoutManager:Object;
+		private var methodIterator:Iterator;
+		private var runSingle:Boolean;
 
 		/**
 		 * Constructs a test case with the given name.
+		 *
+		 * Be sure to implement the constructor in your own TestCase base classes.
+		 *
+		 * Using the optional <code>testMethod</code> constructor parameter is how we
+		 * create and run a single test case and test method.
 		 */
 		public function TestCase(testMethod:String = null) {
 			var description:XML = describeType(this);
@@ -114,8 +104,9 @@ package asunit.framework {
 			}
 			setName(className.toString());
 			resolveLayoutManager();
+			asyncQueue = [];
 		}
-		
+
 		private function resolveLayoutManager():void {
 			// Avoid creating import dependencies on flex framework
 			// If you have the framework.swc in your classpath,
@@ -131,7 +122,7 @@ package asunit.framework {
 			catch(e:Error) {
 				layoutManager = new Object();
 				layoutManager.resetAll = function():void {
-				}
+				};
 			}
 		}
 
@@ -152,7 +143,7 @@ package asunit.framework {
 				testMethods.push(name);
 			}
 		}
-		
+
 		public function getTestMethods():Array {
 			return testMethods;
 		}
@@ -170,7 +161,7 @@ package asunit.framework {
 		 * @see TestResult
 		 */
 		protected function createResult():TestResult {
-		    return new TestResult();
+			return new TestResult();
 		}
 
 		/**
@@ -191,14 +182,13 @@ package asunit.framework {
 			this.result = result;
 		}
 
-		protected function getResult():TestListener {
+		internal function getResult():TestListener {
 			return (result == null) ? createResult() : result;
 		}
 
 		/**
 		 * Runs the bare test sequence.
-		 * @exception Error if any exception is thrown
-		 *  throws Error
+		 * @throws Error if any exception is thrown
 		 */
 		public function runBare():void {
 			if(isComplete) {
@@ -218,7 +208,7 @@ package asunit.framework {
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-		
+
 		private function getMethodIterator():Iterator {
 			if(methodIterator == null) {
 				methodIterator = new ArrayIterator(testMethods);
@@ -226,27 +216,25 @@ package asunit.framework {
 			return methodIterator;
 		}
 
-		// Override this method in Asynchronous test cases
-		// or any other time you want to perform additional
-		// member cleanup after all test methods have run
+		/**
+		*   Override this method in Asynchronous test cases
+		*   or any other time you want to perform additional
+		*   member cleanup after all test methods have run
+		**/
 		protected function cleanUp():void {
 		}
-		
+
 		private function runMethod(methodName:String):void {
 			try {
-				methodIsAsynchronous = false;
 				if(currentState == PRE_SET_UP) {
 					currentState = SET_UP;
 					getResult().startTestMethod(this, methodName);
 					setUp(); // setUp may be async and change the state of methodIsAsynchronous
 				}
 				currentMethod = methodName;
-				if(!methodIsAsynchronous) {
+				if(!waitForAsync()) {
 					currentState = RUN_METHOD;
 					this[methodName]();
-				}
-				else {
-					setUpIsAsynchronous = true;
 				}
 			}
 			catch(assertionFailedError:AssertionFailedError) {
@@ -256,7 +244,7 @@ package asunit.framework {
 				getResult().addError(this, unknownError);
 			}
 			finally {
-				if(!methodIsAsynchronous) {
+				if(!waitForAsync()) {
 					runTearDown();
 				}
 			}
@@ -265,17 +253,57 @@ package asunit.framework {
 		/**
 		 * Sets up the fixture, for example, instantiate a mock object.
 		 * This method is called before each test is executed.
-		 * throws Exception on error
+		 * throws Exception on error.
+		 *
+		 * @example This method is usually overridden in your concrete test cases:
+		 *  <listing>
+		 *  private var instance:MyInstance;
+		 *
+		 *  override protected function setUp():void {
+		 *      super.setUp();
+		 *      instance = new MyInstance();
+		 *      addChild(instance);
+		 *  }
+		 *  </listing>
 		 */
 		protected function setUp():void {
 		}
 		/**
-		 * Tears down the fixture, for example, delete mock object.
-		 * This method is called after a test is executed.
-		 *  throws Exception on error
+		 *  Tears down the fixture, for example, delete mock object.
+		 *
+		 *  This method is called after a test is executed - even if the test method
+		 *  throws an exception or fails.
+		 *
+		 *  Even though the base class <code>TestCase</code> doesn't do anything on <code>tearDown</code>,
+		 *  It's a good idea to call <code>super.tearDown()</code> in your subclasses. Many projects
+		 *  wind up using some common fixtures which can often be extracted out a common project
+		 *  <code>TestCase</code>.
+		 *
+		 *  <code>tearDown</code> is <em>not</em> called when we tell a test case to execute
+		 *  a single test method.
+		 *
+		 *  @throws Error on error.
+		 *
+		 *  @example This method is usually overridden in your concrete test cases:
+		 *  <listing>
+		 *  private var instance:MyInstance;
+		 *
+		 *  override protected function setUp():void {
+		 *      super.setUp();
+		 *      instance = new MyInstance();
+		 *      addChild(instance);
+		 *  }
+		 *
+		 *  override protected function tearDown():void {
+		 *      super.tearDown();
+		 *      removeChild(instance);
+		 *  }
+		 *  </listing>
+		 *
 		 */
 		protected function tearDown():void {
 		}
+
 		/**
 		 * Returns a string representation of the test case
 		 */
@@ -307,46 +335,69 @@ package asunit.framework {
 			this.context = context;
 		}
 
+		/**
+		*   Returns the visual <code>DisplayObjectContainer</code> that will be used by
+		*   <code>addChild</code> and <code>removeChild</code> helper methods.
+		**/
 		public function getContext():DisplayObjectContainer {
 			return context;
 		}
 
-		protected function addAsync(handler:Function = null, duration:Number=DEFAULT_TIMEOUT):Function {
+		/**
+		*   Called from within <code>setUp</code> or the body of any test method.
+		*
+		*   Any call to <code>addAsync</code>, will prevent test execution from continuing
+		*   until the <code>duration</code> (in milliseconds) is exceeded, or the function returned by <code>addAsync</code>
+		*   is called. <code>addAsync</code> can be called any number of times within a particular
+		*   test method, and will block execution until each handler has returned.
+		*
+		*   Following is an example of how to use the <code>addAsync</code> feature:
+		*   <listing>
+		*   public function testDispatcher():void {
+		*       var dispatcher:IEventDispatcher = new EventDispatcher();
+		*       // Subscribe to an event by sending the return value of addAsync:
+		*       dispatcher.addEventListener(Event.COMPLETE, addAsync(function(event:Event):void {
+		*           // Make assertions *inside* your async handler:
+		*           assertEquals(34, dispatcher.value);
+		*       }));
+		*   }
+		*   </listing>
+		*
+		*   If you just want to verify that a particular event is triggered, you don't
+		*   need to provide a handler of your own, you can do the following:
+		*   <listing>
+		*   public function testDispatcher():void {
+		*       var dispatcher:IEventDispatcher = new EventDispatcher();
+		*       dispatcher.addEventListener(Event.COMPLETE, addAsync());
+		*   }
+		*   </listing>
+		*
+		*   If you have a series of events that need to happen, you can generally add
+		*   the async handler to the last one.
+		*
+		*   The main thing to remember is that any assertions that happen outside of the
+		*   initial thread of execution, must be inside of an <code>addAsync</code> block.
+		**/
+		protected function addAsync(handler:Function = null, duration:Number=DEFAULT_TIMEOUT, failureHandler:Function=null):Function {
 			if(handler == null) {
-				handler = function(args:*):* {};
+				handler = function(args:*):* {return;};
 			}
-			methodIsAsynchronous = true;
-			timeout = new Timer(duration, 1);
-			timeout.addEventListener(TimerEvent.TIMER_COMPLETE, getTimeoutComplete(duration));
-			timeout.start();
-			// try ..args
-			var context:TestCase = this;
-			return function(args:*):* {
-				context.timeout.stop();
-				try {
-					handler.apply(context, arguments);
-				}
-				catch(e:AssertionFailedError) {
-					context.getResult().addFailure(context, e);
-				}
-				catch(ioe:IllegalOperationError) {
-					context.getResult().addError(context, ioe);
-				}
-				finally {
-					context.asyncMethodComplete();
-				}
-			}
+			var async:AsyncOperation = new AsyncOperation(this, handler, duration, failureHandler);
+			asyncQueue.push(async);
+			return async.getCallback();
 		}
-		
-		private function getTimeoutComplete(duration:Number):Function {
-			var context:TestCase = this;
-			return function(event:Event):void {
-				context.getResult().addError(context, new IllegalOperationError("TestCase.timeout (" + duration + "ms) exceeded on an asynchronous test method."));
-				context.asyncMethodComplete();
-			}
+
+		internal function asyncOperationTimeout(async:AsyncOperation, duration:Number, isError:Boolean=true):void {
+			if(isError) getResult().addError(this, new IllegalOperationError("TestCase.timeout (" + duration + "ms) exceeded on an asynchronous operation."));
+			asyncOperationComplete(async);
 		}
-		
-		protected function asyncMethodComplete():void {
+
+		internal function asyncOperationComplete(async:AsyncOperation):void{
+			// remove operation from queue
+			var i:int = asyncQueue.indexOf(async);
+			asyncQueue.splice(i,1);
+			// if we still need to wait, return
+			if(waitForAsync()) return;
 			if(currentState == SET_UP) {
 				runMethod(currentMethod);
 			}
@@ -355,7 +406,14 @@ package asunit.framework {
 			}
 		}
 
+		private function waitForAsync():Boolean{
+			return asyncQueue.length > 0;
+		}
+
 		protected function runTearDown():void {
+			if(currentState == TEAR_DOWN) {
+				return;
+			}
 			currentState = TEAR_DOWN;
 			if(isComplete) {
 				return;
@@ -367,14 +425,61 @@ package asunit.framework {
 			}
 			setTimeout(runBare, 5);
 		}
-		
+
+		/**
+		* Helper method for testing <code>DisplayObject</code>s.
+		*
+		* This method allows you to more easily add and manage <code>DisplayObject</code>
+		* instances in your <code>TestCase</code>.
+		*
+		* If you are using the regular <code>TestRunner</code>, you cannot add Flex classes.
+		*
+		* If you are using a <code>FlexRunner</code> base class, you can add either
+		* regular <code>DisplayObject</code>s or <code>IUIComponent</code>s.
+		*
+		* Usually, this method is called within <code>setUp</code>, and <code>removeChild</code>
+		* is called from within <code>tearDown</code>. Using these methods, ensures that added
+		* children will be subsequently removed, even when tests fail.
+		*
+		* Here is an example of the <code>addChild</code> method:
+		* <listing>
+		*   private var instance:MyComponent;
+		*
+		*   override protected function setUp():void {
+		*       super.setUp();
+		*       instance = new MyComponent();
+		*       instance.addEventListener(Event.COMPLETE, addAsync());
+		*       addChild(instance);
+		*   }
+		*
+		*   override protected function tearDown():void {
+		*       super.tearDown();
+		*       removeChild(instance);
+		*   }
+		*
+		*   public function testParam():void {
+		*       assertEquals(34, instance.value);
+		*   }
+		* </listing>
+		**/
 		protected function addChild(child:DisplayObject):DisplayObject {
 			return getContext().addChild(child);
 		}
 
+		/**
+		* Helper method for removing added <code>DisplayObject</code>s.
+		*
+		* <b>Update:</b> This method should no longer fail if the provided <code>DisplayObject</code>
+		* has already been removed.
+		**/
 		protected function removeChild(child:DisplayObject):DisplayObject {
-			if(child != null && child.parent === getContext()) {
+			if(child == null) {
+				return null;
+			}
+			try {
 				return getContext().removeChild(child);
+			}
+			catch(e:Error) {
 			}
 			return null;
 		}
